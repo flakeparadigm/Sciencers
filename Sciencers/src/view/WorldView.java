@@ -15,6 +15,7 @@ import model.World;
 public class WorldView extends JFrame implements OurObserver{
 	public static JFrame gameWindow;
 	public static TextView panel;
+	public static World world;
 
 	static Toolkit tk = Toolkit.getDefaultToolkit();
 	private final int xScreenSize = ((int) tk.getScreenSize().getWidth());
@@ -40,16 +41,14 @@ public class WorldView extends JFrame implements OurObserver{
 		setTitle("Animation Example");
 		setSize(xWindowSize, yWindowSize);
 		setLocation(50, 50);
-
 	}
 
 	private void setupModel() {
-		// TODO Auto-generated method stub
-		World world = new World();
+		world = new World();
 	}
 
 	private void addComponents() {
-		panel = new TextView();
+		panel = new TextView(world);
 		add(panel);
 	}
 
@@ -60,7 +59,7 @@ public class WorldView extends JFrame implements OurObserver{
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
-		
+		// here we should update all relevant panels with world info
+		panel.update(world);
 	}
 }

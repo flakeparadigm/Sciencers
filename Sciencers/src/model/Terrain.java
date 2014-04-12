@@ -5,7 +5,6 @@ import view.Tile;
 public class Terrain extends OurObservable{
 	private Tile[][] terrain;
 	private String seed;
-	// we will need to find a good value for the height.
 	private int mapHeight;
 	private int mapWidth;
 	
@@ -14,6 +13,8 @@ public class Terrain extends OurObservable{
 		this.mapWidth = mapWidth;
 		this.mapHeight = mapHeight;
 		terrain = new Tile[this.mapWidth][this.mapHeight];
+		generateSky();
+		notifyObservers();
 	}
 	
 	public void generateSky(){
@@ -23,12 +24,14 @@ public class Terrain extends OurObservable{
 				setTile(Tile.Sky, i, j);
 			}
 		}
-		notifyObservers();
 	}
 	
 	public void generateRandom(){
 		//TODO
-		notifyObservers();
+	}
+	
+	public Tile[][] getTileArray(){
+		return terrain;
 	}
 	
 	public Tile getTile(int row, int col){
@@ -37,6 +40,7 @@ public class Terrain extends OurObservable{
 	
 	public void setTile(Tile tile, int row, int col){
 		terrain[row][col] = tile;
+		//is this notification here necessary? I'm not sure
 		notifyObservers();
 	}
 }
