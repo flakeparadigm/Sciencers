@@ -5,11 +5,14 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
+import model.OurObserver;
+import model.World;
+
 /* I thought it might be nice to have a working view for testing 
  * the map generation - so here is a start for this class
  */
 
-public class WorldView extends JFrame{
+public class WorldView extends JFrame implements OurObserver{
 	public static JFrame gameWindow;
 	public static TextView panel;
 
@@ -32,7 +35,7 @@ public class WorldView extends JFrame{
 	}
 
 	private void setupProperties() {
-		//in the future, we may want to make the window either maximized or scaled to screen size
+		//in the future, we may want to make the window either maximized or scaled to screen size (or both, which would be nice)
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Animation Example");
 		setSize(xWindowSize, yWindowSize);
@@ -42,7 +45,7 @@ public class WorldView extends JFrame{
 
 	private void setupModel() {
 		// TODO Auto-generated method stub
-		
+		World world = new World();
 	}
 
 	private void addComponents() {
@@ -51,6 +54,12 @@ public class WorldView extends JFrame{
 	}
 
 	private void registerListeners() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update() {
 		// TODO Auto-generated method stub
 		
 	}
