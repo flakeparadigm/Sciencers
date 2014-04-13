@@ -31,7 +31,7 @@ public class TextView extends JPanel{
 		Tile[][] grid = world.getTerrain().getTileArray();
 		for (int i = 0; i< grid.length; i++){
 			for (int j = 0; j< grid[0].length; j++){
-				g2.drawString(Character.toString(grid[i][j].value), 10 + 6*i, 10 + 6*j);
+				g2.drawString(Character.toString(grid[i][j].value), 10 + 10*i, 10 + 10*j);
 			}
 		}
 	}

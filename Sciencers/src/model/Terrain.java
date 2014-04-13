@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 import view.Tile;
 
 public class Terrain extends OurObservable {
@@ -7,6 +9,24 @@ public class Terrain extends OurObservable {
 	private String seed;
 	private int mapHeight;
 	private int mapWidth;
+	
+	/*
+	 * edit these following values to change how the map will generate.
+	 * >Magnitude for the three functions indicates how far up or down the 
+	 * terrain might stretch
+	 * >Frequency determines the distance between points of the specified magnitude
+	 * in the plot. Thus, for a terrain with sparsely placed mountains,
+	 * you would want one function to have a high magnitude and high value for 
+	 * frequency. (High frequency number means the points are farther apart).
+	 *
+	 */
+	private final int averageTerrainHeight = 30;
+	private final int perlin1Magnitude = 20;
+	private final int perlin2Magnitude = 2;
+	private final int perlin3Magnitude = 1;
+	private final int perlin1NoiseFrequency = 50;
+	private final int perlin2NoiseFrequency = 4;
+	private final int perlin3NoiseFrequency = 3;
 
 	public Terrain(String seed, int mapWidth, int mapHeight) {
 		this.seed = seed;
@@ -29,17 +49,102 @@ public class Terrain extends OurObservable {
 
 	public void generateRandomTerrain() {
 		// TODO: Perlin noise function
-		System.out.println(Noise1());
+		generateTerrainHeight();
 	}
 
-	private float Noise1() {
-		//return a random float between -1 and 1
-		float Min = -1;
-		float Max = 1;
-		return (float) (Min + (Math.random() * ((Max - Min) + 1)));
-		//I'm trying to follow this outline to some degree:http://freespace.virgin.net/hugo.elias/models/m_perlin.htm
+	private void generateTerrainHeight() {
+		// plot points at specified frequency
+		int[] smoothFunction = new int[mapWidth * perlin1NoiseFrequency];
+		for (int i = 0; i < mapWidth; i++) {
+			if (i % perlin1NoiseFrequency == 0) {
+				smoothFunction[i] = Noise1(perlin1Magnitude);
+			}
+		}
+		// linearly interpolate
+		for (int i = 0; i < mapWidth; i++) {
+			if (i % perlin1NoiseFrequency != 0) {
+				int lastPoint = i - i % perlin1NoiseFrequency;
+				int nextPoint;
+				if (lastPoint + perlin1NoiseFrequency < mapWidth) {
+					nextPoint = lastPoint + perlin1NoiseFrequency;
+				} else {
+					nextPoint = mapWidth-1;
+				}
+				double slope = (double)(smoothFunction[nextPoint] - smoothFunction[lastPoint])
+						/ (double)perlin1NoiseFrequency;
+				smoothFunction[i] = (int) (smoothFunction[lastPoint] + (i % perlin1NoiseFrequency)
+						* slope);
+			}
+		}
+
+		//plot second perlin points:
+		int[] smoothFunction2 = new int[mapWidth * perlin2NoiseFrequency];
+		for (int i = 0; i < mapWidth; i++) {
+			if (i % perlin2NoiseFrequency == 0) {
+				smoothFunction2[i] = Noise1(perlin2Magnitude);
+			}
+		}
+		// linearly interpolate
+		for (int i = 0; i < mapWidth; i++) {
+			if (i % perlin2NoiseFrequency != 0) {
+				int lastPoint = i - i % perlin2NoiseFrequency;
+				int nextPoint;
+				if (lastPoint + perlin2NoiseFrequency < mapWidth) {
+					nextPoint = lastPoint + perlin2NoiseFrequency;
+				} else {
+					nextPoint = mapWidth-1;
+				}
+				double slope = (double)(smoothFunction2[nextPoint] - smoothFunction2[lastPoint])
+						/ (double)perlin2NoiseFrequency;
+				smoothFunction2[i] = (int) (smoothFunction2[lastPoint] + (i % perlin2NoiseFrequency)
+						* slope);
+			}
+		}
+		
+		//plot second perlin points:
+		int[] smoothFunction3 = new int[mapWidth * perlin3NoiseFrequency];
+		for (int i = 0; i < mapWidth; i++) {
+			if (i % perlin3NoiseFrequency == 0) {
+				smoothFunction3[i] = Noise1(perlin3Magnitude);
+			}
+		}
+		// linearly interpolate
+		for (int i = 0; i < mapWidth; i++) {
+			if (i % perlin3NoiseFrequency != 0) {
+				int lastPoint = i - i % perlin3NoiseFrequency;
+				int nextPoint;
+				if (lastPoint + perlin3NoiseFrequency < mapWidth) {
+					nextPoint = lastPoint + perlin3NoiseFrequency;
+				} else {
+					nextPoint = mapWidth-1;
+				}
+				System.out.println(smoothFunction3[lastPoint]);
+				System.out.println(smoothFunction3[nextPoint]);
+				double slope = (double)(smoothFunction3[nextPoint] - smoothFunction3[lastPoint])
+						/ (double)perlin3NoiseFrequency;
+				System.out.println("slope:" + slope);
+				smoothFunction3[i] = (int) (smoothFunction3[lastPoint] + (i % perlin3NoiseFrequency)
+						* slope);
+			}
+		}
+		
+		//Set tiles on the terrain (add all perlin functions)
+		for (int i = 0; i < mapWidth; i++) {
+			System.out.println(smoothFunction[i]);
+			for (int j = 0; j< smoothFunction[i] + smoothFunction2[i] + smoothFunction3[i] + averageTerrainHeight; j++){
+				setTile(Tile.Dirt, i, j);
+			}
+		}
 	}
-	
+
+	private int Noise1(int magnitude) {
+		// return a random float between -1 and 1
+		int Min = -magnitude;
+		int Max = magnitude;
+		return (int) (Min + (Math.random() * ((Max - Min) + 1)));
+		// I'm trying to follow this outline to some
+		// degree:http://freespace.virgin.net/hugo.elias/models/m_perlin.htm
+	}
 
 	public Tile[][] getTileArray() {
 		return terrain;
