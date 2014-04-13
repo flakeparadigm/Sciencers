@@ -1,12 +1,14 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import view.Tile;
 
 public class Terrain extends OurObservable {
 	private Tile[][] terrain;
-	private String seed;
+	private long seed;
+	private Random random;
 	private int mapHeight;
 	private int mapWidth;
 	
@@ -28,11 +30,12 @@ public class Terrain extends OurObservable {
 	private final int perlin2NoiseFrequency = 4;
 	private final int perlin3NoiseFrequency = 3;
 
-	public Terrain(String seed, int mapWidth, int mapHeight) {
+	public Terrain(long seed, int mapWidth, int mapHeight) {
 		this.seed = seed;
 		this.mapWidth = mapWidth;
 		this.mapHeight = mapHeight;
 		terrain = new Tile[this.mapWidth][this.mapHeight];
+		random = new Random(seed);
 		generateSky();
 		generateRandomTerrain();
 		notifyObservers();
@@ -130,8 +133,7 @@ public class Terrain extends OurObservable {
 		
 		//Set tiles on the terrain (add all perlin functions)
 		for (int i = 0; i < mapWidth; i++) {
-			System.out.println(smoothFunction[i]);
-			for (int j = 0; j< smoothFunction[i] + smoothFunction2[i] + smoothFunction3[i] + averageTerrainHeight; j++){
+			for (int j = smoothFunction[i] + smoothFunction2[i] + smoothFunction3[i] + averageTerrainHeight; j< mapHeight; j++){
 				setTile(Tile.Dirt, i, j);
 			}
 		}
@@ -141,9 +143,7 @@ public class Terrain extends OurObservable {
 		// return a random float between -1 and 1
 		int Min = -magnitude;
 		int Max = magnitude;
-		return (int) (Min + (Math.random() * ((Max - Min) + 1)));
-		// I'm trying to follow this outline to some
-		// degree:http://freespace.virgin.net/hugo.elias/models/m_perlin.htm
+		return (int) (Min + (random.nextDouble() * ((Max - Min) + 1)));
 	}
 
 	public Tile[][] getTileArray() {

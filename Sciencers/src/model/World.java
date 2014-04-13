@@ -19,7 +19,7 @@ public class World{
 	
 	public World(){
 		//note that we will also want to figure out a good map size
-		terrain = new Terrain("AAAAA", 500, 100);
+		terrain = new Terrain(1234, 500, 100);
 	}
 	
 	public Terrain getTerrain(){
