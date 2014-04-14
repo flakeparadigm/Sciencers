@@ -38,7 +38,7 @@ public class WorldView extends JFrame implements OurObserver{
 	private void setupProperties() {
 		//in the future, we may want to make the window either maximized or scaled to screen size (or both, which would be nice)
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setTitle("Animation Example");
+		setTitle("Sciencers");
 		setSize(xWindowSize, yWindowSize);
 		setLocation(50, 50);
 	}
