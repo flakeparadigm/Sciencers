@@ -24,13 +24,16 @@ public class PathFinder {
 	
 	// other info
 	private Terrain terrain;
+	private Tile passable;
+	
 	
 	// Magic Numbers
 	public static final int MOVEMENT_COST = 10;
 	
 	public PathFinder(Point startPoint, Point targetPoint, Terrain terrain , Tile passable) {
-		// store the terain
+		// store the terain and passable tiles
 		this.terrain = terrain;
+		this.passable = passable;
 		
 		// make the starting and ending nodes, add them to our tracking map
 		startNode = new PathFinderNode(startPoint, null, this);
@@ -40,6 +43,9 @@ public class PathFinder {
 		
 		// start with the startNode as the first node to check.
 		checkingNode = startNode;
+		
+		// find the path!
+		findPath();
 	}
 	
 	public Stack<Point> getPath() {
@@ -49,7 +55,12 @@ public class PathFinder {
 	private void findPath() {
 		// will need to probably fix these boolean expressions
 		while(checkingNode != targetNode){
+			moveToClosedList(checkingNode);
 			
+			makeAdjacentNodes(checkingNode);
+			checkingNode.setAdjacentNodes();
+			
+			checkingNode = openList.poll();
 		}
 		
 		while(checkingNode != startNode){
@@ -76,6 +87,49 @@ public class PathFinder {
 	private void moveToClosedList(PathFinderNode node) {
 		removeFromOpenList(node);
 		addToClosedList(node);
+	}
+	
+	private void makeAdjacentNodes(PathFinderNode checking) {
+		// create Nodes for all of the adjacent nodes if they don't exist (are passable)
+		Point checkingPoint = checking.getPoint();
+		int checkX = (int) checkingPoint.getX();
+		int checkY = (int) checkingPoint.getY();
+		
+		// north
+		Point northPoint = new Point(checkX, checkY+1);
+		Tile northTile = terrain.getTile(checkX, checkY+1);
+		if(northTile == passable && allNodes.get(northPoint) == null) {
+			PathFinderNode newNode = new PathFinderNode(northPoint, checking, this);
+			allNodes.put(northPoint, newNode);
+			openList.add(newNode);
+		}
+		
+		// South
+		Point southPoint = new Point(checkX, checkY-1);
+		Tile southTile = terrain.getTile(checkX, checkY-1);
+		if(southTile == passable && allNodes.get(southPoint) == null) {
+			PathFinderNode newNode = new PathFinderNode(southPoint, checking, this);
+			allNodes.put(southPoint, newNode);
+			openList.add(newNode);
+		}
+		
+		// East
+		Point eastPoint = new Point(checkX+1, checkY);
+		Tile eastTile = terrain.getTile(checkX+1, checkY);
+		if(eastTile == passable && allNodes.get(eastPoint) == null) {
+			PathFinderNode newNode = new PathFinderNode(eastPoint, checking, this);
+			allNodes.put(eastPoint, newNode);
+			openList.add(newNode);
+		}
+		
+		// West
+		Point westPoint = new Point(checkX-1, checkY);
+		Tile westTile = terrain.getTile(checkX-1, checkY);
+		if(westTile == passable && allNodes.get(westPoint) == null) {
+			PathFinderNode newNode = new PathFinderNode(westPoint, checking, this);
+			allNodes.put(westPoint, newNode);
+			openList.add(newNode);
+		}
 	}
 	
 	public PathFinderNode getNode(Point p) {

@@ -71,6 +71,17 @@ public class PathFinderNode implements Comparable {
 		}
 	}
 
+	public void setAdjacentNodes() {
+		int x = myCoordinate.x;
+		int y = myCoordinate.y;
+
+		// get adjacent nodes
+		north = pathFinder.getNode(new Point(x, y + 1));
+		south = pathFinder.getNode(new Point(x, y - 1));
+		east = pathFinder.getNode(new Point(x + 1, y));
+		west = pathFinder.getNode(new Point(x - 1, y));
+	}
+
 	@Override
 	public int compareTo(Object other) {
 		if (other instanceof PathFinderNode) {
@@ -100,14 +111,4 @@ public class PathFinderNode implements Comparable {
 		heuristicCost = (int) Math.sqrt(heuristicCalc);
 	}
 
-	private void setAdjacentNodes() {
-		int x = myCoordinate.x;
-		int y = myCoordinate.y;
-
-		// get adjacent nodes
-		north = pathFinder.getNode(new Point(x, y + 1));
-		south = pathFinder.getNode(new Point(x, y - 1));
-		east = pathFinder.getNode(new Point(x + 1, y));
-		west = pathFinder.getNode(new Point(x - 1, y));
-	}
 }
