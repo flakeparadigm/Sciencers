@@ -63,5 +63,8 @@ public class PathFinder {
 		return allNodes.get(p);
 	}
 	
+	public PathFinderNode getDestination() {
+		return targetNode;
+	}
 	
 }

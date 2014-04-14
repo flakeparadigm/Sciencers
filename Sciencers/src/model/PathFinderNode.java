@@ -17,12 +17,14 @@ public class PathFinderNode implements Comparable {
 	private PathFinderNode parent = null, north = null, south = null,
 			east = null, west = null;
 	private Point myCoordinate;
+	private Point target;
 	
 	// other important objects
 	private PathFinder pathFinder;
 	
 	public PathFinderNode(Point location, PathFinderNode parent, PathFinder pathFinder) {
-		
+		target = pathFinder.getDestination().getPoint();
+		heuristicCost = (int) Math.sqrt((Math.pow((target.getX()-myCoordinate.getX()),2)+Math.pow(target.getY()-myCoordinate.getY(),2)));
 	}
 
 	private void detectAdjacentNodes() {
@@ -83,5 +85,9 @@ public class PathFinderNode implements Comparable {
 		} else {
 			return -2;
 		}
+	}
+	
+	public Point getPoint() {
+		return myCoordinate;
 	}
 }
