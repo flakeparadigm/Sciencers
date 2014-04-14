@@ -32,19 +32,19 @@ public class Terrain extends OurObservable {
 	/*
 	 * edit these values to change how minerals and materials will be placed in
 	 * the ground. Placement determines the probability of a certain mineral
-	 * being set to a specific tile. Propogation determines the probability of
+	 * being set to a specific tile. Propagation determines the probability of
 	 * the tile being a larger vein. Depth Ratio determines how much much more
 	 * likely the mineral will be present at lower depths.
 	 * 
-	 * PS: don't go over .25 for propogation or you will get a stack overflow
+	 * PS: don't go over .25 for propagation or you will get a stack overflow
 	 * for some reason. Haven't bothered to try to fix it since we aren't 
 	 * going to need it nearly that high for the game.
 	 */
 	
 	//stonePlacement: percentage that a dirt block is replaced with stone
 	private final double stonePlacement = .01;
-	//stonePropogation: percentage for a placed dirt block to expand it's vein to a nearby tile
-	private final double stonePropogation = 0.2;
+	//stonePropagation: percentage for a placed dirt block to expand it's vein to a nearby tile
+	private final double stonePropagation = 0.2;
 	//stoneDepthRatio: a lower number here means the veins will be generally deeper
 	private final double stoneDepthRatio = .00000001;
 	//stoneDepthExp: a higher number here increases the probabilities to place stone exponentially,
@@ -52,12 +52,12 @@ public class Terrain extends OurObservable {
 	private final double stoneDepthExp = 4;
 	
 	private final double ironPlacement = .002;
-	private final double ironPropogation = .2;
+	private final double ironPropagation = .2;
 	private final double ironDepthRatio = .0001;
 	private final double ironDepthExp = .4;
 	
 	private final double uraniumPlacement = .002;
-	private final double uraniumPropogation = .1;
+	private final double uraniumPropagation = .1;
 	private final double uraniumDepthRatio = .0001;
 	private final double uraniumDepthExp = .8;
 
@@ -183,36 +183,36 @@ public class Terrain extends OurObservable {
 					//place these statements in the order of rarity of Tile
 					if (random.nextDouble() < (stonePlacement +  stoneDepthRatio*(Math.pow((j - averageTerrainHeight), stoneDepthExp)))) {
 						setTile(Tile.Stone, i, j);
-						propogate(Tile.Stone, i, j);
+						propagate(Tile.Stone, i, j);
 					}
 					if (random.nextDouble() < (ironPlacement +  ironDepthRatio*(Math.pow((j - averageTerrainHeight), ironDepthExp)))) {
 						setTile(Tile.Iron, i, j);
-						propogate(Tile.Iron, i, j);
+						propagate(Tile.Iron, i, j);
 					}
 					if (random.nextDouble() < (uraniumPlacement +  uraniumDepthRatio*(Math.pow((j - averageTerrainHeight), uraniumDepthExp)))) {
 						setTile(Tile.Uranium, i, j);
-						propogate(Tile.Uranium, i, j);
+						propagate(Tile.Uranium, i, j);
 					}
 				}
 			}
 		}
 	}
 
-	private void propogate(Tile type, int row, int col) {
-		double propogation = 0;
+	private void propagate(Tile type, int row, int col) {
+		double propagation = 0;
 		if (type.equals(Tile.Stone)){
-			propogation = stonePropogation;
+			propagation = stonePropagation;
 		} else if (type.equals(Tile.Iron)){
-			propogation = ironPropogation;
+			propagation = ironPropagation;
 		} else if (type.equals(Tile.Uranium)){
-			propogation = uraniumPropogation;
+			propagation = uraniumPropagation;
 		}
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
-				if (random.nextDouble() < propogation
+				if (random.nextDouble() < propagation
 						&& getTile(row + i, col + j).equals(Tile.Dirt)) {
 					setTile(type, row + i, col + j);
-					propogate(type, row + i, col + j);
+					propagate(type, row + i, col + j);
 				}
 			}
 		}
