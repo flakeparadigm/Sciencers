@@ -25,7 +25,7 @@ public class Agent {
 	// this will be what the agent uses to get the path to its next destination.
 	// should develop it out later to take in a building or something similar as an arg.
 	public boolean goHere(Point destination) {
-		PathFinder thePath = new PathFinder(currentPosition, destination);
+		//PathFinder thePath = new PathFinder(currentPosition, destination);
 		return false;
 	}
 }
