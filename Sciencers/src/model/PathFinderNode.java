@@ -18,50 +18,51 @@ public class PathFinderNode implements Comparable {
 			east = null, west = null;
 	private Point myCoordinate;
 	private Point target;
-	
+
 	// other important objects
 	private PathFinder pathFinder;
-	
+
 	public PathFinderNode(Point location, PathFinderNode parent, PathFinder pathFinder) {
+		// set my location
+		myCoordinate = location;
+		// store the parent node
+		this.parent = parent;
+		// store the PathFinder
+		this.pathFinder = pathFinder;
+
+		// set the target
 		target = pathFinder.getDestination().getPoint();
-		heuristicCost = (int) Math.sqrt((Math.pow((target.getX()-myCoordinate.getX()),2)+Math.pow(target.getY()-myCoordinate.getY(),2)));
-	}
 
-	private void detectAdjacentNodes() {
-		int x = myCoordinate.x;
-		int y = myCoordinate.y;
-
-		// get adjacent nodes
-		north = pathFinder.getNode(new Point(x, y+1));
-		south = pathFinder.getNode(new Point(x, y-1));
-		east = pathFinder.getNode(new Point(x+1, y));
-		west = pathFinder.getNode(new Point(x-1, y));
+		// calculate the (initial) values
+		calcHeuristic();
+		updateCosts();
+		setAdjacentNodes();
 	}
 
 	public void updateCosts() {
 		movementCost = parent.getMovementCost() + PathFinder.MOVEMENT_COST;
-		
+
 		totalCost = movementCost + heuristicCost;
 	}
-	
+
 	public int seeNewCosts() {
 		int newMvmtCost = parent.getMovementCost() + pathFinder.MOVEMENT_COST;
 		return newMvmtCost + heuristicCost;
 	}
-	
+
 	public int getTotalCost() {
 		return totalCost;
 	}
-	
+
 	public int getMovementCost() {
 		return movementCost;
 	}
-	
+
 	public boolean setParent(PathFinderNode newParent) {
 		PathFinderNode oldParent = parent;
 		parent = newParent;
-		
-		if(seeNewCosts() < totalCost) {
+
+		if (seeNewCosts() < totalCost) {
 			updateCosts();
 			return true;
 		} else {
@@ -72,22 +73,41 @@ public class PathFinderNode implements Comparable {
 
 	@Override
 	public int compareTo(Object other) {
-		if(other instanceof PathFinderNode) {
+		if (other instanceof PathFinderNode) {
 			PathFinderNode otherPFN = (PathFinderNode) other;
-			if(totalCost > otherPFN.getTotalCost())
+			if (totalCost > otherPFN.getTotalCost())
 				return 1;
-			else if(totalCost < otherPFN.getTotalCost())
+			else if (totalCost < otherPFN.getTotalCost())
 				return -1;
 			else
 				return 0;
-			
-		// PathFinderNodes should always come before other objects
+
+			// PathFinderNodes should always come before other objects
 		} else {
 			return -2;
 		}
 	}
-	
+
 	public Point getPoint() {
 		return myCoordinate;
+	}
+
+	private void calcHeuristic() {
+		int heuristicCalc = (int) Math.pow(target.getX() - myCoordinate.getX(),
+				2);
+		heuristicCalc += (int) Math.pow(target.getY() - myCoordinate.getY(), 2);
+
+		heuristicCost = (int) Math.sqrt(heuristicCalc);
+	}
+
+	private void setAdjacentNodes() {
+		int x = myCoordinate.x;
+		int y = myCoordinate.y;
+
+		// get adjacent nodes
+		north = pathFinder.getNode(new Point(x, y + 1));
+		south = pathFinder.getNode(new Point(x, y - 1));
+		east = pathFinder.getNode(new Point(x + 1, y));
+		west = pathFinder.getNode(new Point(x - 1, y));
 	}
 }

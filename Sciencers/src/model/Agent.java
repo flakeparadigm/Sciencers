@@ -3,6 +3,8 @@ package model;
 import java.awt.Point;
 import java.util.Stack;
 
+import view.Tile;
+
 public class Agent extends OurObservable {
 	
 	// agent id tracking
@@ -29,7 +31,7 @@ public class Agent extends OurObservable {
 	// this will be what the agent uses to get the path to its next destination.
 	// should develop it out later to take in a building or something similar as an arg.
 	public boolean goHere(Point destination) {
-		PathFinder thePath = new PathFinder(currentPosition, destination, terrain);
+		PathFinder thePath = new PathFinder(currentPosition, destination, terrain, Tile.Sky);
 		return false;
 	}
 }
