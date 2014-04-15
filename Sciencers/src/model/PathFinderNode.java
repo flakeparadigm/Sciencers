@@ -14,8 +14,8 @@ public class PathFinderNode implements Comparable {
 	private int totalCost = 0, movementCost = 0, heuristicCost = 0;
 
 	// important locations
-	private PathFinderNode parent = null, north = null, south = null,
-			east = null, west = null;
+	private PathFinderNode parent = null;
+	public PathFinderNode north = null, south = null, east = null, west = null;
 	private Point myCoordinate;
 	private Point target;
 
@@ -70,6 +70,10 @@ public class PathFinderNode implements Comparable {
 			return false;
 		}
 	}
+	
+	public PathFinderNode getParent() {
+		return parent;
+	}
 
 	public void setAdjacentNodes() {
 		int x = myCoordinate.x;
@@ -109,6 +113,11 @@ public class PathFinderNode implements Comparable {
 		heuristicCalc += (int) Math.pow(target.getY() - myCoordinate.getY(), 2);
 
 		heuristicCost = (int) Math.sqrt(heuristicCalc);
+	}
+
+	public void forceParent(PathFinderNode newParent) {
+		parent = newParent;		
+		updateCosts();
 	}
 
 }
