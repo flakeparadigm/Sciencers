@@ -30,7 +30,8 @@ public class PathFinder {
 	// Magic Numbers
 	public static final int MOVEMENT_COST = 10;
 
-	public PathFinder(Point startPoint, Point targetPoint, Terrain terrain, Tile passable) {
+	public PathFinder(Point startPoint, Point targetPoint, Terrain terrain,
+			Tile passable) {
 		// store the terain and passable tiles
 		this.terrain = terrain;
 		this.passable = passable;
@@ -79,15 +80,15 @@ public class PathFinder {
 			boolean isSouthTarget = (checkingNode.south == targetNode);
 			boolean isEastTarget = (checkingNode.east == targetNode);
 			boolean isWestTarget = (checkingNode.west == targetNode);
-			
+
 			if (isNorthTarget || isSouthTarget || isEastTarget || isWestTarget) {
 				targetNode.forceParent(checkingNode);
 				checkingNode = targetNode;
 			} else {
 				checkingNode = openList.poll();
 			}
-			
-			if(checkingNode == null)
+
+			if (checkingNode == null)
 				return;
 		}
 
@@ -120,45 +121,58 @@ public class PathFinder {
 		Point checkingPoint = checking.getPoint();
 		int checkX = (int) checkingPoint.getX();
 		int checkY = (int) checkingPoint.getY();
+		int maxX = terrain.getTileArray().length - 1;
+		int maxY = (terrain.getTileArray())[0].length - 1;
+
+		if ((checkX > maxX) || (checkY > maxY))
+			return;
 
 		// north
-		Point northPoint = new Point(checkX, checkY + 1);
-		Tile northTile = terrain.getTile(checkX, checkY + 1);
-		if (northTile == passable && allNodes.get(northPoint) == null) {
-			PathFinderNode newNode = new PathFinderNode(northPoint, checking,
-					this);
-			allNodes.put(northPoint, newNode);
-			addToOpenList(newNode);
+		if (checkY != 0) {
+			Point northPoint = new Point(checkX, checkY - 1);
+			Tile northTile = terrain.getTile(checkX, checkY - 1);
+			if (northTile == passable && allNodes.get(northPoint) == null) {
+				PathFinderNode newNode = new PathFinderNode(northPoint,
+						checking, this);
+				allNodes.put(northPoint, newNode);
+				addToOpenList(newNode);
+			}
 		}
 
 		// South
-		Point southPoint = new Point(checkX, checkY - 1);
-		Tile southTile = terrain.getTile(checkX, checkY - 1);
-		if (southTile == passable && allNodes.get(southPoint) == null) {
-			PathFinderNode newNode = new PathFinderNode(southPoint, checking,
-					this);
-			allNodes.put(southPoint, newNode);
-			addToOpenList(newNode);
+		if (checkY < maxY) {
+			Point southPoint = new Point(checkX, checkY + 1);
+			Tile southTile = terrain.getTile(checkX, checkY + 1);
+			if (southTile == passable && allNodes.get(southPoint) == null) {
+				PathFinderNode newNode = new PathFinderNode(southPoint,
+						checking, this);
+				allNodes.put(southPoint, newNode);
+				addToOpenList(newNode);
+			}
 		}
 
 		// East
-		Point eastPoint = new Point(checkX + 1, checkY);
-		Tile eastTile = terrain.getTile(checkX + 1, checkY);
-		if (eastTile == passable && allNodes.get(eastPoint) == null) {
-			PathFinderNode newNode = new PathFinderNode(eastPoint, checking,
-					this);
-			allNodes.put(eastPoint, newNode);
-			addToOpenList(newNode);
+		if (checkX < maxX) {
+			Point eastPoint = new Point(checkX + 1, checkY);
+			Tile eastTile = terrain.getTile(checkX + 1, checkY);
+			if (eastTile == passable && allNodes.get(eastPoint) == null) {
+				PathFinderNode newNode = new PathFinderNode(eastPoint,
+						checking, this);
+				allNodes.put(eastPoint, newNode);
+				addToOpenList(newNode);
+			}
 		}
 
 		// West
-		Point westPoint = new Point(checkX - 1, checkY);
-		Tile westTile = terrain.getTile(checkX - 1, checkY);
-		if (westTile == passable && allNodes.get(westPoint) == null) {
-			PathFinderNode newNode = new PathFinderNode(westPoint, checking,
-					this);
-			allNodes.put(westPoint, newNode);
-			addToOpenList(newNode);
+		if (checkX != 0) {
+			Point westPoint = new Point(checkX - 1, checkY);
+			Tile westTile = terrain.getTile(checkX - 1, checkY);
+			if (westTile == passable && allNodes.get(westPoint) == null) {
+				PathFinderNode newNode = new PathFinderNode(westPoint,
+						checking, this);
+				allNodes.put(westPoint, newNode);
+				addToOpenList(newNode);
+			}
 		}
 	}
 

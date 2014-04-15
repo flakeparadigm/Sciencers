@@ -9,7 +9,7 @@ import java.awt.Point;
 public class PathFinderNode implements Comparable<PathFinderNode> {
 
 	// Math numbers.
-	private int totalCost = 0, movementCost = 0, heuristicCost = 0;
+	private int totalCost = 0, movementCost = 2147483647, heuristicCost = 0;
 
 	// important locations
 	private PathFinderNode parent = null;
@@ -36,8 +36,6 @@ public class PathFinderNode implements Comparable<PathFinderNode> {
 		calcHeuristic();
 		updateCosts();
 		setAdjacentNodes();
-
-		System.out.println("New node created for " + myCoordinate);
 	}
 
 	public void updateCosts() {
@@ -82,8 +80,8 @@ public class PathFinderNode implements Comparable<PathFinderNode> {
 		int y = myCoordinate.y;
 
 		// get adjacent nodes
-		north = pathFinder.getNode(new Point(x, y + 1));
-		south = pathFinder.getNode(new Point(x, y - 1));
+		north = pathFinder.getNode(new Point(x, y - 1));
+		south = pathFinder.getNode(new Point(x, y + 1));
 		east = pathFinder.getNode(new Point(x + 1, y));
 		west = pathFinder.getNode(new Point(x - 1, y));
 	}
