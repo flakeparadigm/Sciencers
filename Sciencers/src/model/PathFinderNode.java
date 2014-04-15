@@ -1,14 +1,12 @@
 package model;
 
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.List;
 
 //based on A* algorithm described on http://wiki.gamegardens.com/Path_Finding_Tutorial
 //and the videos in this tutorial series https://www.youtube.com/watch?v=KNXfSOx4eEE
 
 //Pathfinding Node class. These are nodes for the A* path-finding algorithm.
-public class PathFinderNode implements Comparable {
+public class PathFinderNode implements Comparable<PathFinderNode> {
 
 	// Math numbers.
 	private int totalCost = 0, movementCost = 0, heuristicCost = 0;
@@ -22,7 +20,8 @@ public class PathFinderNode implements Comparable {
 	// other important objects
 	private PathFinder pathFinder;
 
-	public PathFinderNode(Point location, PathFinderNode parent, PathFinder pathFinder) {
+	public PathFinderNode(Point location, PathFinderNode parent,
+			PathFinder pathFinder) {
 		// set my location
 		myCoordinate = location;
 		// store the parent node
@@ -31,22 +30,25 @@ public class PathFinderNode implements Comparable {
 		this.pathFinder = pathFinder;
 
 		// set the target
-		target = pathFinder.getDestination().getPoint();
+		target = pathFinder.getDestination();
 
 		// calculate the (initial) values
 		calcHeuristic();
 		updateCosts();
 		setAdjacentNodes();
+
+		System.out.println("New node created for " + myCoordinate);
 	}
 
 	public void updateCosts() {
-		movementCost = parent.getMovementCost() + PathFinder.MOVEMENT_COST;
+		if(parent != null)
+			movementCost = parent.getMovementCost() + PathFinder.MOVEMENT_COST;
 
 		totalCost = movementCost + heuristicCost;
 	}
 
 	public int seeNewCosts() {
-		int newMvmtCost = parent.getMovementCost() + pathFinder.MOVEMENT_COST;
+		int newMvmtCost = parent.getMovementCost() + PathFinder.MOVEMENT_COST;
 		return newMvmtCost + heuristicCost;
 	}
 
@@ -70,7 +72,7 @@ public class PathFinderNode implements Comparable {
 			return false;
 		}
 	}
-	
+
 	public PathFinderNode getParent() {
 		return parent;
 	}
@@ -87,20 +89,14 @@ public class PathFinderNode implements Comparable {
 	}
 
 	@Override
-	public int compareTo(Object other) {
-		if (other instanceof PathFinderNode) {
-			PathFinderNode otherPFN = (PathFinderNode) other;
-			if (totalCost > otherPFN.getTotalCost())
-				return 1;
-			else if (totalCost < otherPFN.getTotalCost())
-				return -1;
-			else
-				return 0;
-
-			// PathFinderNodes should always come before other objects
-		} else {
-			return -2;
-		}
+	public int compareTo(PathFinderNode other) {
+		PathFinderNode otherPFN = (PathFinderNode) other;
+		if (totalCost > otherPFN.getTotalCost())
+			return 1;
+		else if (totalCost < otherPFN.getTotalCost())
+			return -1;
+		else
+			return 0;
 	}
 
 	public Point getPoint() {
@@ -116,7 +112,7 @@ public class PathFinderNode implements Comparable {
 	}
 
 	public void forceParent(PathFinderNode newParent) {
-		parent = newParent;		
+		parent = newParent;
 		updateCosts();
 	}
 

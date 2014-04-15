@@ -237,4 +237,18 @@ public class Terrain extends OurObservable {
 		// is this notification here necessary? I'm not sure
 		notifyObservers();
 	}
+	
+	public String toString() {
+		String theOutput = "";
+		
+		theOutput += "seed: " + seed + ", mapWidth: " + mapWidth + ", mapHeight: " + mapHeight + "\n\n";
+		for(int i = 0; i < terrain[0].length; i++){
+			for(int j = 0; j < terrain.length; j++){
+				theOutput += terrain[j][i].value + " ";
+			}
+			theOutput += "\n";
+		}
+		
+		return theOutput;
+	}
 }

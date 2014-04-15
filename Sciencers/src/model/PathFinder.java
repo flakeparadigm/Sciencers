@@ -16,6 +16,7 @@ public class PathFinder {
 	// nodes
 	private PathFinderNode startNode, targetNode, checkingNode;
 	private HashMap<Point, PathFinderNode> allNodes = new HashMap<Point, PathFinderNode>();
+	private Point targetPoint;
 
 	// tracking lists
 	private PriorityQueue<PathFinderNode> openList = new PriorityQueue<PathFinderNode>();
@@ -29,11 +30,11 @@ public class PathFinder {
 	// Magic Numbers
 	public static final int MOVEMENT_COST = 10;
 
-	public PathFinder(Point startPoint, Point targetPoint, Terrain terrain,
-			Tile passable) {
+	public PathFinder(Point startPoint, Point targetPoint, Terrain terrain, Tile passable) {
 		// store the terain and passable tiles
 		this.terrain = terrain;
 		this.passable = passable;
+		this.targetPoint = targetPoint;
 
 		// make the starting and ending nodes, add them to our tracking map
 		startNode = new PathFinderNode(startPoint, null, this);
@@ -127,7 +128,7 @@ public class PathFinder {
 			PathFinderNode newNode = new PathFinderNode(northPoint, checking,
 					this);
 			allNodes.put(northPoint, newNode);
-			openList.add(newNode);
+			addToOpenList(newNode);
 		}
 
 		// South
@@ -137,7 +138,7 @@ public class PathFinder {
 			PathFinderNode newNode = new PathFinderNode(southPoint, checking,
 					this);
 			allNodes.put(southPoint, newNode);
-			openList.add(newNode);
+			addToOpenList(newNode);
 		}
 
 		// East
@@ -147,7 +148,7 @@ public class PathFinder {
 			PathFinderNode newNode = new PathFinderNode(eastPoint, checking,
 					this);
 			allNodes.put(eastPoint, newNode);
-			openList.add(newNode);
+			addToOpenList(newNode);
 		}
 
 		// West
@@ -157,7 +158,7 @@ public class PathFinder {
 			PathFinderNode newNode = new PathFinderNode(westPoint, checking,
 					this);
 			allNodes.put(westPoint, newNode);
-			openList.add(newNode);
+			addToOpenList(newNode);
 		}
 	}
 
@@ -165,8 +166,8 @@ public class PathFinder {
 		return allNodes.get(p);
 	}
 
-	public PathFinderNode getDestination() {
-		return targetNode;
+	public Point getDestination() {
+		return targetPoint;
 	}
 
 }
