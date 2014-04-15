@@ -20,8 +20,7 @@ public class PathFinderNode implements Comparable<PathFinderNode> {
 	// other important objects
 	private PathFinder pathFinder;
 
-	public PathFinderNode(Point location, PathFinderNode parent,
-			PathFinder pathFinder) {
+	public PathFinderNode(Point location, PathFinderNode parent, PathFinder pathFinder) {
 		// set my location
 		myCoordinate = location;
 		// store the parent node
@@ -38,26 +37,38 @@ public class PathFinderNode implements Comparable<PathFinderNode> {
 		setAdjacentNodes();
 	}
 
+	/*
+	 * This updates the movement and total costs. The Heuristic cost will not
+	 * change because a point on the map shouldn't move.
+	 * 
+	 * Movement Cost: This is the distance from the starting point. This is
+	 * 		the number of blocks traveled from the starting point, times 10
+	 * 
+	 * Total Cost: The movement cost plus the Heuristic Cost
+	 */
 	public void updateCosts() {
 		if(parent != null)
 			movementCost = parent.getMovementCost() + PathFinder.MOVEMENT_COST;
+		else
+			movementCost = 0;
 
 		totalCost = movementCost + heuristicCost;
 	}
 
+	/*
+	 * Get a preview of the cost with the new parent 
+	 */
 	public int seeNewCosts() {
 		int newMvmtCost = parent.getMovementCost() + PathFinder.MOVEMENT_COST;
 		return newMvmtCost + heuristicCost;
 	}
 
-	public int getTotalCost() {
-		return totalCost;
-	}
-
-	public int getMovementCost() {
-		return movementCost;
-	}
-
+	/*
+	 * Set the parent of this node by checking to see first if the path
+	 * from the starting point, to this node is lower. If it new path is
+	 * cheaper, then keep the parent. If the new path is more expensive,
+	 * then toss it out.
+	 */
 	public boolean setParent(PathFinderNode newParent) {
 		PathFinderNode oldParent = parent;
 		parent = newParent;
@@ -71,10 +82,24 @@ public class PathFinderNode implements Comparable<PathFinderNode> {
 		}
 	}
 
+	/*
+	 * Force a new parent on the node. This is only really used for the
+	 * destination once it's reached, allowing the path to be traced
+	 * back by starting on the end.
+	 */
+	public void forceParent(PathFinderNode newParent) {
+		parent = newParent;
+		updateCosts();
+	}
+
 	public PathFinderNode getParent() {
 		return parent;
 	}
 
+	/*
+	 * pulls the the nodes that would be adjacent out of the map of all
+	 * of the nodes created so far in this path finder
+	 */
 	public void setAdjacentNodes() {
 		int x = myCoordinate.x;
 		int y = myCoordinate.y;
@@ -86,6 +111,13 @@ public class PathFinderNode implements Comparable<PathFinderNode> {
 		west = pathFinder.getNode(new Point(x - 1, y));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 * 
+	 * This overrides compareTo in comparable so that the object can be
+	 * sorted in a priority queue
+	 */
 	@Override
 	public int compareTo(PathFinderNode other) {
 		PathFinderNode otherPFN = (PathFinderNode) other;
@@ -97,10 +129,10 @@ public class PathFinderNode implements Comparable<PathFinderNode> {
 			return 0;
 	}
 
-	public Point getPoint() {
-		return myCoordinate;
-	}
-
+	/*
+	 * Calculate the heuristic cost. Only gets called once, but it's neater to
+	 * have it in its own method.
+	 */
 	private void calcHeuristic() {
 		int heuristicCalc = (int) Math.pow(target.getX() - myCoordinate.getX(),
 				2);
@@ -108,10 +140,16 @@ public class PathFinderNode implements Comparable<PathFinderNode> {
 
 		heuristicCost = (int) Math.sqrt(heuristicCalc);
 	}
-
-	public void forceParent(PathFinderNode newParent) {
-		parent = newParent;
-		updateCosts();
+	
+	// Get methods
+	public int getMovementCost() {
+		return movementCost;
+	}
+	public Point getPoint() {
+		return myCoordinate;
+	}
+	public int getTotalCost() {
+		return totalCost;
 	}
 
 }
