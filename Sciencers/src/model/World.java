@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 
+import model.building.Building;
+
 /*
  * Currently, this class is just set up to provide a method to access terrain from the view
  */

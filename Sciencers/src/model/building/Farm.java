@@ -2,7 +2,6 @@ package model.building;
 
 import java.util.Random;
 
-import model.Building;
 import model.Command;
 
 public class Farm implements Building {

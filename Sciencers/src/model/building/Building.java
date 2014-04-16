@@ -1,5 +1,6 @@
-package model;
+package model.building;
 
+import model.Command;
 import model.inventory.Resource;
 
 public interface Building {
