@@ -21,6 +21,9 @@ public class World{
 		//note that we will also want to figure out a good map size
 		terrain = new Terrain(12345, 500, 100);
 	}
+	public World(long seed, int width, int height) {
+		terrain = new Terrain(seed, width, height);
+	}
 	
 	public Terrain getTerrain(){
 		return terrain;
