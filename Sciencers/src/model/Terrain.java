@@ -251,4 +251,13 @@ public class Terrain extends OurObservable {
 		
 		return theOutput;
 	}
+
+	public int getAltitude(int xPos) {
+		for (int j = 0; j<mapHeight; j++){
+			if (!terrain[xPos][j].equals(Tile.Sky)){
+				return j;
+			}
+		}
+		return -1;
+	}
 }

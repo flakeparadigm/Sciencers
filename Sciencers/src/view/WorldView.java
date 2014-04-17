@@ -31,6 +31,9 @@ public class WorldView extends JFrame implements OurObserver {
 	private final int Y_SCREEN_SIZE = ((int) tk.getScreenSize().getHeight());
 	private final int X_WINDOW_SIZE = 700;
 	private final int Y_WINDOW_SIZE = 700;
+	
+	private final int X_MAP_SIZE = 500;
+	private final int Y_MAP_SIZE = 100;
 
 	private static int moveSpeed = 15;
 	private static int panTimerMS = 1;
@@ -60,7 +63,7 @@ public class WorldView extends JFrame implements OurObserver {
 	}
 
 	private void setupModel() {
-		world = new World();
+		world = new World(12345, X_MAP_SIZE, Y_MAP_SIZE);
 	}
 
 	private void addComponents() {

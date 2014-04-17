@@ -22,22 +22,16 @@ public class World{
 	// generation info
 	long seed;	// (NOTE: we can use the same seed to generate everything. Consistency for simulation)
 	
-	public World(){
-		//note that we will also want to figure out a good map size
-		terrain = new Terrain(12345, 500, 100);
-		seed = 12345;
-		
-		agents = new ArrayList<Agent>();
-		buildings = new ArrayList<Building>();
-		projectiles = new ArrayList<Projectile>();
-		
-		//add initial agents TODO: find correct points to add them at.
-		agents.add(new Agent(terrain, buildings, new Point(3,3)));
-	}
-	
 	public World(long seed, int width, int height) {
 		terrain = new Terrain(seed, width, height);
 		this.seed = seed;
+		agents = new ArrayList<Agent>();
+		buildings = new ArrayList<Building>();
+		projectiles = new ArrayList<Projectile>();
+	}
+	
+	public void addAgent(int xPos){
+		Agent agent = new Agent(terrain, buildings, new Point(xPos, terrain.getAltitude(xPos) - 1));
 	}
 	
 	public Terrain getTerrain(){
@@ -46,5 +40,9 @@ public class World{
 
 	public ArrayList<Agent> getAgents(){
 		return agents;
+	}
+	
+	public ArrayList<Building> getBuildings(){
+		return buildings;
 	}
 }
