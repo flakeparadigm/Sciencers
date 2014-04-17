@@ -32,7 +32,7 @@ public class Agent extends OurObservable {
 	private boolean evenTick = false;
 	
 	// Magic Numbers
-	private final int AGENT_HEIGHT = 2;
+	public final int AGENT_HEIGHT = 2;
 	private final int MAX_SEEK_FOOD_HUNGER = 600;
 	private final int MAX_SEEK_REST_FATIGUE = 500;
 	private final int MAX_WORKING_HUNGER = 250; // 25.0%
