@@ -1,11 +1,10 @@
 package tests;
 
-import javax.swing.JFrame;
-
-import java.awt.Point;
 import java.awt.Toolkit;
 
-import model.Agent;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+
 import model.World;
 import view.WorldView;
 
@@ -18,6 +17,9 @@ public class Demo extends JFrame {
 	// Graphical elements
 	private static WorldView worldView;
 	private static Demo demoTools;
+	
+	// Test Buttons
+	private JButton testTerrainUpdateButton = new JButton("Test Terrain Update");
 	
 	// magic numbers
 	private final int X_SCREEN_SIZE = ((int) tk.getScreenSize().getWidth());
@@ -37,6 +39,7 @@ public class Demo extends JFrame {
 		setupProperties();
 		setupModel();
 		addComponents();
+		registerListeners();
 	}
 
 	private void setupProperties() {
@@ -58,6 +61,15 @@ public class Demo extends JFrame {
 	}
 
 	private void addComponents() {
+		
+	}
+	
+	private void registerListeners() {
+		
+	}
+	
+	// PUT ALL TEST CASES BELOW
+	private void testTerrainUpdate() {
 		
 	}
 

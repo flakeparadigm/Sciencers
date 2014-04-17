@@ -2,6 +2,7 @@ package model;
 
 import java.util.Random;
 
+import controller.TerrainObserver;
 import view.Tile;
 
 public class Terrain {
@@ -232,6 +233,11 @@ public class Terrain {
 		if (row < mapWidth && col < mapHeight && row >= 0 && col >= 0) {
 			terrain[row][col] = tile;
 		}
+	}
+	
+	public void updateTile(Tile tile, int row, int col) {
+		setTile(tile, row, col);
+		TerrainObserver.updateObserver();
 	}
 	
 	public String toString() {

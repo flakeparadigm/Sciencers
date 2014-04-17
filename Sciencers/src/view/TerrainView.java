@@ -7,11 +7,11 @@ import javax.swing.JPanel;
 
 import model.World;
 
-public class TextView extends JPanel{
+public class TerrainView extends JPanel{
 
 	private World world;
 	
-	public TextView(World world) {
+	public TerrainView(World world) {
 		this.world = world;
 		
 		// load any necessary media here: (probably not necessary for the text
@@ -35,8 +35,7 @@ public class TextView extends JPanel{
 		}
 	}
 
-	public void update(World world) {
-		this.world = world;
+	public void update() {
 		repaint();
 	}
 
