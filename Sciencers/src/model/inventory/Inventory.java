@@ -29,12 +29,21 @@ public class Inventory {
 			capacity = 500;
 	}
 	
-	public void add(Resource type, int amount) {
+	public void changeAmount(Resource type, int amount) {
 		for(ItemCrate i : itemList) {
 			if(type == i.getType()) {
 				i.add(amount);
 			}
 		}
+	}
+	
+	public int getAmount (Resource type){
+		for(ItemCrate i : itemList) {
+			if(type == i.getType()) {
+				return i.amount;
+			}
+		}
+		return 0;
 	}
 	
 	
