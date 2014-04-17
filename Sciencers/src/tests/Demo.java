@@ -1,7 +1,11 @@
 package tests;
 
 import javax.swing.JFrame;
+
+import java.awt.Point;
 import java.awt.Toolkit;
+
+import model.Agent;
 import model.World;
 import view.WorldView;
 
@@ -48,6 +52,9 @@ public class Demo extends JFrame {
 
 	private void setupModel() {
 		world = worldView.getWorld();
+		//for example: add agent and farm
+		world.addAgent(11);
+		world.addFarm(27, 16);
 	}
 
 	private void addComponents() {
