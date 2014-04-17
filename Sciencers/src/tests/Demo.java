@@ -18,7 +18,7 @@ public class Demo extends JFrame {
 	// magic numbers
 	private final int X_SCREEN_SIZE = ((int) tk.getScreenSize().getWidth());
 	private final int Y_SCREEN_SIZE = ((int) tk.getScreenSize().getHeight());
-	private final int X_WINDOW_SIZE = 200;
+	private final int X_WINDOW_SIZE = 250;
 	private final int Y_WINDOW_SIZE = 700;
 
 	public static void main(String[] args) {
@@ -37,6 +37,7 @@ public class Demo extends JFrame {
 
 	private void setupProperties() {
 		worldView.setSize(X_SCREEN_SIZE - X_WINDOW_SIZE - 150, Y_WINDOW_SIZE);
+		worldView.setTitle("Sciencers Demo");
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Demo Controls");

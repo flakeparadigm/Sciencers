@@ -1,11 +1,10 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import view.Tile;
 
-public class Terrain extends OurObservable {
+public class Terrain {
 	private Tile[][] terrain;
 	private long seed;
 	private Random random;
@@ -70,7 +69,6 @@ public class Terrain extends OurObservable {
 		generateSky();
 		generateRandomTerrain();
 		generateGroundDetails();
-		notifyObservers();
 	}
 
 	public void generateSky() {
@@ -234,8 +232,6 @@ public class Terrain extends OurObservable {
 		if (row < mapWidth && col < mapHeight && row >= 0 && col >= 0) {
 			terrain[row][col] = tile;
 		}
-		// is this notification here necessary? I'm not sure
-		notifyObservers();
 	}
 	
 	public String toString() {

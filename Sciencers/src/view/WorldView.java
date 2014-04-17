@@ -1,7 +1,6 @@
 package view;
 
 import java.awt.Color;
-import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,14 +12,13 @@ import javax.swing.JFrame;
 import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
-import model.OurObserver;
 import model.World;
 
 /* I thought it might be nice to have a working view for testing 
  * the map generation - so here is a start for this class
  */
 
-public class WorldView extends JFrame implements OurObserver {
+public class WorldView extends JFrame {
 	public static JFrame gameWindow;
 	public static TextView terrainPanel;
 	public static AgentsView agentPanel;
@@ -264,7 +262,6 @@ public class WorldView extends JFrame implements OurObserver {
 		downButtonTimer.stop();
 	}
 
-	@Override
 	public void update() {
 		// here we should update all relevant panels with world info
 		terrainPanel.update(world);

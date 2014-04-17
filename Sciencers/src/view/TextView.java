@@ -5,7 +5,6 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
-import model.OurObserver;
 import model.World;
 
 public class TextView extends JPanel{

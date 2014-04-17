@@ -5,12 +5,11 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import model.building.Building;
-import model.inventory.InvType;
 import model.inventory.Inventory;
 import model.inventory.Resource;
 import view.Tile;
 
-public class Agent extends OurObservable {
+public class Agent {
 	
 	// agent id tracking
 	private static int currentId = 0;
