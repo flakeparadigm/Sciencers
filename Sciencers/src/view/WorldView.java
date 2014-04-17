@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -21,7 +22,8 @@ import model.World;
 
 public class WorldView extends JFrame implements OurObserver {
 	public static JFrame gameWindow;
-	public static TextView panel;
+	public static TextView terrainPanel;
+	public static AgentsView agentPanel;
 	public static World world;
 
 	static Toolkit tk = Toolkit.getDefaultToolkit();
@@ -62,11 +64,20 @@ public class WorldView extends JFrame implements OurObserver {
 	}
 
 	private void addComponents() {
-		panel = new TextView(world);
-		add(panel);
-		panel.setLocation(0, 0);
+		terrainPanel = new TextView(world);
+		add(terrainPanel);
+		terrainPanel.setLocation(0, 0);
 		//TODO: figure out correct panel size
-		panel.setSize(10000, 10000);
+		terrainPanel.setSize(10000, 10000);
+		terrainPanel.setOpaque(false);
+		terrainPanel.setBackground(new Color(0,0,0,0));
+		
+		agentPanel = new AgentsView(world);
+		add(agentPanel);
+		agentPanel.setLocation(0,0);
+		agentPanel.setSize(100,100);
+		agentPanel.setOpaque(false);
+		agentPanel.setBackground(new Color(0,0,0,0));
 	}
 
 	private void registerListeners() {
@@ -185,7 +196,8 @@ public class WorldView extends JFrame implements OurObserver {
 		public void actionPerformed(ActionEvent e) {
 			// continuous left pressed code here:
 			xPanelLocation += moveSpeed;
-			panel.setLocation(xPanelLocation, yPanelLocation);
+			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
+			agentPanel.setLocation(xPanelLocation, yPanelLocation);
 		}
 	};
 	static Timer leftButtonTimer = new Timer(panTimerMS, leftTimerAction);
@@ -203,7 +215,8 @@ public class WorldView extends JFrame implements OurObserver {
 		public void actionPerformed(ActionEvent e) {
 			// continuous right pressed code here:
 			xPanelLocation-= moveSpeed;
-			panel.setLocation(xPanelLocation, yPanelLocation);
+			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
+			agentPanel.setLocation(xPanelLocation, yPanelLocation);
 		}
 	};
 	static Timer rightButtonTimer = new Timer(panTimerMS, rightTimerAction);
@@ -221,7 +234,8 @@ public class WorldView extends JFrame implements OurObserver {
 		public void actionPerformed(ActionEvent e) {
 			// continuous up pressed code here:
 			yPanelLocation += moveSpeed;
-			panel.setLocation(xPanelLocation, yPanelLocation);
+			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
+			agentPanel.setLocation(xPanelLocation, yPanelLocation);
 		}
 	};
 	static Timer upButtonTimer = new Timer(panTimerMS, upTimerAction);
@@ -239,7 +253,8 @@ public class WorldView extends JFrame implements OurObserver {
 		public void actionPerformed(ActionEvent e) {
 			// continuous down pressed code here:
 			yPanelLocation-= moveSpeed;
-			panel.setLocation(xPanelLocation, yPanelLocation);
+			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
+			agentPanel.setLocation(xPanelLocation, yPanelLocation);
 		}
 	};
 	static Timer downButtonTimer = new Timer(panTimerMS, downTimerAction);
@@ -252,6 +267,6 @@ public class WorldView extends JFrame implements OurObserver {
 	@Override
 	public void update() {
 		// here we should update all relevant panels with world info
-		panel.update(world);
+		terrainPanel.update(world);
 	}
 }
