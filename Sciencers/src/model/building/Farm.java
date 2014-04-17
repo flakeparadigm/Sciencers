@@ -1,16 +1,20 @@
 package model.building;
 
+import java.awt.Point;
 import java.util.Random;
 
 import model.Command;
+import model.inventory.Resource;
 
 public class Farm implements Building {
 	
 	private final int MAX_STORAGE = 1000;
 	private int storage; //number of food items currently stored
 	private final int TICKS_PER_ITEM = 50;
+	private final Point POSITION;
 	
-	public Farm() {
+	public Farm(int xPos, int yPos) {
+		POSITION = new Point(xPos, yPos);
 		storage = 0;
 	}
 	
@@ -22,8 +26,8 @@ public class Farm implements Building {
 	}
 
 	@Override
-	public String getType() {
-		return "Food";
+	public Resource getType() {
+		return Resource.FOOD;
 	}
 
 	@Override
@@ -45,5 +49,10 @@ public class Farm implements Building {
 		}
 		storage += quantity;
 		return true;
+	}
+
+	@Override
+	public Point getPos() {
+		return POSITION;
 	}
 }

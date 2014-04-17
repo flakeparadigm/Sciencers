@@ -51,7 +51,9 @@ public class Demo extends JFrame {
 
 	private void setupModel() {
 		world = worldView.getWorld();
-		world.getAgents().add(new Agent(world.getTerrain(), world.getBuildings(), new Point(5,5)));
+		//for example: add agent and farm
+		world.addAgent(11);
+		world.addFarm(27, 16);
 	}
 
 	private void addComponents() {

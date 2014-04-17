@@ -2,7 +2,9 @@ package model;
 
 import java.awt.Point;
 import java.util.ArrayList;
+
 import model.building.Building;
+import model.building.Farm;
 
 /*
  * Currently, this class is just set up to provide a method to access terrain from the view
@@ -31,7 +33,15 @@ public class World{
 	}
 	
 	public void addAgent(int xPos){
+		//this adds an Agent at the highest point on the terrain at a certain point
 		Agent agent = new Agent(terrain, buildings, new Point(xPos, terrain.getAltitude(xPos) - 1));
+		agents.add(agent);
+		System.out.println( terrain.getAltitude(xPos) - 1);
+	}
+	
+	public void addFarm(int xPos, int yPos){
+		Building building = new Farm(xPos, yPos);
+		buildings.add(building);
 	}
 	
 	public Terrain getTerrain(){

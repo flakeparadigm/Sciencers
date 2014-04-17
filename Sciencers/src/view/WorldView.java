@@ -78,7 +78,7 @@ public class WorldView extends JFrame implements OurObserver {
 		agentPanel = new AgentsView(world);
 		add(agentPanel);
 		agentPanel.setLocation(0,0);
-		agentPanel.setSize(100,100);
+		agentPanel.setSize(1000,1000);
 		agentPanel.setOpaque(false);
 		agentPanel.setBackground(new Color(0,0,0,0));
 	}
