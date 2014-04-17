@@ -17,12 +17,17 @@ public class World{
 	private int playerScience;
 	private int playerMoney;
 	
+	// generation info
+	long seed;	// (NOTE: we can use the same seed to generate everything. Consistency for simulation)
+	
 	public World(){
 		//note that we will also want to figure out a good map size
 		terrain = new Terrain(12345, 500, 100);
+		seed = 12345;
 	}
 	public World(long seed, int width, int height) {
 		terrain = new Terrain(seed, width, height);
+		this.seed = seed;
 	}
 	
 	public Terrain getTerrain(){
