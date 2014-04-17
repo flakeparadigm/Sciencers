@@ -269,4 +269,8 @@ public class WorldView extends JFrame implements OurObserver {
 		// here we should update all relevant panels with world info
 		terrainPanel.update(world);
 	}
+	
+	public World getWorld() {
+		return world;
+	}
 }
