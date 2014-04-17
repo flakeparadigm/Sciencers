@@ -27,10 +27,10 @@ public class WorldView extends JFrame implements OurObserver {
 	public static World world;
 
 	static Toolkit tk = Toolkit.getDefaultToolkit();
-	private final int xScreenSize = ((int) tk.getScreenSize().getWidth());
-	private final int yScreenSize = ((int) tk.getScreenSize().getHeight());
-	private final int xWindowSize = 700;
-	private final int yWindowSize = 700;
+	private final int X_SCREEN_SIZE = ((int) tk.getScreenSize().getWidth());
+	private final int Y_SCREEN_SIZE = ((int) tk.getScreenSize().getHeight());
+	private final int X_WINDOW_SIZE = 700;
+	private final int Y_WINDOW_SIZE = 700;
 
 	private static int moveSpeed = 15;
 	private static int panTimerMS = 1;
@@ -54,7 +54,7 @@ public class WorldView extends JFrame implements OurObserver {
 		// scaled to screen size (or both, which would be nice)
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Sciencers");
-		setSize(xWindowSize, yWindowSize);
+		setSize(X_WINDOW_SIZE, Y_WINDOW_SIZE);
 		setLayout(null);
 		setLocation(50, 50);
 	}
