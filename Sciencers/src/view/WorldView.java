@@ -35,6 +35,8 @@ public class WorldView extends JFrame {
 	
 	private final int X_MAP_SIZE = 500;
 	private final int Y_MAP_SIZE = 100;
+	
+	public static final int TILE_SIZE = 16;
 
 	private static int moveSpeed = 15;
 	private static int panTimerMS = 1;
@@ -70,14 +72,6 @@ public class WorldView extends JFrame {
 	}
 
 	private void addComponents() {
-		terrainPanel = new TerrainView(world);
-		add(terrainPanel);
-		terrainPanel.setLocation(0, 0);
-		//TODO: figure out correct panel size
-		terrainPanel.setSize(10000, 10000);
-		terrainPanel.setOpaque(false);
-		terrainPanel.setBackground(new Color(0,0,0,0));
-		
 		agentPanel = new AgentsView(world);
 		add(agentPanel);
 		agentPanel.setLocation(0,0);
@@ -91,29 +85,34 @@ public class WorldView extends JFrame {
 		buildingPanel.setSize(1000,1000);
 		buildingPanel.setOpaque(false);
 		buildingPanel.setBackground(new Color(0,0,0,0));
+		
+		terrainPanel = new TerrainView(world);
+		add(terrainPanel);
+		terrainPanel.setLocation(0, 0);
+		//TODO: figure out correct panel size
+		terrainPanel.setSize(10000, 10000);
+		terrainPanel.setOpaque(false);
+		terrainPanel.setBackground(new Color(0,0,0,0));
 	}
 
 	private void registerListeners() {
 		// These will allow the user to pan around the panel
+		
+		// Left movement with Left Arrow and A keys.
 		KeyStroke left = KeyStroke.getKeyStroke("LEFT");
 		KeyStroke a = KeyStroke.getKeyStroke("A");
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(left,
-				"moveLeft");
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(a,
-				"moveLeft");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(left, "moveLeft");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(a, "moveLeft");
 		getRootPane().getActionMap().put("moveLeft", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				leftPress();
 			}
 		});
-		KeyStroke leftReleased = KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0,
-				true);
+		KeyStroke leftReleased = KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, true);
 		KeyStroke aReleased = KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, true);
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				leftReleased, "releaseLeft");
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				aReleased, "releaseLeft");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(leftReleased, "releaseLeft");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(aReleased, "releaseLeft");
 		getRootPane().getActionMap().put("releaseLeft", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -121,25 +120,21 @@ public class WorldView extends JFrame {
 			}
 		});
 
+		// Right movement with Right Arrow and D keys.
 		KeyStroke right = KeyStroke.getKeyStroke("RIGHT");
 		KeyStroke d = KeyStroke.getKeyStroke("D");
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(right,
-				"moveRight");
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(d,
-				"moveRight");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(right, "moveRight");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(d,	"moveRight");
 		getRootPane().getActionMap().put("moveRight", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				rightPress();
 			}
 		});
-		KeyStroke rightReleased = KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0,
-				true);
+		KeyStroke rightReleased = KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, true);
 		KeyStroke dReleased = KeyStroke.getKeyStroke(KeyEvent.VK_D, 0, true);
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				rightReleased, "releaseRight");
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				dReleased, "releaseRight");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(rightReleased, "releaseRight");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(dReleased, "releaseRight");
 		getRootPane().getActionMap().put("releaseRight", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -147,26 +142,21 @@ public class WorldView extends JFrame {
 			}
 		});
 		
-		//up and down control
+		// Up movement with Up Arrow and W keys.
 		KeyStroke up = KeyStroke.getKeyStroke("UP");
 		KeyStroke w = KeyStroke.getKeyStroke("W");
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(up,
-				"moveUp");
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(w,
-				"moveUp");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(up, "moveUp");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(w, "moveUp");
 		getRootPane().getActionMap().put("moveUp", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				upPress();
 			}
 		});
-		KeyStroke upReleased = KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0,
-				true);
+		KeyStroke upReleased = KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, true);
 		KeyStroke wReleased = KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, true);
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				upReleased, "releaseUp");
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				wReleased, "releaseUp");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(upReleased, "releaseUp");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(wReleased, "releaseUp");
 		getRootPane().getActionMap().put("releaseUp", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -174,25 +164,21 @@ public class WorldView extends JFrame {
 			}
 		});
 
+		// Down movement with Down Arrow and S keys.
 		KeyStroke down = KeyStroke.getKeyStroke("DOWN");
 		KeyStroke s = KeyStroke.getKeyStroke("S");
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(down,
-				"moveDown");
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(s,
-				"moveDown");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(down, "moveDown");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(s, "moveDown");
 		getRootPane().getActionMap().put("moveDown", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				downPress();
 			}
 		});
-		KeyStroke downReleased = KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0,
-				true);
+		KeyStroke downReleased = KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, true);
 		KeyStroke sReleased = KeyStroke.getKeyStroke(KeyEvent.VK_S, 0, true);
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				downReleased, "releaseDown");
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				sReleased, "releaseDown");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(downReleased, "releaseDown");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(sReleased, "releaseDown");
 		getRootPane().getActionMap().put("releaseDown", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -209,8 +195,9 @@ public class WorldView extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// continuous left pressed code here:
 			xPanelLocation += moveSpeed;
-			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
+			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
+			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
 		}
 	};
 	static Timer leftButtonTimer = new Timer(panTimerMS, leftTimerAction);
@@ -228,8 +215,9 @@ public class WorldView extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// continuous right pressed code here:
 			xPanelLocation-= moveSpeed;
-			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
+			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
+			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
 		}
 	};
 	static Timer rightButtonTimer = new Timer(panTimerMS, rightTimerAction);
@@ -247,8 +235,9 @@ public class WorldView extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// continuous up pressed code here:
 			yPanelLocation += moveSpeed;
-			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
+			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
+			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
 		}
 	};
 	static Timer upButtonTimer = new Timer(panTimerMS, upTimerAction);
@@ -266,8 +255,9 @@ public class WorldView extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// continuous down pressed code here:
 			yPanelLocation-= moveSpeed;
-			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
+			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
+			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
 		}
 	};
 	static Timer downButtonTimer = new Timer(panTimerMS, downTimerAction);
@@ -277,6 +267,8 @@ public class WorldView extends JFrame {
 		downButtonTimer.stop();
 	}
 
+	
+	// UPDATE METHODS for updating the view panels.
 	public void updateAll() {
 		// here we should update all relevant panels with world info
 		updateTerrain();
@@ -293,6 +285,7 @@ public class WorldView extends JFrame {
 		buildingPanel.update();
 	}
 	
+	// getWorld method. Should only be used in the Demo tool right now.
 	public World getWorld() {
 		return world;
 	}
