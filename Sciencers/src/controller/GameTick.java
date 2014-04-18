@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import model.Entity;
 
 
-public class GameTick implements Runnable {
+public class GameTick extends Thread {
 	
 	ArrayList<Entity> entities;
 	int tickTime;

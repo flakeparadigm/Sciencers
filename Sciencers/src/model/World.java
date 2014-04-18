@@ -39,8 +39,8 @@ public class World{
 		agentsTick = new GameTick(agents, 50);
 		buildingsTick = new GameTick(buildings, 100);
 
-		agentsTick.run();
-		buildingsTick.run();
+		agentsTick.start();
+		buildingsTick.start();
 	}
 	
 	public void addAgent(int xPos){
