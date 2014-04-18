@@ -4,24 +4,26 @@ import java.awt.Dimension;
 import java.awt.Point;
 
 import model.Command;
+import model.inventory.Inventory;
 import model.inventory.Resource;
 
-public class Warehouse implements Building {
+public class Warehouse extends Building { //collection class for ItemCrates also
 
 	// Magic Numbers
+	private final Point POSITION;
 	private final int BUILDING_WIDTH = 0;
 	private final int BUILDING_HEIGHT = 0;
-
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-		
+	
+	// Variables
+	private Inventory inv;
+	
+	public Warehouse(int xPos, int yPos) {
+		POSITION = new Point(xPos, yPos);
 	}
 
 	@Override
-	public Resource getType() {
-		// TODO Auto-generated method stub
-		return null;
+	public void update() {
+		
 	}
 
 	@Override
@@ -31,21 +33,18 @@ public class Warehouse implements Building {
 	}
 
 	@Override
-	public int getAmount() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int getAmount(Resource r) {
+		return inv.getAmount(r);
 	}
 
 	@Override
-	public boolean changeQuantity(int quantity) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean changeQuantity(Resource r, int quantity) {
+		return inv.changeAmount(r, quantity);
 	}
 
 	@Override
 	public Point getPos() {
-		// TODO Auto-generated method stub
-		return null;
+		return POSITION;
 	}
 
 	@Override

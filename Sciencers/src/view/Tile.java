@@ -1,7 +1,7 @@
 package view;
 
 public enum Tile {
-	Sky('-'), Dirt('d'), Stone('X'), Iron('I'), Uranium('U'), Path('`');
+	Sky('-'), Dirt('d'), Stone('x'), Iron('i'), Uranium('u'), Path('`'), Agent('&'), Farm('F'), Warehouse('W');
 
 	public char value;
 
