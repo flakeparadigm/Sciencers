@@ -1,5 +1,6 @@
 package model.building;
 
+import java.awt.Dimension;
 import java.awt.Point;
 import java.util.Random;
 
@@ -8,10 +9,14 @@ import model.inventory.Resource;
 
 public class Farm implements Building {
 	
-	private final int MAX_STORAGE = 1000;
 	private int storage; //number of food items currently stored
+	
+	// Magic Numbers
 	private final int TICKS_PER_ITEM = 50;
 	private final Point POSITION;
+	private final int MAX_STORAGE = 1000;
+	private final int BUILDING_WIDTH = 0;
+	private final int BUILDING_HEIGHT = 0;
 	
 	public Farm(int xPos, int yPos) {
 		POSITION = new Point(xPos, yPos);
@@ -54,5 +59,11 @@ public class Farm implements Building {
 	@Override
 	public Point getPos() {
 		return POSITION;
+	}
+
+
+	@Override
+	public Dimension getSize() {
+		return new Dimension(BUILDING_WIDTH, BUILDING_HEIGHT);
 	}
 }

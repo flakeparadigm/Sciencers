@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import model.building.Building;
 import model.building.Farm;
+import controller.GameTick;
 
 /*
  * Currently, this class is just set up to provide a method to access terrain from the view
@@ -13,9 +14,13 @@ import model.building.Farm;
 public class World{
 	// objects within the world
 	private Terrain terrain;
-	private ArrayList<Agent> agents;
-	private ArrayList<Building> buildings;
+	private ArrayList<Entity> agents;
+	private ArrayList<Entity> buildings;
 	private ArrayList<Projectile> projectiles;
+	
+	// tick runners
+	private GameTick agentsTick;
+	private GameTick buildingsTick;
 	
 	// resources
 	private int playerScience;
@@ -27,9 +32,15 @@ public class World{
 	public World(long seed, int width, int height) {
 		terrain = new Terrain(seed, width, height);
 		this.seed = seed;
-		agents = new ArrayList<Agent>();
-		buildings = new ArrayList<Building>();
+		agents = new ArrayList<Entity>();
+		buildings = new ArrayList<Entity>();
 		projectiles = new ArrayList<Projectile>();
+		
+		agentsTick = new GameTick(agents, 50);
+		buildingsTick = new GameTick(buildings, 100);
+
+		agentsTick.run();
+		buildingsTick.run();
 	}
 	
 	public void addAgent(int xPos){
@@ -49,11 +60,11 @@ public class World{
 		return terrain;
 	}
 
-	public ArrayList<Agent> getAgents(){
+	public ArrayList<Entity> getAgents(){
 		return agents;
 	}
 	
-	public ArrayList<Building> getBuildings(){
+	public ArrayList<Entity> getBuildings(){
 		return buildings;
 	}
 }

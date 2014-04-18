@@ -1,5 +1,6 @@
 package model.building;
 
+import java.awt.Dimension;
 import java.awt.Point;
 
 import model.Command;
@@ -17,5 +18,7 @@ public interface Building extends Entity {
 	public boolean changeQuantity(int quantity);
 	
 	public Point getPos();
+	
+	public Dimension getSize();
 	
 }

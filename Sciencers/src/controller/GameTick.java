@@ -1,15 +1,15 @@
 package controller;
 
-import java.util.List;
+import java.util.ArrayList;
 import model.Entity;
 
 
 public class GameTick implements Runnable {
 	
-	List<Entity> entities;
+	ArrayList<Entity> entities;
 	int tickTime;
 
-	public GameTick(List<Entity> entities, int tickTime) {
+	public GameTick(ArrayList<Entity> entities, int tickTime) {
 		this.entities = entities;
 		this.tickTime = tickTime;
 	}
@@ -17,7 +17,15 @@ public class GameTick implements Runnable {
 	@Override
 	public void run() {
 		while(true){
-			
+			try {
+				
+			for(Entity e : entities)
+				e.update();
+				Thread.sleep(tickTime);
+				
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 

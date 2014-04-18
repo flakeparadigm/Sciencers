@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Stack;
@@ -21,7 +22,7 @@ public class Agent implements Entity {
 	private Point currentPosition, targetPosition;
 	private Stack<Point> movements;
 	private static Terrain terrain;
-	private static ArrayList<Building> buildings;
+	private static ArrayList<Entity> buildings;
 	private Inventory inventory;
 	
 	// player traits
@@ -31,13 +32,14 @@ public class Agent implements Entity {
 	private boolean evenTick = false;
 	
 	// Magic Numbers
-	public final int AGENT_HEIGHT = 2;
+	private final int AGENT_HEIGHT = 2;
+	private final int AGENT_WIDTH = 1;
 	private final int MAX_SEEK_FOOD_HUNGER = 600;
 	private final int MAX_SEEK_REST_FATIGUE = 500;
 	private final int MAX_WORKING_HUNGER = 250; // 25.0%
 	private final int MAX_WORKING_FATIGUE = 200; // 20.0%
 	
-	public Agent(Terrain terrain, ArrayList<Building> buildings, Point currentPosition) {
+	public Agent(Terrain terrain, ArrayList<Entity> buildings, Point currentPosition) {
 		MY_ID = currentId++;
 		this.terrain = terrain;
 		this.currentPosition = currentPosition;
@@ -91,12 +93,21 @@ public class Agent implements Entity {
 		return currentPosition;
 	}
 	
+	public Dimension getSize() {
+		return new Dimension(AGENT_WIDTH, AGENT_HEIGHT);
+	}
+	
+	/*
+	 * This should not be necessary. Since the variables are just references to the objects,
+	 * the terrain and buildings should always be the same reference across the system.
+	 * 
 	public void updateTerrain(Terrain terrain){
 		// the agent will need updated terrain every time the terrain is changed
 		this.terrain = terrain;
 	}
 	
-	public void updateBuildings(ArrayList<Building> buildings){
+	public void updateBuildings(ArrayList<Entity> buildings){
 		this.buildings = buildings;
 	}
+	*/
 }

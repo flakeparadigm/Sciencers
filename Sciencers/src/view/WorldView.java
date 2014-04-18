@@ -23,6 +23,7 @@ public class WorldView extends JFrame {
 	public static JFrame gameWindow;
 	public static TerrainView terrainPanel;
 	public static AgentsView agentPanel;
+	public static BuildingsView buildingPanel;
 	public static World world;
 	public static TerrainObserver terrainWatch;
 
@@ -83,6 +84,13 @@ public class WorldView extends JFrame {
 		agentPanel.setSize(1000,1000);
 		agentPanel.setOpaque(false);
 		agentPanel.setBackground(new Color(0,0,0,0));
+		
+		buildingPanel = new BuildingsView(world);
+		add(buildingPanel);
+		buildingPanel.setLocation(0,0);
+		buildingPanel.setSize(1000,1000);
+		buildingPanel.setOpaque(false);
+		buildingPanel.setBackground(new Color(0,0,0,0));
 	}
 
 	private void registerListeners() {
