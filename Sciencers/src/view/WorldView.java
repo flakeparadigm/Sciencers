@@ -13,7 +13,7 @@ import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
 import model.World;
-import controller.TerrainObserver;
+import controller.SciencersObserver;
 
 /* I thought it might be nice to have a working view for testing 
  * the map generation - so here is a start for this class
@@ -25,7 +25,7 @@ public class WorldView extends JFrame {
 	public static AgentsView agentPanel;
 	public static BuildingsView buildingPanel;
 	public static World world;
-	public static TerrainObserver terrainWatch;
+	public static SciencersObserver terrainWatch;
 
 	static Toolkit tk = Toolkit.getDefaultToolkit();
 	private final int X_SCREEN_SIZE = ((int) tk.getScreenSize().getWidth());
@@ -47,7 +47,7 @@ public class WorldView extends JFrame {
 	}
 
 	public WorldView() {
-		terrainWatch = new TerrainObserver(this);
+		terrainWatch = new SciencersObserver(this);
 		
 		setupProperties();
 		setupModel();
@@ -280,9 +280,17 @@ public class WorldView extends JFrame {
 	public void updateAll() {
 		// here we should update all relevant panels with world info
 		updateTerrain();
+		updateAgents();
+		updateBuildings();
 	}
 	public void updateTerrain() {
 		terrainPanel.update();
+	}
+	public void updateAgents() {
+		agentPanel.update();
+	}
+	public void updateBuildings() {
+		buildingPanel.update();
 	}
 	
 	public World getWorld() {

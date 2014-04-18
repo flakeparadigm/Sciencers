@@ -2,7 +2,7 @@ package model;
 
 import java.util.Random;
 
-import controller.TerrainObserver;
+import controller.SciencersObserver;
 import view.Tile;
 
 public class Terrain {
@@ -250,7 +250,7 @@ public class Terrain {
 		
 		new Thread(new Runnable() {
 			public void run() {
-				TerrainObserver.updateObserver();
+				SciencersObserver.updateObserver();
 			}
 		}).start();
 	}

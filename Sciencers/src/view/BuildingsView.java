@@ -23,4 +23,8 @@ public class BuildingsView extends JPanel{
 			g2.drawString("B", 10 + 10 * e.getPos().x, 10 + 10 * e.getPos().y);
 		}
 	}
+
+	public void update() {
+		repaint();
+	}
 }

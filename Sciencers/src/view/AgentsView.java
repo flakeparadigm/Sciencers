@@ -24,4 +24,8 @@ public class AgentsView extends JPanel{
 			g2.drawString("A", 10 + 10 * e.getPos().x, 10 + 10 * e.getPos().y);
 		}
 	}
+
+	public void update() {
+		repaint();
+	}
 }

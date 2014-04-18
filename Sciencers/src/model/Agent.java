@@ -41,6 +41,8 @@ public class Agent implements Entity {
 	
 	public Agent(Terrain terrain, ArrayList<Entity> buildings, Point currentPosition) {
 		MY_ID = currentId++;
+		movements = new Stack<Point>();
+		
 		this.terrain = terrain;
 		this.currentPosition = currentPosition;
 		this.buildings = buildings;
@@ -72,6 +74,11 @@ public class Agent implements Entity {
 			Building closestBuildingWithFood;
 			for (int i = 0; i<buildings.size(); i++){
 				//TODO: find shortest path to a building with food
+				// Get list of *food* buildings
+				
+				// Sort them by size of stack for the path finder (PriorityQueue?)
+				
+				// Set my movements stack to the stack with the shortest size.
 			}
 		}
 		
