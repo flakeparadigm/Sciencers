@@ -39,6 +39,7 @@ public class World{
 		System.out.println( terrain.getAltitude(xPos) - 1);
 	}
 	
+	// WE WILL NEED TO REFACTOR THIS EVENTUALLY TO addBuilding(type, pos);
 	public void addFarm(int xPos, int yPos){
 		Building building = new Farm(xPos, yPos);
 		buildings.add(building);

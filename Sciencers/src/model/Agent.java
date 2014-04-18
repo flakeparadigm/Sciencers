@@ -9,7 +9,7 @@ import model.inventory.Inventory;
 import model.inventory.Resource;
 import view.Tile;
 
-public class Agent {
+public class Agent implements Entity {
 	
 	// agent id tracking
 	private static int currentId = 0;

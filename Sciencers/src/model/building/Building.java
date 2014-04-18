@@ -3,9 +3,10 @@ package model.building;
 import java.awt.Point;
 
 import model.Command;
+import model.Entity;
 import model.inventory.Resource;
 
-public interface Building {
+public interface Building extends Entity {
 	
 	public Resource getType();
 	

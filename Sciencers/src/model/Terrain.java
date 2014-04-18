@@ -37,25 +37,29 @@ public class Terrain {
 	 * likely the mineral will be present at lower depths.
 	 * 
 	 * PS: don't go over .25 for propagation or you will get a stack overflow
-	 * for some reason. Haven't bothered to try to fix it since we aren't 
-	 * going to need it nearly that high for the game.
+	 * for some reason. Haven't bothered to try to fix it since we aren't going
+	 * to need it nearly that high for the game.
 	 */
-	
-	//stonePlacement: percentage that a dirt block is replaced with stone
+
+	// stonePlacement: percentage that a dirt block is replaced with stone
 	private final double stonePlacement = .01;
-	//stonePropagation: percentage for a placed dirt block to expand it's vein to a nearby tile
+	// stonePropagation: percentage for a placed dirt block to expand it's vein
+	// to a nearby tile
 	private final double stonePropagation = 0.2;
-	//stoneDepthRatio: a lower number here means the veins will be generally deeper
+	// stoneDepthRatio: a lower number here means the veins will be generally
+	// deeper
 	private final double stoneDepthRatio = .00000001;
-	//stoneDepthExp: a higher number here increases the probabilities to place stone exponentially,
-	// and is modified by the ratio. A high Exp and low Ratio will make a stark change between dirt and stone.
+	// stoneDepthExp: a higher number here increases the probabilities to place
+	// stone exponentially,
+	// and is modified by the ratio. A high Exp and low Ratio will make a stark
+	// change between dirt and stone.
 	private final double stoneDepthExp = 4;
-	
+
 	private final double ironPlacement = .002;
 	private final double ironPropagation = .2;
 	private final double ironDepthRatio = .0001;
 	private final double ironDepthExp = .4;
-	
+
 	private final double uraniumPlacement = .002;
 	private final double uraniumPropagation = .1;
 	private final double uraniumDepthRatio = .0001;
@@ -179,16 +183,22 @@ public class Terrain {
 		for (int i = 0; i < mapWidth; i++) {
 			for (int j = 0; j < mapHeight; j++) {
 				if (getTile(i, j).value == 'd') {
-					//place these statements in the order of rarity of Tile
-					if (random.nextDouble() < (stonePlacement +  stoneDepthRatio*(Math.pow((j - averageTerrainHeight), stoneDepthExp)))) {
+					// place these statements in the order of rarity of Tile
+					if (random.nextDouble() < (stonePlacement + stoneDepthRatio
+							* (Math.pow((j - averageTerrainHeight),
+									stoneDepthExp)))) {
 						setTile(Tile.Stone, i, j);
 						propagate(Tile.Stone, i, j);
 					}
-					if (random.nextDouble() < (ironPlacement +  ironDepthRatio*(Math.pow((j - averageTerrainHeight), ironDepthExp)))) {
+					if (random.nextDouble() < (ironPlacement + ironDepthRatio
+							* (Math.pow((j - averageTerrainHeight),
+									ironDepthExp)))) {
 						setTile(Tile.Iron, i, j);
 						propagate(Tile.Iron, i, j);
 					}
-					if (random.nextDouble() < (uraniumPlacement +  uraniumDepthRatio*(Math.pow((j - averageTerrainHeight), uraniumDepthExp)))) {
+					if (random.nextDouble() < (uraniumPlacement + uraniumDepthRatio
+							* (Math.pow((j - averageTerrainHeight),
+									uraniumDepthExp)))) {
 						setTile(Tile.Uranium, i, j);
 						propagate(Tile.Uranium, i, j);
 					}
@@ -199,11 +209,11 @@ public class Terrain {
 
 	private void propagate(Tile type, int row, int col) {
 		double propagation = 0;
-		if (type.equals(Tile.Stone)){
+		if (type.equals(Tile.Stone)) {
 			propagation = stonePropagation;
-		} else if (type.equals(Tile.Iron)){
+		} else if (type.equals(Tile.Iron)) {
 			propagation = ironPropagation;
-		} else if (type.equals(Tile.Uranium)){
+		} else if (type.equals(Tile.Uranium)) {
 			propagation = uraniumPropagation;
 		}
 		for (int i = -1; i < 2; i++) {
@@ -234,29 +244,35 @@ public class Terrain {
 			terrain[row][col] = tile;
 		}
 	}
-	
+
 	public void updateTile(Tile tile, int row, int col) {
 		setTile(tile, row, col);
-		TerrainObserver.updateObserver();
+		
+		new Thread(new Runnable() {
+			public void run() {
+				TerrainObserver.updateObserver();
+			}
+		}).start();
 	}
-	
+
 	public String toString() {
 		String theOutput = "";
-		
-		theOutput += "seed: " + seed + ", mapWidth: " + mapWidth + ", mapHeight: " + mapHeight + "\n\n";
-		for(int i = 0; i < terrain[0].length; i++){
-			for(int j = 0; j < terrain.length; j++){
+
+		theOutput += "seed: " + seed + ", mapWidth: " + mapWidth
+				+ ", mapHeight: " + mapHeight + "\n\n";
+		for (int i = 0; i < terrain[0].length; i++) {
+			for (int j = 0; j < terrain.length; j++) {
 				theOutput += terrain[j][i].value + " ";
 			}
 			theOutput += "\n";
 		}
-		
+
 		return theOutput;
 	}
 
 	public int getAltitude(int xPos) {
-		for (int j = 0; j<mapHeight; j++){
-			if (!terrain[xPos][j].equals(Tile.Sky)){
+		for (int j = 0; j < mapHeight; j++) {
+			if (!terrain[xPos][j].equals(Tile.Sky)) {
 				return j;
 			}
 		}
