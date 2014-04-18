@@ -7,18 +7,20 @@ import model.Command;
 import model.Entity;
 import model.inventory.Resource;
 
-public interface Building extends Entity {
+public abstract class Building implements Entity {
 	
-	public Resource getType();
+	// Magic Numbers
+	protected final int TICKS_PER_ITEM = 50;
+	protected final int MAX_STORAGE_PER_TILE = 100;
+		
+	public abstract Command updateCommand();
 	
-	public Command updateCommand();
+	public abstract int getAmount(Resource r);
 	
-	public int getAmount();
+	public abstract boolean changeQuantity(Resource r, int quantity);
 	
-	public boolean changeQuantity(int quantity);
+	public abstract Point getPos();
 	
-	public Point getPos();
-	
-	public Dimension getSize();
+	public abstract Dimension getSize();
 	
 }

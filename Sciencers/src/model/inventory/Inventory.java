@@ -1,50 +1,39 @@
 package model.inventory;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-
-/**
- * The code for inventory is probably overwrought, may yet remove it all for simplicity
- */
 
 public class Inventory {
 	
-	private int capacity;
-	private InvType type;
-	private LinkedList<ItemCrate> itemList;
+	private HashMap<Resource, Integer> inv;
+	private final int CAPACITY;
 	
-	public Inventory(InvType type) {
-		this.type = type;
-		
-		itemList = new LinkedList<ItemCrate>();
+	public Inventory(int capacity) {
+		CAPACITY = capacity;
+		inv = new HashMap<Resource, Integer>();
 		for(Resource r : Resource.values()) {
-			itemList.add(new ItemCrate(r, 0));
+			inv.put(r, 0);
 		}
+	}
+	
+	public int getAmount(Resource r) {
+		return inv.get(r);
+	}
+	
+	public boolean changeAmount(Resource r, int quantity) {
+		if(inv.get(r) < quantity)
+			return false;
 		
-		if(type == InvType.WAREHOUSE)
-			capacity = 10000;
-		else if(type == InvType.AGENT)
-			capacity = 1000;
-		else if(type == InvType.FARM)
-			capacity = 500;
+		int temp = inv.remove(r);
+		temp += quantity;
+		inv.put(r, temp);
+		return true;
 	}
 	
-	public void changeAmount(Resource type, int amount) {
-		for(ItemCrate i : itemList) {
-			if(type == i.getType()) {
-				i.add(amount);
-			}
+	public int getTotal() {
+		int temp = 0;
+		for(Resource r : Resource.values()) {
+			temp += inv.get(r);
 		}
+		return temp;
 	}
-	
-	public int getAmount (Resource type){
-		for(ItemCrate i : itemList) {
-			if(type == i.getType()) {
-				return i.amount;
-			}
-		}
-		return 0;
-	}
-	
-	
 }

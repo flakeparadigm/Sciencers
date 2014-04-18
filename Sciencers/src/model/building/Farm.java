@@ -5,34 +5,28 @@ import java.awt.Point;
 import java.util.Random;
 
 import model.Command;
+import model.inventory.Inventory;
 import model.inventory.Resource;
 
-public class Farm implements Building {
+public class Farm extends Building {
 	
-	private int storage; //number of food items currently stored
+	private Inventory inv;
 	
-	// Magic Numbers
-	private final int TICKS_PER_ITEM = 50;
-	private final Point POSITION;
-	private final int MAX_STORAGE = 1000;
-	private final int BUILDING_WIDTH = 0;
-	private final int BUILDING_HEIGHT = 0;
+//	// Magic Numbers
+//	private final int TICKS_PER_ITEM = 50;
+	private final Point POSITION; 				//?
+	private int BUILDING_WIDTH;					//building size
+	private int BUILDING_HEIGHT;				//should be always 1
 	
 	public Farm(int xPos, int yPos) {
 		POSITION = new Point(xPos, yPos);
-		storage = 0;
 	}
 	
 	public void update() {
 		Random random = new Random();
 		if(random.nextInt(TICKS_PER_ITEM) == 1) {
-			storage += 1;
+			inv.changeAmount(Resource.FOOD, 1);
 		}
-	}
-
-	@Override
-	public Resource getType() {
-		return Resource.FOOD;
 	}
 
 	@Override
@@ -42,25 +36,19 @@ public class Farm implements Building {
 	}
 
 	@Override
-	public int getAmount() {
-		return storage;
+	public int getAmount(Resource r) {
+		return inv.getAmount(r);
 	}
 
 	@Override
-	public boolean changeQuantity(int quantity) {
-		if(storage < quantity) { // in the event there isn't the amount requested, the farm gives what it can and returns false
-			quantity = 0;
-			return false;
-		}
-		storage += quantity;
-		return true;
+	public boolean changeQuantity(Resource r, int quantity) {
+		return inv.changeAmount(Resource.FOOD, quantity);
 	}
 
 	@Override
 	public Point getPos() {
 		return POSITION;
 	}
-
 
 	@Override
 	public Dimension getSize() {
