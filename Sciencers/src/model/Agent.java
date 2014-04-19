@@ -19,7 +19,7 @@ public class Agent implements Entity {
 	public final int MY_ID;
 	// making the speed too large can cause the agent to jitter (it is missing
 	// the range to know it has hit a tile)
-	public final double SPEED = .05;
+	public final double SPEED = .04;
 	public final int CAPACITY = 100;
 	// every 100 ticks, hunger goes down
 	public final int HUNGER_SPEED = 100;
@@ -71,10 +71,69 @@ public class Agent implements Entity {
 		}
 		tickCount++;
 
+		if (hunger < MAX_SEEK_FOOD_HUNGER && movements.isEmpty()) {
+			// TODO: maybe throw a random number generator in here someday
+			System.out.println("isHungry");
+			System.out.println("At Building: " + sameLocation(currentPosition, new Point2D.Double(
+					buildings.get(0).getPos().getX(), buildings
+					.get(0).getPos().getY())));
+			// if agent is in same place as building, get some food
+			for (int i = 0; i < buildings.size(); i++) {
+				if (((Building) buildings.get(i)).getInventory().getAmount(
+						Resource.FOOD) > 0
+						&& sameLocation(currentPosition, new Point2D.Double(
+								buildings.get(i).getPos().getX(), buildings
+										.get(i).getPos().getY()))) {
+					// if it gets in here, the agent is on a food building
+					((Building) buildings.get(i)).getInventory().changeAmount(
+							Resource.FOOD, -2);
+					System.out.println("TookFromBuilding");
+					inventory.changeAmount(Resource.FOOD, 2);
+				}
+			}
+
+			// if agent has food, eat some:
+			if (inventory.getAmount(Resource.FOOD) > 0) {
+				inventory.changeAmount(Resource.FOOD, -1);
+				hunger += 10;
+			} else {
+				// if agent doesn't have food, look for building with food.
+				Stack<Point> shortestPath = null;
+				Building closestFoodBuilding = null;
+				boolean nullPath = true;
+				for (int i = 0; i < buildings.size(); i++) {
+					// find shortest path to building with food
+					if (((Building) buildings.get(i)).getInventory().getAmount(
+							Resource.FOOD) > 0) {
+						PathFinder thePath = new PathFinder(new Point(
+								(int) currentPosition.getX(),
+								(int) currentPosition.getY()),
+								(Point) buildings.get(i).getPos(), terrain,
+								Tile.Sky);
+						if (nullPath
+								|| thePath.getPath().size() > shortestPath
+										.size()) {
+							nullPath = false;
+							shortestPath = thePath.getPath();
+							closestFoodBuilding = (Building) buildings.get(i);
+						}
+					}
+				}
+
+				if (shortestPath != null) {
+					goHere(closestFoodBuilding.getPos());
+				}
+
+			}
+		}
+		moveIncremental();
+
+	}
+
+	private void moveIncremental() {
 		// assigns movement to the next point if it exists and the entity has
 		// finished movement to the current tile
-		if (Math.abs(currentPosition.getX() - targetPosition.getX()) < .1
-				&& Math.abs(currentPosition.getY() - targetPosition.getY()) < .1) {
+		if (sameLocation(currentPosition, targetPosition)) {
 			if (!movements.isEmpty()) {
 				Point move = movements.pop();
 				targetPosition = new Point2D.Double((double) move.x,
@@ -99,91 +158,36 @@ public class Agent implements Entity {
 				dy = -SPEED;
 			}
 
-			if (Math.abs(currentPosition.getX() - targetPosition.getX()) > .1) {
+			if (Math.abs(currentPosition.getX() - targetPosition.getX()) > .05) {
 				currentPosition.setLocation(
 						(double) (currentPosition.getX() + dx),
 						(double) currentPosition.getY());
 			}
 
-			if (Math.abs(currentPosition.getY() - targetPosition.getY()) > .1) {
+			if (Math.abs(currentPosition.getY() - targetPosition.getY()) > .05) {
 				currentPosition.setLocation((double) (currentPosition.getX()),
 						(double) (currentPosition.getY() + dy));
 			}
 		}
-		if (hunger < MAX_SEEK_FOOD_HUNGER && movements.isEmpty()) {
-			// TODO: maybe throw a random number generator in here someday
+	}
 
-			// if agent is in same place as building, get some food
-			for (int i = 0; i < buildings.size(); i++) {
-				// TODO: find shortest path to a building with food
-				System.out.println("Xa:"+currentPosition.getX());
-				System.out.println(buildings.get(0).getPos().getX());
-				System.out.println("Ya:"+currentPosition.getY());
-				System.out.println(buildings.get(0).getPos().getY());
-
-				System.out.println("x: "+Math.abs(currentPosition.getX()
-						- buildings.get(i).getPos().getX()));
-				System.out.println("Y: "+Math.abs(currentPosition.getY()
-						- buildings.get(i).getPos().getY()));
-				if (((Building) buildings.get(i)).getInventory().getAmount(
-						Resource.FOOD) > 0
-						&& Math.abs(currentPosition.getX()
-								- buildings.get(i).getPos().getX()) < .1
-						&& Math.abs(currentPosition.getY()
-								- buildings.get(i).getPos().getY()) < .1) {
-					// if it gets in here, the agent is on a food building
-					System.out.println("ONFOOD");
-					((Building) buildings.get(i)).getInventory().changeAmount(
-							Resource.FOOD, -2);
-					inventory.changeAmount(Resource.FOOD, 2);
-					targetPosition = currentPosition;
-				}
-
-			}
-			// if agent has food, eat some:
-			if (inventory.getAmount(Resource.FOOD) > 0) {
-				inventory.changeAmount(Resource.FOOD, -1);
-				hunger += 10;
-			} else {
-				// if agent doesn't have food, look for building with food.
-				Stack<Point> shortestPath = null;
-				boolean nullPath = true;
-				for (int i = 0; i < buildings.size(); i++) {
-					// TODO: find shortest path to a building with food
-					if (((Building) buildings.get(i)).getInventory().getAmount(
-							Resource.FOOD) > 0) {
-						PathFinder thePath = new PathFinder(new Point(
-								(int) currentPosition.getX(),
-								(int) currentPosition.getY()),
-								(Point) buildings.get(i).getPos(), terrain,
-								Tile.Sky);
-						if (nullPath
-								|| thePath.getPath().size() > shortestPath
-										.size()) {
-							nullPath = false;
-							shortestPath = thePath.getPath();
-						}
-					}
-				}
-
-				if (shortestPath != null) {
-					movements = shortestPath;
-				}
-
-			}
-		}
+	private boolean sameLocation(Point2D.Double a, Point2D.Double b) {
+		return (Math.abs(a.getY() - b.getY()) < .1 && Math.abs(a.getX()
+				- b.getX()) < .1);
 	}
 
 	// this will be what the agent uses to get the path to its next destination.
 	// should develop it out later to take in a building or something similar as
 	// an arg.
 	public boolean goHere(Point destination) {
-		// PathFinder thePath = new PathFinder((Point) currentPosition,
-		// destination, terrain, Tile.Sky);
-		// movements = thePath.getPath();
-		// if (movements.isEmpty()) {
-		// return false;
-		// }
+		PathFinder thePath = new PathFinder(new Point(
+				(int) currentPosition.getX(), (int) currentPosition.getY()),
+				destination, terrain, Tile.Sky);
+		movements = thePath.getPath();
+
+		if (movements.isEmpty()) {
+			return false;
+		}
 		return true;
 	}
 
@@ -200,5 +204,11 @@ public class Agent implements Entity {
 	 */
 	public void setHunger(int hunger) {
 		this.hunger = hunger;
+	}
+	
+	public void setPathVisible(){
+		for (int i = 0; i<movements.size(); i++){
+			terrain.setTile(Tile.Path, movements.get(i).x, movements.get(i).y);
+		}
 	}
 }
