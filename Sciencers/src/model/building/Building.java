@@ -3,6 +3,7 @@ package model.building;
 import java.awt.Dimension;
 import java.awt.Point;
 
+import model.Agent;
 import model.Command;
 import model.Entity;
 import model.inventory.Resource;
@@ -23,4 +24,9 @@ public abstract class Building implements Entity {
 	
 	public abstract Dimension getSize();
 	
+	public abstract boolean addWorker(Agent a);
+	
+	public abstract boolean removeWorker(Agent a);
+	
+	public abstract int getNumWorkers();
 }
