@@ -22,7 +22,7 @@ public class Agent implements Entity {
 	private Point currentPosition, targetPosition;
 	private Stack<Point> movements;
 	private static Terrain terrain;
-	private static ArrayList<Entity> buildings;
+	private static ArrayList<Building> buildings;
 	private Inventory inventory;
 	
 	// player traits
@@ -39,7 +39,7 @@ public class Agent implements Entity {
 	private final int MAX_WORKING_HUNGER = 250; // 25.0%
 	private final int MAX_WORKING_FATIGUE = 200; // 20.0%
 	
-	public Agent(Terrain terrain, ArrayList<Entity> buildings, Point currentPosition) {
+	public Agent(Terrain terrain, ArrayList<Building> buildings, Point currentPosition) {
 		MY_ID = currentId++;
 		movements = new Stack<Point>();
 		
@@ -71,14 +71,19 @@ public class Agent implements Entity {
 				hunger += 10;
 			}
 			//if agent doesn't have food, look for building with food.
-			Building closestBuildingWithFood;
+			Stack<Point> shortestPath = null;
 			for (int i = 0; i<buildings.size(); i++){
 				//TODO: find shortest path to a building with food
-				// Get list of *food* buildings
-				
-				// Sort them by size of stack for the path finder (PriorityQueue?)
-				
-				// Set my movements stack to the stack with the shortest size.
+				if (buildings.get(i).getInventory().getAmount(Resource.FOOD) > 0){
+					PathFinder thePath = new PathFinder(currentPosition, buildings.get(i).getPos(), terrain, Tile.Sky);
+					if (thePath.getPath().size() > shortestPath.size()){
+						shortestPath = thePath.getPath();
+					}
+				}
+			}
+			
+			if (shortestPath != null){
+				movements = shortestPath;
 			}
 		}
 		

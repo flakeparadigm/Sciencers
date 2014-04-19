@@ -29,15 +29,15 @@ public class Warehouse extends Building {
 		
 	}
 
-	@Override
-	public int getAmount(Resource r) {
-		return inv.getAmount(r);
-	}
-
-	@Override
-	public boolean changeQuantity(Resource r, int quantity) {
-		return inv.changeAmount(r, quantity);
-	}
+//	@Override
+//	public int getAmount(Resource r) {
+//		return inv.getAmount(r);
+//	}
+//
+//	@Override
+//	public boolean changeQuantity(Resource r, int quantity) {
+//		return inv.changeAmount(r, quantity);
+//	}
 
 	@Override
 	public Point getPos() {
@@ -70,6 +70,10 @@ public class Warehouse extends Building {
 	@Override
 	public int getNumWorkers() {
 		return workers.size();
+	}
+	
+	public Inventory getInventory(){
+		return inv;
 	}
 
 }
