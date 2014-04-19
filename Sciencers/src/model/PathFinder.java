@@ -65,7 +65,7 @@ public class PathFinder {
 			makeAdjacentNodes(checkingNode);
 			checkingNode.setAdjacentNodes();
 
-			// set the parents of the ajacent nodes. (Will only change if
+			// set the parents of the adjacent nodes. (Will only change if
 			// the path through the current node is faster)
 			if (checkingNode.north != null)
 				checkingNode.north.setParent(checkingNode);
@@ -145,37 +145,58 @@ public class PathFinder {
 		// north
 		if (checkY != 0) {
 			Point northPoint = new Point(checkX, checkY - 1);
-			Tile northTile = terrain.getTile(checkX, checkY - 1);
-			makeNode(northPoint, northTile, checking);
+			makeNode(northPoint, checking);
 		}
 
 		// South
 		if (checkY < maxY) {
 			Point southPoint = new Point(checkX, checkY + 1);
-			Tile southTile = terrain.getTile(checkX, checkY + 1);
-			makeNode(southPoint, southTile, checking);
+			makeNode(southPoint, checking);
 		}
 
 		// East
 		if (checkX < maxX) {
 			Point eastPoint = new Point(checkX + 1, checkY);
-			Tile eastTile = terrain.getTile(checkX + 1, checkY);
-			makeNode(eastPoint, eastTile, checking);
+			makeNode(eastPoint, checking);
 		}
 
 		// West
 		if (checkX != 0) {
 			Point westPoint = new Point(checkX - 1, checkY);
-			Tile westTile = terrain.getTile(checkX - 1, checkY);
-			makeNode(westPoint, westTile, checking);
+			makeNode(westPoint, checking);
 		}
 	}
-	private void makeNode(Point newPoint, Tile newTile, PathFinderNode parent) {
-		if (newTile == passable && allNodes.get(newPoint) == null) {
+	private void makeNode(Point newPoint, PathFinderNode parent) {
+		if (isPassable(newPoint) && allNodes.get(newPoint) == null) {
 			PathFinderNode newNode = new PathFinderNode(newPoint, parent, this);
 			allNodes.put(newPoint, newNode);
 			addToOpenList(newNode);
 		}
+	}
+	
+	private boolean isPassable(Point pt) {
+		Tile myTile = terrain.getTile(pt.x, pt.y);
+		boolean isPassable = myTile == passable;
+		
+		if(!isPassable)
+			return false;
+		
+		try {
+			if(terrain.getTile(pt.x, pt.y+1) != passable)
+				return true;
+		} catch(ArrayIndexOutOfBoundsException e) {
+			return true;
+		}
+		
+
+		try {
+			if((terrain.getTile(pt.x-1, pt.y+1) != passable) || (terrain.getTile(pt.x+1, pt.y+1) != passable))
+				return true;
+		} catch(ArrayIndexOutOfBoundsException e) {
+			return false;
+		}
+		
+		return false;
 	}
 
 	// get methods

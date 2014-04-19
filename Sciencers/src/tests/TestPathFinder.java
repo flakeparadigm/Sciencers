@@ -18,13 +18,13 @@ public class TestPathFinder {
 	public static void main(String[] args) {
 		// create the terrain and print it to be compared with
 		// a terrain that has a path cut out of it.
-		Terrain theLand = new Terrain(123, 50, 25);
+		Terrain theLand = new Terrain(789, 50, 25);
 		System.out.println(theLand);
 		
 		// create the start and end points, find the path
-		Point startPoint = new Point(25, 24);
-		Point endPoint = new Point(34, 23);
-		PathFinder pathFinder = new PathFinder(startPoint, endPoint, theLand, Tile.Dirt);
+		Point startPoint = new Point(18, 13);
+		Point endPoint = new Point(42, 11);
+		PathFinder pathFinder = new PathFinder(startPoint, endPoint, theLand, Tile.Sky);
 		Stack<Point> thePath = pathFinder.getPath();
 		
 		// print out the stack of points. This is all of the points
@@ -36,6 +36,7 @@ public class TestPathFinder {
 
 		// mark the path on the map and see if we had success!
 		theLand.setTile(Tile.Path, startPoint.x, startPoint.y);
+		theLand.setTile(Tile.Path, endPoint.x, endPoint.y);
 		for(Point p : thePath) {
 			theLand.setTile(Tile.Path, p.x, p.y);
 		}

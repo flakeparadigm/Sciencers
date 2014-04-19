@@ -278,4 +278,11 @@ public class Terrain {
 		}
 		return -1;
 	}
+
+	public int getMapHeight() {
+		return mapHeight;
+	}
+	public int getMapWidth() {
+		return mapWidth;
+	}
 }

@@ -121,12 +121,7 @@ public class PathFinderNode implements Comparable<PathFinderNode> {
 	@Override
 	public int compareTo(PathFinderNode other) {
 		PathFinderNode otherPFN = (PathFinderNode) other;
-		if (totalCost > otherPFN.getTotalCost())
-			return 1;
-		else if (totalCost < otherPFN.getTotalCost())
-			return -1;
-		else
-			return 0;
+		return totalCost - otherPFN.getTotalCost();
 	}
 
 	/*

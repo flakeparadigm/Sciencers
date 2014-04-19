@@ -75,14 +75,14 @@ public class WorldView extends JFrame {
 		agentPanel = new AgentsView(world);
 		add(agentPanel);
 		agentPanel.setLocation(0,0);
-		agentPanel.setSize(1000,1000);
+		agentPanel.setSize(X_MAP_SIZE*TILE_SIZE, Y_MAP_SIZE*TILE_SIZE);
 		agentPanel.setOpaque(false);
 		agentPanel.setBackground(new Color(0,0,0,0));
 		
 		buildingPanel = new BuildingsView(world);
 		add(buildingPanel);
 		buildingPanel.setLocation(0,0);
-		buildingPanel.setSize(1000,1000);
+		buildingPanel.setSize(X_MAP_SIZE*TILE_SIZE, Y_MAP_SIZE*TILE_SIZE);
 		buildingPanel.setOpaque(false);
 		buildingPanel.setBackground(new Color(0,0,0,0));
 		
@@ -90,7 +90,7 @@ public class WorldView extends JFrame {
 		add(terrainPanel);
 		terrainPanel.setLocation(0, 0);
 		//TODO: figure out correct panel size
-		terrainPanel.setSize(10000, 10000);
+		terrainPanel.setSize(X_MAP_SIZE*TILE_SIZE, Y_MAP_SIZE*TILE_SIZE);
 		terrainPanel.setOpaque(false);
 		terrainPanel.setBackground(new Color(0,0,0,0));
 	}
