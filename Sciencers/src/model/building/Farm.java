@@ -14,9 +14,9 @@ public class Farm extends Building {
 	
 //	// Magic Numbers
 //	private final int TICKS_PER_ITEM = 50;
-	private final Point POSITION; 				//?
-	private int BUILDING_WIDTH;					//building size
-	private int BUILDING_HEIGHT;				//should be always 1
+	private final Point POSITION;
+	private final int BUILDING_WIDTH = 5;
+	private int BUILDING_HEIGHT = 1; //?
 	
 	public Farm(int xPos, int yPos) {
 		POSITION = new Point(xPos, yPos);

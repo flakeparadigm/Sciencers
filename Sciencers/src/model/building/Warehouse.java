@@ -11,8 +11,8 @@ public class Warehouse extends Building { //collection class for ItemCrates also
 
 	// Magic Numbers
 	private final Point POSITION;
-	private final int BUILDING_WIDTH = 0;
-	private final int BUILDING_HEIGHT = 0;
+	private final int BUILDING_WIDTH = 10;
+	private final int BUILDING_HEIGHT = 1; //?
 	
 	// Variables
 	private Inventory inv;
