@@ -32,7 +32,7 @@ public class Agent implements Entity {
 	private boolean evenTick = false;
 	
 	// Magic Numbers
-	private final int AGENT_HEIGHT = 2;
+	private final int AGENT_HEIGHT = 1;
 	private final int AGENT_WIDTH = 1;
 	private final int MAX_SEEK_FOOD_HUNGER = 600;
 	private final int MAX_SEEK_REST_FATIGUE = 500;
@@ -103,18 +103,4 @@ public class Agent implements Entity {
 	public Dimension getSize() {
 		return new Dimension(AGENT_WIDTH, AGENT_HEIGHT);
 	}
-	
-	/*
-	 * This should not be necessary. Since the variables are just references to the objects,
-	 * the terrain and buildings should always be the same reference across the system.
-	 * 
-	public void updateTerrain(Terrain terrain){
-		// the agent will need updated terrain every time the terrain is changed
-		this.terrain = terrain;
-	}
-	
-	public void updateBuildings(ArrayList<Entity> buildings){
-		this.buildings = buildings;
-	}
-	*/
 }

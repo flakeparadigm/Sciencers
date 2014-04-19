@@ -5,7 +5,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 import model.Agent;
-import model.Command;
 import model.inventory.Inventory;
 import model.inventory.Resource;
 
@@ -28,12 +27,6 @@ public class Warehouse extends Building {
 	@Override
 	public void update() {
 		
-	}
-
-	@Override
-	public Command updateCommand() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

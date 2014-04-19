@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import model.Agent;
-import model.Command;
 import model.inventory.Inventory;
 import model.inventory.Resource;
 
@@ -34,12 +33,6 @@ public class Farm extends Building {
 			int foodAdd = workers.size() * ITEMS_PER_UPDATE + 1;
 			inv.changeAmount(Resource.FOOD, foodAdd);
 		}
-	}
-
-	@Override
-	public Command updateCommand() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
