@@ -17,17 +17,22 @@ public class Agent implements Entity {
 	// agent id tracking
 	private static int currentId = 0;
 	public final int MY_ID;
-	public final double SPEED = .1;
+	// making the speed too large can cause the agent to jitter (it is missing
+	// the range to know it has hit a tile)
+	public final double SPEED = .05;
 	public final int CAPACITY = 100;
+	// every 100 ticks, hunger goes down
+	public final int HUNGER_SPEED = 100;
 
 	// current status. Ints represent 100.0%
-	private int hunger = 1000, fatigue = 1000;
+	private int hunger = 10000000, fatigue = 1000;
 	private boolean isWorking = false;
 	private Point2D.Double currentPosition, targetPosition;
 	private Stack<Point> movements;
 	private static Terrain terrain;
 	private static ArrayList<Entity> buildings;
 	private Inventory inventory;
+	private int tickCount = 0;
 
 	// player traits
 	private int intelligence, motivation, speed, strength;
@@ -49,22 +54,22 @@ public class Agent implements Entity {
 		this.currentPosition = new Point2D.Double((double) currentPosition.x,
 				(double) currentPosition.y);
 		this.buildings = buildings;
-		this.currentPosition.setLocation(30, 5);
-
 		targetPosition = this.currentPosition;
 		inventory = new Inventory(CAPACITY);
 	}
 
 	public void update() {
 		// update stats
-
-		if (isWorking) {
-			hunger -= 6;
-			fatigue -= 3;
-		} else {
-			hunger -= 1;
-			fatigue -= 1;
+		if (tickCount % HUNGER_SPEED == 0) {
+			if (isWorking) {
+				hunger -= 6;
+				fatigue -= 3;
+			} else {
+				hunger -= 1;
+				fatigue -= 1;
+			}
 		}
+		tickCount++;
 
 		// assigns movement to the next point if it exists and the entity has
 		// finished movement to the current tile
@@ -81,54 +86,92 @@ public class Agent implements Entity {
 			// For now, it is all straight lines between tiles
 			double dx = 0;
 			double dy = 0;
-			if (targetPosition.getX() > currentPosition.getX()) {
+			if (targetPosition.getX() - currentPosition.getX() > .1) {
 				dx = SPEED;
 			}
-			if (targetPosition.getX() < currentPosition.getX()) {
+			if (targetPosition.getX() - currentPosition.getX() < -.1) {
 				dx = -SPEED;
 			}
-			if (targetPosition.getY() > currentPosition.getY()) {
+			if (targetPosition.getY() - currentPosition.getY() > .1) {
 				dy = SPEED;
 			}
-			if (targetPosition.getY() < currentPosition.getY()) {
+			if (targetPosition.getY() - currentPosition.getY() < -.1) {
 				dy = -SPEED;
 			}
 
-			currentPosition.setLocation((double) (currentPosition.getX() + dx),
-					(double) (currentPosition.getY() + dy));
-		}
+			if (Math.abs(currentPosition.getX() - targetPosition.getX()) > .1) {
+				currentPosition.setLocation(
+						(double) (currentPosition.getX() + dx),
+						(double) currentPosition.getY());
+			}
 
+			if (Math.abs(currentPosition.getY() - targetPosition.getY()) > .1) {
+				currentPosition.setLocation((double) (currentPosition.getX()),
+						(double) (currentPosition.getY() + dy));
+			}
+		}
 		if (hunger < MAX_SEEK_FOOD_HUNGER && movements.isEmpty()) {
 			// TODO: maybe throw a random number generator in here someday
+
+			// if agent is in same place as building, get some food
+			for (int i = 0; i < buildings.size(); i++) {
+				// TODO: find shortest path to a building with food
+				System.out.println("Xa:"+currentPosition.getX());
+				System.out.println(buildings.get(0).getPos().getX());
+				System.out.println("Ya:"+currentPosition.getY());
+				System.out.println(buildings.get(0).getPos().getY());
+
+				System.out.println("x: "+Math.abs(currentPosition.getX()
+						- buildings.get(i).getPos().getX()));
+				System.out.println("Y: "+Math.abs(currentPosition.getY()
+						- buildings.get(i).getPos().getY()));
+				if (((Building) buildings.get(i)).getInventory().getAmount(
+						Resource.FOOD) > 0
+						&& Math.abs(currentPosition.getX()
+								- buildings.get(i).getPos().getX()) < .1
+						&& Math.abs(currentPosition.getY()
+								- buildings.get(i).getPos().getY()) < .1) {
+					// if it gets in here, the agent is on a food building
+					System.out.println("ONFOOD");
+					((Building) buildings.get(i)).getInventory().changeAmount(
+							Resource.FOOD, -2);
+					inventory.changeAmount(Resource.FOOD, 2);
+					targetPosition = currentPosition;
+				}
+
+			}
 			// if agent has food, eat some:
 			if (inventory.getAmount(Resource.FOOD) > 0) {
 				inventory.changeAmount(Resource.FOOD, -1);
 				hunger += 10;
-			}
-			// if agent doesn't have food, look for building with food.
-			Stack<Point> shortestPath = null;
-			boolean nullPath = true;
-			for (int i = 0; i < buildings.size(); i++) {
-				// TODO: find shortest path to a building with food
-				if (((Building) buildings.get(i)).getInventory().getAmount(
-						Resource.FOOD) > 0) {
-					PathFinder thePath = new PathFinder(new Point(
-							(int) currentPosition.getX(),
-							(int) currentPosition.getY()), (Point) buildings
-							.get(i).getPos(), terrain, Tile.Sky);
-					if (nullPath
-							|| thePath.getPath().size() > shortestPath.size()) {
-						nullPath = false;
-						shortestPath = thePath.getPath();
+			} else {
+				// if agent doesn't have food, look for building with food.
+				Stack<Point> shortestPath = null;
+				boolean nullPath = true;
+				for (int i = 0; i < buildings.size(); i++) {
+					// TODO: find shortest path to a building with food
+					if (((Building) buildings.get(i)).getInventory().getAmount(
+							Resource.FOOD) > 0) {
+						PathFinder thePath = new PathFinder(new Point(
+								(int) currentPosition.getX(),
+								(int) currentPosition.getY()),
+								(Point) buildings.get(i).getPos(), terrain,
+								Tile.Sky);
+						if (nullPath
+								|| thePath.getPath().size() > shortestPath
+										.size()) {
+							nullPath = false;
+							shortestPath = thePath.getPath();
+						}
 					}
 				}
-			}
 
-			if (shortestPath != null) {
-				movements = shortestPath;
+				if (shortestPath != null) {
+					movements = shortestPath;
+				}
+
 			}
 		}
-
 	}
 
 	// this will be what the agent uses to get the path to its next destination.

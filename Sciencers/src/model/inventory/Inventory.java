@@ -28,7 +28,7 @@ public class Inventory {
 //		inv.put(r, temp);
 //		return true;
 		
-		inv.put(r, quantity);
+		inv.put(r, getAmount(r) + quantity);
 	}
 	
 	public int getTotal() {

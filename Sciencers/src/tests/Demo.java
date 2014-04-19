@@ -88,9 +88,13 @@ public class Demo extends JFrame {
 		}
 
 		private void testHungerMovement() {
-			world.addFarm(50, 16);
-			world.addAgent(33);
-			Agent hungryAgent = (Agent) world.getAgents().get(0);
+			world.addFarm(45, 25);
+			world.addAgent(12);
+			world.addAgent(50);
+			world.addAgent(30);
+			world.addAgent(70);
+			world.getTerrain().setTile(Tile.Uranium, 12, 9);
+			Agent hungryAgent = (Agent) world.getAgents().get(1);
 			hungryAgent.setHunger(200);
 		}
 
