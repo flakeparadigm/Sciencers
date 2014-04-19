@@ -19,14 +19,16 @@ public class Inventory {
 		return inv.get(r);
 	}
 	
-	public boolean changeAmount(Resource r, int quantity) {
-		if(inv.get(r) < quantity)
-			return false;
+	public void changeAmount(Resource r, int quantity) {
+		//Not sure what this actually does. Putting it out for now because it is not changing the amount
+//		if(inv.get(r) < quantity)
+//			return false;
+//		int temp = inv.remove(r);
+//		temp += quantity;
+//		inv.put(r, temp);
+//		return true;
 		
-		int temp = inv.remove(r);
-		temp += quantity;
-		inv.put(r, temp);
-		return true;
+		inv.put(r, quantity);
 	}
 	
 	public int getTotal() {

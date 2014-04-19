@@ -31,7 +31,7 @@ public class BuildingsView extends JPanel{
 		Graphics2D g2 = (Graphics2D) g;
 		
 		for (Entity e : world.getBuildings()) {
-			g2.drawImage(placeholder, WorldView.TILE_SIZE*(e.getPos().x+1), WorldView.TILE_SIZE*(e.getPos().y+1), null);
+			g2.drawImage(placeholder, (int) (WorldView.TILE_SIZE*(e.getPos().getX()+1)), (int) (WorldView.TILE_SIZE*(e.getPos().getY()+1)), null);
 //			g2.drawString("B", WorldView.TILE_SIZE*(e.getPos().x + 1), WorldView.TILE_SIZE*(e.getPos().y + 1));
 		}
 	}

@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import model.Agent;
 import model.World;
 import view.Tile;
 import view.WorldView;
@@ -25,6 +26,7 @@ public class Demo extends JFrame {
 
 	// Test Buttons
 	private JButton testTerrainUpdateButton = new JButton("Test Terrain Update");
+	private JButton testHungerMovementButton = new JButton("Test Hunger Movement");
 
 	// magic numbers
 	private final int X_SCREEN_SIZE = ((int) tk.getScreenSize().getWidth());
@@ -61,16 +63,16 @@ public class Demo extends JFrame {
 	private void setupModel() {
 		world = worldView.getWorld();
 		// for example: add agent and farm
-		world.addAgent(11);
-		world.addFarm(27, 16);
 	}
 
 	private void addComponents() {
 		this.add(testTerrainUpdateButton);
+		this.add(testHungerMovementButton);
 	}
 
 	private void registerListeners() {
 		testTerrainUpdateButton.addActionListener(new demoButtonListener());
+		testHungerMovementButton.addActionListener(new demoButtonListener());
 	}
 
 	// PUT ALL TEST CASES BELOW.
@@ -80,7 +82,16 @@ public class Demo extends JFrame {
 		public void actionPerformed(ActionEvent event) {
 			if (event.getSource() == testTerrainUpdateButton)
 				testTerrainUpdate();
+			if (event.getSource() == testHungerMovementButton)
+				testHungerMovement();
 
+		}
+
+		private void testHungerMovement() {
+			world.addFarm(50, 16);
+			world.addAgent(33);
+			Agent hungryAgent = (Agent) world.getAgents().get(0);
+			hungryAgent.setHunger(200);
 		}
 
 		private void testTerrainUpdate() {
@@ -104,5 +115,4 @@ public class Demo extends JFrame {
 		}
 
 	}
-
 }

@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import model.building.Building;
@@ -36,7 +37,7 @@ public class World{
 		buildings = new ArrayList<Entity>();
 		projectiles = new ArrayList<Projectile>();
 		
-		agentsTick = new GameTick(agents, 50);
+		agentsTick = new GameTick(agents, 5);
 		buildingsTick = new GameTick(buildings, 100);
 
 		agentsTick.start();
@@ -47,7 +48,6 @@ public class World{
 		//this adds an Agent at the highest point on the terrain at a certain point
 		Agent agent = new Agent(terrain, buildings, new Point(xPos, terrain.getAltitude(xPos) - 1));
 		agents.add(agent);
-		System.out.println( terrain.getAltitude(xPos) - 1);
 	}
 	
 	// WE WILL NEED TO REFACTOR THIS EVENTUALLY TO addBuilding(type, pos);

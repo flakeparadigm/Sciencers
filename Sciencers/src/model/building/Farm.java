@@ -18,6 +18,7 @@ public class Farm extends Building {
 	private final int BUILDING_HEIGHT = 1; //?
 	private final int MAX_WORKERS = 5;
 	private final int ITEMS_PER_UPDATE = 1;
+	private final int CAPACITY = 1000;
 	
 	//Variables
 	private Inventory inv;
@@ -25,6 +26,9 @@ public class Farm extends Building {
 	
 	public Farm(int xPos, int yPos) {
 		POSITION = new Point(xPos, yPos);
+		workers = new ArrayList<Agent>();
+		inv = new Inventory(CAPACITY);
+		inv.changeAmount(Resource.FOOD, 100);
 	}
 	
 	public void update() {
