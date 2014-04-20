@@ -70,13 +70,10 @@ public class Agent implements Entity {
 			}
 		}
 		tickCount++;
-
-		if (hunger < MAX_SEEK_FOOD_HUNGER && movements.isEmpty()) {
+		
+		if (hunger < MAX_SEEK_FOOD_HUNGER && movements.isEmpty() && sameLocation(currentPosition, targetPosition)) {
 			// TODO: maybe throw a random number generator in here someday
-			System.out.println("isHungry");
-			System.out.println("At Building: " + sameLocation(currentPosition, new Point2D.Double(
-					buildings.get(0).getPos().getX(), buildings
-					.get(0).getPos().getY())));
+
 			// if agent is in same place as building, get some food
 			for (int i = 0; i < buildings.size(); i++) {
 				if (((Building) buildings.get(i)).getInventory().getAmount(
@@ -87,7 +84,6 @@ public class Agent implements Entity {
 					// if it gets in here, the agent is on a food building
 					((Building) buildings.get(i)).getInventory().changeAmount(
 							Resource.FOOD, -2);
-					System.out.println("TookFromBuilding");
 					inventory.changeAmount(Resource.FOOD, 2);
 				}
 			}
@@ -158,13 +154,13 @@ public class Agent implements Entity {
 				dy = -SPEED;
 			}
 
-			if (Math.abs(currentPosition.getX() - targetPosition.getX()) > .05) {
+			if (Math.abs(currentPosition.getX() - targetPosition.getX()) > .1) {
 				currentPosition.setLocation(
 						(double) (currentPosition.getX() + dx),
 						(double) currentPosition.getY());
 			}
 
-			if (Math.abs(currentPosition.getY() - targetPosition.getY()) > .05) {
+			if (Math.abs(currentPosition.getY() - targetPosition.getY()) > .1) {
 				currentPosition.setLocation((double) (currentPosition.getX()),
 						(double) (currentPosition.getY() + dy));
 			}
@@ -206,9 +202,7 @@ public class Agent implements Entity {
 		this.hunger = hunger;
 	}
 	
-	public void setPathVisible(){
-		for (int i = 0; i<movements.size(); i++){
-			terrain.setTile(Tile.Path, movements.get(i).x, movements.get(i).y);
-		}
+	public Stack<Point> getPath(){
+		return movements;
 	}
 }
