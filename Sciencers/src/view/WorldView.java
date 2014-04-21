@@ -30,8 +30,8 @@ public class WorldView extends JFrame {
 	static Toolkit tk = Toolkit.getDefaultToolkit();
 	private final int X_SCREEN_SIZE = ((int) tk.getScreenSize().getWidth());
 	private final int Y_SCREEN_SIZE = ((int) tk.getScreenSize().getHeight());
-	private final int X_WINDOW_SIZE = 700;
-	private final int Y_WINDOW_SIZE = 700;
+	private final static int X_WINDOW_SIZE = 700;
+	private final static int Y_WINDOW_SIZE = 700;
 	
 	private final static int X_MAP_SIZE = 500;
 	private final static int Y_MAP_SIZE = 100;
@@ -217,7 +217,7 @@ public class WorldView extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// continuous right pressed code here:
 			xPanelLocation-= moveSpeed;
-			int maxX = -(X_MAP_SIZE*TILE_SIZE-gameWindow.getWidth()+30);
+			int maxX = -(X_MAP_SIZE*TILE_SIZE-X_WINDOW_SIZE+30);
 			if(xPanelLocation < maxX)
 				xPanelLocation = maxX;
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
@@ -262,7 +262,7 @@ public class WorldView extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// continuous down pressed code here:
 			yPanelLocation-= moveSpeed;
-			int maxY = -(Y_MAP_SIZE*TILE_SIZE-gameWindow.getHeight()+55);
+			int maxY = -(Y_MAP_SIZE*TILE_SIZE-Y_WINDOW_SIZE+55);
 			if(yPanelLocation < maxY)
 				yPanelLocation = maxY;
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
