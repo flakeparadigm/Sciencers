@@ -1,6 +1,8 @@
 package model;
 
+import java.awt.Point;
 import java.util.Random;
+import java.util.Stack;
 
 import controller.SciencersObserver;
 import view.Tile;
@@ -284,5 +286,11 @@ public class Terrain {
 	}
 	public int getMapWidth() {
 		return mapWidth;
+	}
+	
+	public void setPathVisible(Stack<Point> movements){
+		for (int i = 0; i<movements.size(); i++){
+			terrain[movements.get(i).x][movements.get(i).y].equals(Tile.Path);
+		}
 	}
 }

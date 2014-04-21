@@ -26,7 +26,8 @@ public class Demo extends JFrame {
 
 	// Test Buttons
 	private JButton testTerrainUpdateButton = new JButton("Test Terrain Update");
-	private JButton testHungerMovementButton = new JButton("Test Hunger Movement");
+	private JButton testHungerMovementButton = new JButton(
+			"Test Hunger Movement");
 
 	// magic numbers
 	private final int X_SCREEN_SIZE = ((int) tk.getScreenSize().getWidth());
@@ -88,14 +89,18 @@ public class Demo extends JFrame {
 		}
 
 		private void testHungerMovement() {
-			world.addFarm(50, 16);
-			world.addAgent(33);
+			world.addFarm(29, 17);
+			world.addAgent(9);
+			world.addAgent(18);
+			world.getTerrain().setTile(Tile.Dirt, 20, 14);
 			Agent hungryAgent = (Agent) world.getAgents().get(0);
 			hungryAgent.setHunger(200);
 		}
 
 		private void testTerrainUpdate() {
-			JOptionPane.showMessageDialog(worldView, "This demo should replace 50 blocks along the top of the map with Stone (X)");
+			JOptionPane
+					.showMessageDialog(worldView,
+							"This demo should replace 50 blocks along the top of the map with Stone (X)");
 			Runnable r = new Runnable() {
 				public void run() {
 					try {
