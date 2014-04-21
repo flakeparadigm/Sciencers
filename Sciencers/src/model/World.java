@@ -1,11 +1,9 @@
 package model;
 
 import java.awt.Point;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
-import model.building.Building;
-import model.building.Farm;
+import model.building.*;
 import controller.GameTick;
 
 /*
@@ -51,12 +49,15 @@ public class World{
 	}
 	
 	// WE WILL NEED TO REFACTOR THIS EVENTUALLY TO addBuilding(type, pos);
-	public void addBuilding(String type, Point pos){
-		Building building;
-		if(type.equals("Farm")) {
+	public void addBuilding(EBuilding type, Point pos){
+		Building building = null;
+		if(type == EBuilding.FARM)
 			building = new Farm(pos);
-			buildings.add(building);
-		}
+		else if(type == EBuilding.WAREHOUSE)
+			building = new Warehouse(pos);
+		if(building == null)
+			System.out.println("Building is null! World.addBuilding()");
+		buildings.add(building);
 	}
 	
 	public Terrain getTerrain(){

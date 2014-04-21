@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 
 import model.Agent;
 import model.World;
+import model.building.EBuilding;
 import view.Tile;
 import view.WorldView;
 
@@ -90,7 +91,7 @@ public class Demo extends JFrame {
 		}
 
 		private void testHungerMovement() {
-			world.addBuilding("Farm", new Point(29, 17));
+			world.addBuilding(EBuilding.FARM, new Point(29, 17));
 			world.addAgent(9);
 			world.addAgent(18);
 			world.getTerrain().setTile(Tile.Dirt, 20, 14);
