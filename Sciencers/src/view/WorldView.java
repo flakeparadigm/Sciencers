@@ -33,8 +33,8 @@ public class WorldView extends JFrame {
 	private final int X_WINDOW_SIZE = 700;
 	private final int Y_WINDOW_SIZE = 700;
 	
-	private final int X_MAP_SIZE = 500;
-	private final int Y_MAP_SIZE = 100;
+	private final static int X_MAP_SIZE = 500;
+	private final static int Y_MAP_SIZE = 100;
 	
 	public static final int TILE_SIZE = 16;
 
@@ -195,6 +195,8 @@ public class WorldView extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// continuous left pressed code here:
 			xPanelLocation += moveSpeed;
+			if(xPanelLocation > 0)
+				xPanelLocation = 0;
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
 			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
 			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
@@ -215,6 +217,9 @@ public class WorldView extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// continuous right pressed code here:
 			xPanelLocation-= moveSpeed;
+			int maxX = -(X_MAP_SIZE*TILE_SIZE-gameWindow.getWidth()+30);
+			if(xPanelLocation < maxX)
+				xPanelLocation = maxX;
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
 			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
 			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
@@ -235,6 +240,8 @@ public class WorldView extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// continuous up pressed code here:
 			yPanelLocation += moveSpeed;
+			if(yPanelLocation > 0)
+				yPanelLocation = 0;
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
 			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
 			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
@@ -255,6 +262,9 @@ public class WorldView extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// continuous down pressed code here:
 			yPanelLocation-= moveSpeed;
+			int maxY = -(Y_MAP_SIZE*TILE_SIZE-gameWindow.getHeight()+55);
+			if(yPanelLocation < maxY)
+				yPanelLocation = maxY;
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
 			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
 			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
