@@ -50,7 +50,7 @@ public class WorldView extends JFrame {
 
 	public WorldView() {
 		terrainWatch = new SciencersObserver(this);
-		
+		gameWindow = this;
 		setupProperties();
 		setupModel();
 		addComponents();
@@ -217,7 +217,7 @@ public class WorldView extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// continuous right pressed code here:
 			xPanelLocation-= moveSpeed;
-			int maxX = -(X_MAP_SIZE*TILE_SIZE-X_WINDOW_SIZE+30);
+			int maxX = -(X_MAP_SIZE*TILE_SIZE-gameWindow.getWidth()+30);
 			if(xPanelLocation < maxX)
 				xPanelLocation = maxX;
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
@@ -262,7 +262,7 @@ public class WorldView extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// continuous down pressed code here:
 			yPanelLocation-= moveSpeed;
-			int maxY = -(Y_MAP_SIZE*TILE_SIZE-Y_WINDOW_SIZE+55);
+			int maxY = -(Y_MAP_SIZE*TILE_SIZE-gameWindow.getHeight()+55);
 			if(yPanelLocation < maxY)
 				yPanelLocation = maxY;
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
