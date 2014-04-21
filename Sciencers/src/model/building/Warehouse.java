@@ -20,8 +20,9 @@ public class Warehouse extends Building {
 	private Inventory inv;
 	private ArrayList<Agent> workers;
 	
-	public Warehouse(int xPos, int yPos) {
-		POSITION = new Point(xPos, yPos);
+	public Warehouse(Point pos) {
+		super(pos);
+		POSITION = pos;
 	}
 
 	@Override

@@ -13,6 +13,8 @@ public abstract class Building implements Entity {
 	// Magic Numbers
 	protected final int TICKS_PER_ITEM = 50;
 	protected final int MAX_STORAGE_PER_TILE = 100;
+	protected final int BLDG_ID;
+	protected static int currentID = 0;
 	
 	/*I believe we should do these in the inventory class 
 	 * rather than have them in both each building and the inventory class
@@ -20,6 +22,10 @@ public abstract class Building implements Entity {
 //	public abstract int getAmount(Resource r);
 //	
 //	public abstract boolean changeQuantity(Resource r, int quantity);
+	
+	public Building(Point pos) {
+		BLDG_ID = currentID++;
+	}
 	
 	public abstract Point getPos();
 	

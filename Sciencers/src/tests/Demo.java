@@ -1,6 +1,7 @@
 package tests;
 
 import java.awt.FlowLayout;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -89,7 +90,7 @@ public class Demo extends JFrame {
 		}
 
 		private void testHungerMovement() {
-			world.addFarm(29, 17);
+			world.addBuilding("Farm", new Point(29, 17));
 			world.addAgent(9);
 			world.addAgent(18);
 			world.getTerrain().setTile(Tile.Dirt, 20, 14);

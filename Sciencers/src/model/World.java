@@ -51,9 +51,12 @@ public class World{
 	}
 	
 	// WE WILL NEED TO REFACTOR THIS EVENTUALLY TO addBuilding(type, pos);
-	public void addFarm(int xPos, int yPos){
-		Building building = new Farm(xPos, yPos);
-		buildings.add(building);
+	public void addBuilding(String type, Point pos){
+		Building building;
+		if(type.equals("Farm")) {
+			building = new Farm(pos);
+			buildings.add(building);
+		}
 	}
 	
 	public Terrain getTerrain(){
