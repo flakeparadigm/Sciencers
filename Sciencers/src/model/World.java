@@ -12,10 +12,10 @@ import controller.GameTick;
 
 public class World{
 	// objects within the world
-	private Terrain terrain;
-	private ArrayList<Entity> agents;
-	private ArrayList<Entity> buildings;
-	private ArrayList<Projectile> projectiles;
+	public static Terrain terrain;
+	public static ArrayList<Entity> agents;
+	public static ArrayList<Entity> buildings;
+	public static ArrayList<Projectile> projectiles;
 	
 	// tick Info
 	private GameTick agentsTick;
@@ -24,16 +24,16 @@ public class World{
 	private final int BUILDING_TICK_TIME = 100;
 	
 	// resources
-	private int playerScience;
-	private int playerMoney;
+	public static int playerScience;
+	public static int playerMoney;
 	
 	// generation info
-	long seed;	// (NOTE: we can use the same seed to generate everything. Consistency for simulation)
-	int width, height;
+	public static long seed;	// (NOTE: we can use the same seed to generate everything. Consistency for simulation)
+	private int width, height;
 	
 	public World(long seed, int width, int height) {
 		terrain = new Terrain(seed, width, height);
-		this.seed = seed;
+		World.seed = seed;
 		this.width = width;
 		this.height = height;
 		
@@ -50,7 +50,7 @@ public class World{
 	
 	public void addAgent(int xPos){
 		//this adds an Agent at the highest point on the terrain at a certain point
-		Agent agent = new Agent(terrain, buildings, new Point(xPos, terrain.getAltitude(xPos) - 1));
+		Agent agent = new Agent(new Point(xPos, terrain.getAltitude(xPos) - 1));
 		agents.add(agent);
 	}
 	

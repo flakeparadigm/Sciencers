@@ -3,8 +3,6 @@ package model;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
-import java.util.ArrayList;
 import java.util.Stack;
 
 import model.building.Building;
@@ -31,8 +29,8 @@ public class Agent implements Entity {
 	private boolean isWorking = false;
 	private Point2D.Double currentPosition, targetPosition;
 	private Stack<Point> movements;
-	private static Terrain terrain;
-	private static ArrayList<Entity> buildings;
+//	private static Terrain terrain;
+//	private static ArrayList<Entity> buildings;
 	private Inventory inventory;
 	private int tickCount = 0;
 
@@ -53,15 +51,12 @@ public class Agent implements Entity {
 	boolean buildBuilding = false;
 	Point buildingPosition;
 	
-	public Agent(Terrain terrain, ArrayList<Entity> buildings,
-			Point currentPosition) {
+	public Agent(Point currentPosition) {
 		MY_ID = currentId++;
 		movements = new Stack<Point>();
 
-		this.terrain = terrain;
 		this.currentPosition = new Point2D.Double((double) currentPosition.x,
 				(double) currentPosition.y);
-		this.buildings = buildings;
 		targetPosition = this.currentPosition;
 		inventory = new Inventory(CAPACITY);
 	}
@@ -116,21 +111,21 @@ public class Agent implements Entity {
 		Stack<Point> shortestPath = null;
 		Building closestFoodBuilding = null;
 		boolean nullPath = true;
-		for (int i = 0; i < buildings.size(); i++) {
+		for (int i = 0; i < World.buildings.size(); i++) {
 			// find shortest path to building with food
-			if (((Building) buildings.get(i)).getInventory().getAmount(
+			if (((Building) World.buildings.get(i)).getInventory().getAmount(
 					r) > 0) {
 				PathFinder thePath = new PathFinder(new Point(
 						(int) currentPosition.getX(),
 						(int) currentPosition.getY()),
-						(Point) buildings.get(i).getPos(), terrain,
+						(Point) World.buildings.get(i).getPos(), World.terrain,
 						Tile.Sky);
 				if (nullPath
 						|| thePath.getPath().size() > shortestPath
 								.size()) {
 					nullPath = false;
 					shortestPath = thePath.getPath();
-					closestFoodBuilding = (Building) buildings.get(i);
+					closestFoodBuilding = (Building) World.buildings.get(i);
 				}
 			}
 		}
@@ -141,14 +136,14 @@ public class Agent implements Entity {
 	}
 
 	private void getResourceFromBuildingAtCurrentLocation(Resource r) {
-		for (int i = 0; i < buildings.size(); i++) {
-			if (((Building) buildings.get(i)).getInventory().getAmount(
+		for (int i = 0; i < World.buildings.size(); i++) {
+			if (((Building) World.buildings.get(i)).getInventory().getAmount(
 					r) > 0
 					&& sameLocation(currentPosition, new Point2D.Double(
-							buildings.get(i).getPos().getX(), buildings
+							World.buildings.get(i).getPos().getX(), World.buildings
 									.get(i).getPos().getY()))) {
 				// if it gets in here, the agent is on a food building
-				((Building) buildings.get(i)).getInventory().changeAmount(
+				((Building) World.buildings.get(i)).getInventory().changeAmount(
 						r, -2);
 				inventory.changeAmount(r, 2);
 			}
@@ -207,7 +202,7 @@ public class Agent implements Entity {
 	public boolean goHere(Point destination) {
 		PathFinder thePath = new PathFinder(new Point(
 				(int) currentPosition.getX(), (int) currentPosition.getY()),
-				destination, terrain, Tile.Sky);
+				destination, World.terrain, Tile.Sky);
 		movements = thePath.getPath();
 
 		if (movements.isEmpty()) {
