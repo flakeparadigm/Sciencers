@@ -21,9 +21,7 @@ public class BuildBuildingTask implements Task {
 
 	@Override
 	public Point getPos() {
-		return null;
-		// TODO Auto-generated method stub
-		
+		return building.getPos();		
 	}
 
 	
