@@ -19,11 +19,11 @@ import view.WorldView;
 public class Demo extends JFrame {
 
 	// important things
-	private static World world;
+//	private static World World;
 	static Toolkit tk = Toolkit.getDefaultToolkit();
 
 	// Graphical elements
-	private static WorldView worldView;
+	private static WorldView WorldView;
 	private static Demo demoTools;
 
 	// Test Buttons
@@ -39,8 +39,8 @@ public class Demo extends JFrame {
 	private final int Y_WINDOW_SIZE = 700;
 
 	public static void main(String[] args) {
-		worldView = new WorldView();
-		worldView.setVisible(true);
+		WorldView = new WorldView();
+		WorldView.setVisible(true);
 
 		demoTools = new Demo();
 		demoTools.setVisible(true);
@@ -54,8 +54,8 @@ public class Demo extends JFrame {
 	}
 
 	private void setupProperties() {
-		worldView.setSize(X_SCREEN_SIZE - X_WINDOW_SIZE - 150, Y_WINDOW_SIZE);
-		worldView.setTitle("Sciencers Demo");
+		WorldView.setSize(X_SCREEN_SIZE - X_WINDOW_SIZE - 150, Y_WINDOW_SIZE);
+		WorldView.setTitle("Sciencers Demo");
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Demo Controls");
@@ -65,7 +65,7 @@ public class Demo extends JFrame {
 	}
 
 	private void setupModel() {
-		world = worldView.getWorld();
+//		World = WorldView.getWorld();
 		// for example: add agent and farm
 	}
 
@@ -100,35 +100,35 @@ public class Demo extends JFrame {
 		}
 		
 		private void resetWorld() {
-			world.reset();
-			worldView.updateAll();
+			World.reset();
+			WorldView.updateAll();
 		}
 		
 		private void testBuildingConstruction(){
-			world.addAgent(9);
-			world.getTerrain().setTile(Tile.Dirt, 20, 14);
-			Agent builderAgent = (Agent) world.getAgents().get(0);
+			World.addAgent(9);
+			World.terrain.setTile(Tile.Dirt, 20, 14);
+			Agent builderAgent = (Agent) World.agents.get(0);
 			builderAgent.setBuild(true, new Point (29,17));
 		}
 
 		private void testHungerMovement() {
-			world.addBuilding(EBuilding.FARM, new Point(29, 17));
-			world.addAgent(9);
-			world.addAgent(18);
-			world.getTerrain().setTile(Tile.Dirt, 20, 14);
-			Agent hungryAgent = (Agent) world.getAgents().get(0);
+			World.addBuilding(EBuilding.FARM, new Point(29, 17));
+			World.addAgent(9);
+			World.addAgent(18);
+			World.terrain.setTile(Tile.Dirt, 20, 14);
+			Agent hungryAgent = (Agent) World.agents.get(0);
 			hungryAgent.setHunger(200);
 		}
 
 		private void testTerrainUpdate() {
 			JOptionPane
-					.showMessageDialog(worldView,
+					.showMessageDialog(WorldView,
 							"This demo should replace 50 blocks along the top of the map with Stone (X)");
 			Runnable r = new Runnable() {
 				public void run() {
 					try {
 						for (int i = 0; i < 100; i += 2) {
-							world.getTerrain().updateTile(Tile.Stone, i, 0);
+							World.terrain.updateTile(Tile.Stone, i, 0);
 							Thread.sleep(100);
 						}
 

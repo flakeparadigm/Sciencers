@@ -18,10 +18,10 @@ public class World{
 	public static ArrayList<Projectile> projectiles;
 	
 	// tick Info
-	private GameTick agentsTick;
-	private GameTick buildingsTick;
-	private final int AGENT_TICK_TIME = 5;
-	private final int BUILDING_TICK_TIME = 100;
+	private static GameTick agentsTick;
+	private static GameTick buildingsTick;
+	private static final int AGENT_TICK_TIME = 5;
+	private static final int BUILDING_TICK_TIME = 100;
 	
 	// resources
 	public static int playerScience;
@@ -29,7 +29,7 @@ public class World{
 	
 	// generation info
 	public static long seed;	// (NOTE: we can use the same seed to generate everything. Consistency for simulation)
-	private int width, height;
+	private static int width, height;
 	
 	public World(long seed, int width, int height) {
 		terrain = new Terrain(seed, width, height);
@@ -48,14 +48,14 @@ public class World{
 		buildingsTick.start();
 	}
 	
-	public void addAgent(int xPos){
+	public static void addAgent(int xPos){
 		//this adds an Agent at the highest point on the terrain at a certain point
 		Agent agent = new Agent(new Point(xPos, terrain.getAltitude(xPos) - 1));
 		agents.add(agent);
 	}
 	
 	// WE WILL NEED TO REFACTOR THIS EVENTUALLY TO addBuilding(type, pos);
-	public void addBuilding(EBuilding type, Point pos){
+	public static void addBuilding(EBuilding type, Point pos){
 		Building building = null;
 		if(type == EBuilding.FARM)
 			building = new Farm(pos);
@@ -66,19 +66,22 @@ public class World{
 		buildings.add(building);
 	}
 	
-	public Terrain getTerrain(){
-		return terrain;
-	}
-
-	public ArrayList<Entity> getAgents(){
-		return agents;
-	}
+	/*
+	 * these should be unnecessary as long as their variables are public static
+	 */
+//	public Terrain getTerrain(){
+//		return terrain;
+//	}
+//
+//	public ArrayList<Entity> getAgents(){
+//		return agents;
+//	}
 	
 	public ArrayList<Entity> getBuildings(){
 		return buildings;
 	}
 
-	public void reset() {
+	public static void reset() {
 		terrain = new Terrain(seed, width, height);
 		
 		agents = new ArrayList<Entity>();

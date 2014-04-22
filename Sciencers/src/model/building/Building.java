@@ -38,4 +38,6 @@ public abstract class Building implements Entity {
 	public abstract boolean removeWorker(Agent a);
 	
 	public abstract int getNumWorkers();
+
+	public abstract EBuilding getType();
 }

@@ -30,7 +30,7 @@ public class AgentsView extends JPanel{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		
-		for (Entity e : world.getAgents()) {
+		for (Entity e : World.agents) {
 			//this line of code is for testing that agents will show up in the correct location on the TextView
 			g2.drawImage(placeholder, (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getX() + 1)), (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getY() + 1)), null);
 //			g2.drawString("A", WorldView.TILE_SIZE*(e.getPos().x + 1), WorldView.TILE_SIZE*(e.getPos().y + 1));

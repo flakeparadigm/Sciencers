@@ -77,4 +77,9 @@ public class Warehouse extends Building {
 		return inv;
 	}
 
+	@Override
+	public EBuilding getType() {
+		return EBuilding.WAREHOUSE;
+	}
+
 }

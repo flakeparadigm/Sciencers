@@ -86,4 +86,9 @@ public class Farm extends Building {
 	public Inventory getInventory(){
 		return inv;
 	}
+
+	@Override
+	public EBuilding getType() {
+		return EBuilding.FARM;
+	}
 }
