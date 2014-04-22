@@ -23,7 +23,7 @@ public class Terrain {
 	 * and high value for frequency. (High frequency number means the points are
 	 * farther apart).
 	 */
-	private final int averageTerrainHeight = 10;
+	private final int averageTerrainHeight = 20;
 	private final int perlin1Magnitude = 20;
 	private final int perlin2Magnitude = 2;
 	private final int perlin3Magnitude = 1;
@@ -66,6 +66,8 @@ public class Terrain {
 	private final double uraniumPropagation = .1;
 	private final double uraniumDepthRatio = .0001;
 	private final double uraniumDepthExp = .8;
+	
+	private final double treePlacement = .2;
 
 	public Terrain(long seed, int mapWidth, int mapHeight) {
 		this.seed = seed;
@@ -76,6 +78,16 @@ public class Terrain {
 		generateSky();
 		generateRandomTerrain();
 		generateGroundDetails();
+		generateTrees();
+	}
+	
+	public void generateTrees(){
+		for (int i = 0; i< terrain.length; i++) {
+			if (random.nextDouble() < treePlacement){
+				int alt = getAltitude(i);
+				terrain[i][alt] = Tile.Wood;
+			}
+		}
 	}
 
 	public void generateSky() {
@@ -175,7 +187,7 @@ public class Terrain {
 	}
 
 	private int Noise1(int magnitude) {
-		// return a random float between -1 and 1
+		// return a random float between -mgnitude and magnitude
 		int Min = -magnitude;
 		int Max = magnitude;
 		return (int) (Min + (random.nextDouble() * ((Max - Min) + 1)));
