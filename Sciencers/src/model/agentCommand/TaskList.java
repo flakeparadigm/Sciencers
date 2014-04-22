@@ -16,7 +16,11 @@ public class TaskList {
 		tasks.add(t);
 	}
 	
-	public static Task assignTask() {
+	public static Task nextTask() {
 		return tasks.poll();
+	}
+	
+	public static Queue<Task> getList() {
+		return tasks;
 	}
 }

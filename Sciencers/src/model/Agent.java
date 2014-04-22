@@ -17,8 +17,7 @@ public class Agent implements Entity {
 	// agent id tracking
 	private static int currentId = 0;
 	public final int MY_ID;
-	//agent type *Jake
-	private EAgent type;
+	private EAgent type; //agent type (Jake)
 	
 	// making the speed too large can cause the agent to jitter (it is missing
 	// the range to know it has hit a tile)
