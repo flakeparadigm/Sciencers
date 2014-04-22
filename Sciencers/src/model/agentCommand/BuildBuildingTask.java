@@ -1,5 +1,7 @@
 package model.agentCommand;
 
+import java.awt.Point;
+
 import model.building.Building;
 
 public class BuildBuildingTask implements Task {
@@ -16,7 +18,8 @@ public class BuildBuildingTask implements Task {
 	}
 
 	@Override
-	public void getPos() {
+	public Point getPos() {
+		return null;
 		// TODO Auto-generated method stub
 		
 	}

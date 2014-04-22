@@ -1,9 +1,11 @@
 package model.agentCommand;
 
+import java.awt.Point;
+
 public interface Task {
 
 	public abstract void execute();
 	
-	public abstract void getPos();
+	public abstract Point getPos();
 	
 }
