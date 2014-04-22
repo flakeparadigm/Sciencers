@@ -7,5 +7,11 @@ public class GetResourcesTask implements Task {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void getPos() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

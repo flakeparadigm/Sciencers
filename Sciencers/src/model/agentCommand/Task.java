@@ -4,4 +4,6 @@ public interface Task {
 
 	public abstract void execute();
 	
+	public abstract void getPos();
+	
 }

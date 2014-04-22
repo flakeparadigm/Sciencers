@@ -15,5 +15,11 @@ public class BuildBuildingTask implements Task {
 		
 	}
 
+	@Override
+	public void getPos() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 }
