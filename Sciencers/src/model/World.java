@@ -17,9 +17,11 @@ public class World{
 	private ArrayList<Entity> buildings;
 	private ArrayList<Projectile> projectiles;
 	
-	// tick runners
+	// tick Info
 	private GameTick agentsTick;
 	private GameTick buildingsTick;
+	private final int AGENT_TICK_TIME = 5;
+	private final int BUILDING_TICK_TIME = 100;
 	
 	// resources
 	private int playerScience;
@@ -27,16 +29,20 @@ public class World{
 	
 	// generation info
 	long seed;	// (NOTE: we can use the same seed to generate everything. Consistency for simulation)
+	int width, height;
 	
 	public World(long seed, int width, int height) {
 		terrain = new Terrain(seed, width, height);
 		this.seed = seed;
+		this.width = width;
+		this.height = height;
+		
 		agents = new ArrayList<Entity>();
 		buildings = new ArrayList<Entity>();
 		projectiles = new ArrayList<Projectile>();
 		
-		agentsTick = new GameTick(agents, 5);
-		buildingsTick = new GameTick(buildings, 100);
+		agentsTick = new GameTick(agents, AGENT_TICK_TIME);
+		buildingsTick = new GameTick(buildings, BUILDING_TICK_TIME);
 
 		agentsTick.start();
 		buildingsTick.start();
@@ -70,5 +76,19 @@ public class World{
 	
 	public ArrayList<Entity> getBuildings(){
 		return buildings;
+	}
+
+	public void reset() {
+		terrain = new Terrain(seed, width, height);
+		
+		agents = new ArrayList<Entity>();
+		buildings = new ArrayList<Entity>();
+		projectiles = new ArrayList<Projectile>();
+
+		agentsTick = new GameTick(agents, AGENT_TICK_TIME);
+		buildingsTick = new GameTick(buildings, BUILDING_TICK_TIME);
+
+		agentsTick.start();
+		buildingsTick.start();
 	}
 }

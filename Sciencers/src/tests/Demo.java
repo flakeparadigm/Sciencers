@@ -27,9 +27,9 @@ public class Demo extends JFrame {
 	private static Demo demoTools;
 
 	// Test Buttons
+	private JButton resetWorldButton = new JButton("Reset World");
 	private JButton testTerrainUpdateButton = new JButton("Test Terrain Update");
-	private JButton testHungerMovementButton = new JButton(
-			"Test Hunger Movement");
+	private JButton testHungerMovementButton = new JButton("Test Hunger Movement");
 
 	// magic numbers
 	private final int X_SCREEN_SIZE = ((int) tk.getScreenSize().getWidth());
@@ -69,11 +69,13 @@ public class Demo extends JFrame {
 	}
 
 	private void addComponents() {
+		this.add(resetWorldButton);
 		this.add(testTerrainUpdateButton);
 		this.add(testHungerMovementButton);
 	}
 
 	private void registerListeners() {
+		resetWorldButton.addActionListener(new demoButtonListener());
 		testTerrainUpdateButton.addActionListener(new demoButtonListener());
 		testHungerMovementButton.addActionListener(new demoButtonListener());
 	}
@@ -83,11 +85,19 @@ public class Demo extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent event) {
+
+			if (event.getSource() == resetWorldButton)
+				resetWorld();
 			if (event.getSource() == testTerrainUpdateButton)
 				testTerrainUpdate();
 			if (event.getSource() == testHungerMovementButton)
 				testHungerMovement();
 
+		}
+		
+		private void resetWorld() {
+			world.reset();
+			worldView.updateAll();
 		}
 
 		private void testHungerMovement() {
