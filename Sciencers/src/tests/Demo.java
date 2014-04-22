@@ -30,6 +30,7 @@ public class Demo extends JFrame {
 	private JButton resetWorldButton = new JButton("Reset World");
 	private JButton testTerrainUpdateButton = new JButton("Test Terrain Update");
 	private JButton testHungerMovementButton = new JButton("Test Hunger Movement");
+	private JButton testBuildingConstructionButton = new JButton("Test Building Construction");
 
 	// magic numbers
 	private final int X_SCREEN_SIZE = ((int) tk.getScreenSize().getWidth());
@@ -72,12 +73,14 @@ public class Demo extends JFrame {
 		this.add(resetWorldButton);
 		this.add(testTerrainUpdateButton);
 		this.add(testHungerMovementButton);
+		this.add(testBuildingConstructionButton);
 	}
 
 	private void registerListeners() {
 		resetWorldButton.addActionListener(new demoButtonListener());
 		testTerrainUpdateButton.addActionListener(new demoButtonListener());
 		testHungerMovementButton.addActionListener(new demoButtonListener());
+		testBuildingConstructionButton.addActionListener(new demoButtonListener());
 	}
 
 	// PUT ALL TEST CASES BELOW.
@@ -92,12 +95,20 @@ public class Demo extends JFrame {
 				testTerrainUpdate();
 			if (event.getSource() == testHungerMovementButton)
 				testHungerMovement();
-
+			if (event.getSource() == testBuildingConstructionButton)
+				testBuildingConstruction();
 		}
 		
 		private void resetWorld() {
 			world.reset();
 			worldView.updateAll();
+		}
+		
+		private void testBuildingConstruction(){
+			world.addAgent(9);
+			world.getTerrain().setTile(Tile.Dirt, 20, 14);
+			Agent builderAgent = (Agent) world.getAgents().get(0);
+			builderAgent.setBuild(true, new Point (29,17));
 		}
 
 		private void testHungerMovement() {

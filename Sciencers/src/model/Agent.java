@@ -46,7 +46,13 @@ public class Agent implements Entity {
 	private final int MAX_SEEK_REST_FATIGUE = 500;
 	private final int MAX_WORKING_HUNGER = 250; // 25.0%
 	private final int MAX_WORKING_FATIGUE = 200; // 20.0%
-
+	
+	/*
+	 * for testing:
+	 */
+	boolean buildBuilding = false;
+	Point buildingPosition;
+	
 	public Agent(Terrain terrain, ArrayList<Entity> buildings,
 			Point currentPosition) {
 		MY_ID = currentId++;
@@ -77,18 +83,7 @@ public class Agent implements Entity {
 			// TODO: maybe throw a random number generator in here someday
 
 			// if agent is in same place as building, get some food
-			for (int i = 0; i < buildings.size(); i++) {
-				if (((Building) buildings.get(i)).getInventory().getAmount(
-						Resource.FOOD) > 0
-						&& sameLocation(currentPosition, new Point2D.Double(
-								buildings.get(i).getPos().getX(), buildings
-										.get(i).getPos().getY()))) {
-					// if it gets in here, the agent is on a food building
-					((Building) buildings.get(i)).getInventory().changeAmount(
-							Resource.FOOD, -2);
-					inventory.changeAmount(Resource.FOOD, 2);
-				}
-			}
+			getResourceFromBuildingAtCurrentLocation(Resource.FOOD);
 
 			// if agent has food, eat some:
 			if (inventory.getAmount(Resource.FOOD) > 0) {
@@ -96,36 +91,68 @@ public class Agent implements Entity {
 				hunger += 10;
 			} else {
 				// if agent doesn't have food, look for building with food.
-				Stack<Point> shortestPath = null;
-				Building closestFoodBuilding = null;
-				boolean nullPath = true;
-				for (int i = 0; i < buildings.size(); i++) {
-					// find shortest path to building with food
-					if (((Building) buildings.get(i)).getInventory().getAmount(
-							Resource.FOOD) > 0) {
-						PathFinder thePath = new PathFinder(new Point(
-								(int) currentPosition.getX(),
-								(int) currentPosition.getY()),
-								(Point) buildings.get(i).getPos(), terrain,
-								Tile.Sky);
-						if (nullPath
-								|| thePath.getPath().size() > shortestPath
-										.size()) {
-							nullPath = false;
-							shortestPath = thePath.getPath();
-							closestFoodBuilding = (Building) buildings.get(i);
-						}
-					}
-				}
-
-				if (shortestPath != null) {
-					goHere(closestFoodBuilding.getPos());
-				}
-
+				setPathToBuildingWithType(Resource.FOOD);
 			}
 		}
+		
+		
+		// build building code *not fully set yet
+		// if (buildBuilding) {
+		// goHere(buildingPosition);
+		// buildBuilding = false;
+		// }
+		//
+		// if (sameLocation(currentPosition, new Point2D.Double(
+		// buildingPosition.x, buildingPosition.y))) {
+		// Building building = new Farm(buildingPosition);
+		// buildings.add(building);
+		// }
+		
 		moveIncremental();
 
+	}
+
+	private void setPathToBuildingWithType(Resource r) {
+		Stack<Point> shortestPath = null;
+		Building closestFoodBuilding = null;
+		boolean nullPath = true;
+		for (int i = 0; i < buildings.size(); i++) {
+			// find shortest path to building with food
+			if (((Building) buildings.get(i)).getInventory().getAmount(
+					r) > 0) {
+				PathFinder thePath = new PathFinder(new Point(
+						(int) currentPosition.getX(),
+						(int) currentPosition.getY()),
+						(Point) buildings.get(i).getPos(), terrain,
+						Tile.Sky);
+				if (nullPath
+						|| thePath.getPath().size() > shortestPath
+								.size()) {
+					nullPath = false;
+					shortestPath = thePath.getPath();
+					closestFoodBuilding = (Building) buildings.get(i);
+				}
+			}
+		}
+
+		if (shortestPath != null) {
+			goHere(closestFoodBuilding.getPos());
+		}
+	}
+
+	private void getResourceFromBuildingAtCurrentLocation(Resource r) {
+		for (int i = 0; i < buildings.size(); i++) {
+			if (((Building) buildings.get(i)).getInventory().getAmount(
+					r) > 0
+					&& sameLocation(currentPosition, new Point2D.Double(
+							buildings.get(i).getPos().getX(), buildings
+									.get(i).getPos().getY()))) {
+				// if it gets in here, the agent is on a food building
+				((Building) buildings.get(i)).getInventory().changeAmount(
+						r, -2);
+				inventory.changeAmount(r, 2);
+			}
+		}
 	}
 
 	private void moveIncremental() {
@@ -206,5 +233,10 @@ public class Agent implements Entity {
 	
 	public Stack<Point> getPath(){
 		return movements;
+	}
+	
+	public void setBuild(boolean buildBuilding, Point position) {
+		this.buildBuilding = buildBuilding;
+		this.buildingPosition = position;
 	}
 }
