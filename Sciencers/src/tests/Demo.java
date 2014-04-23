@@ -40,6 +40,7 @@ public class Demo extends JFrame {
 	private JButton testTreeHarvestButton = new JButton("Test Tree Harvesting");
 	private JButton testSurvivalButton = new JButton("Test Overall Survival");
 	private JButton testHungerDeathButton = new JButton("Test Hunger Death");
+	private JButton testGatherAndStoreButton = new JButton("Gather and Store Food");
 
 	// magic numbers
 	private final int X_SCREEN_SIZE = ((int) tk.getScreenSize().getWidth());
@@ -86,6 +87,7 @@ public class Demo extends JFrame {
 		this.add(testTreeHarvestButton);
 		this.add(testSurvivalButton);
 		this.add(testHungerDeathButton);
+		this.add(testGatherAndStoreButton);
 	}
 
 	private void registerListeners() {
@@ -97,6 +99,7 @@ public class Demo extends JFrame {
 		testTreeHarvestButton.addActionListener(new demoButtonListener());
 		testSurvivalButton.addActionListener(new demoButtonListener());
 		testHungerDeathButton.addActionListener(new demoButtonListener());
+		testGatherAndStoreButton.addActionListener(new demoButtonListener());
 	}
 
 	// PUT ALL TEST CASES BELOW.
@@ -119,6 +122,8 @@ public class Demo extends JFrame {
 				testSurvival();
 			if (event.getSource() == testHungerDeathButton)
 				testHungerDeath();
+			if (event.getSource() == testGatherAndStoreButton)
+				testGatherAndStore();
 		}
 
 		private void resetWorld() {
@@ -143,10 +148,20 @@ public class Demo extends JFrame {
 			hungryAgent.setHunger(5);
 		}
 		
+		private void testGatherAndStore(){
+			World.addAgent(9);
+			World.terrain.setTile(Tile.Dirt, 20, 24);
+			TaskList.addTask(new BuildBuildingTask(EBuilding.FARM, new Point(
+					25, 26)));
+			Agent gatherAgent = (Agent) World.agents.get(0);
+			gatherAgent.setToGather();
+		}
+		
 		private void testSurvival(){
 			World.addAgent(9);
 			Agent hungryAgent = (Agent) World.agents.get(0);
 			hungryAgent.setHunger(200);
+			
 		}
 
 		private void testTreeHarvest() {

@@ -63,6 +63,7 @@ public class Agent implements Entity {
 	 */
 	boolean buildBuilding = false;
 	Point buildingPosition;
+	boolean gather = false;
 
 	public Agent(Point currentPosition) {
 		MY_ID = currentId++;
@@ -100,8 +101,24 @@ public class Agent implements Entity {
 					(int) currentPosition.x, (int) currentPosition.y)));
 			currentTask.execute();
 		}
+		
 
+
+		
+		
 		if (movements.isEmpty()) {
+			
+			if (gather){
+				//gather if set to gather
+				if (inventory.getAmount(Resource.FOOD) > 18){
+					Building foodBuilding = getBuildingWithType(Resource.FOOD);
+					TaskList.addTask(new AccessBuildingInventory(this, foodBuilding, Resource.FOOD, 10));
+				} else {
+					TaskList.addTask(new HarvestTreeTask(this,
+							findNearestTree(), World.terrain));
+				}
+			}
+			
 			if (hunger < MAX_SEEK_FOOD_HUNGER
 					&& sameLocation(currentPosition, targetPosition)) {
 				// TODO: maybe throw a random number generator in here someday
@@ -390,22 +407,6 @@ public class Agent implements Entity {
 		return inventory;
 	}
 
-	/*
-	 * For testing: ability to set some stats
-	 */
-	public void setHunger(int hunger) {
-		this.hunger = hunger;
-	}
-
-	public Stack<Point> getPath() {
-		return movements;
-	}
-
-	public void setBuild(boolean buildBuilding, Point position) {
-		this.buildBuilding = buildBuilding;
-		this.buildingPosition = position;
-	}
-
 	public void craftTool(Tool t) {
 		if (inventory.getAmount(Resource.WOOD) >= 3) {
 			if (mainTool == null) {
@@ -433,5 +434,25 @@ public class Agent implements Entity {
 			return true;
 		else
 			return false;
+	}
+	
+	/*
+	 * For testing: ability to set some stats
+	 */
+	public void setToGather(){
+		gather = true;
+	}
+	
+	public void setHunger(int hunger) {
+		this.hunger = hunger;
+	}
+
+	public Stack<Point> getPath() {
+		return movements;
+	}
+
+	public void setBuild(boolean buildBuilding, Point position) {
+		this.buildBuilding = buildBuilding;
+		this.buildingPosition = position;
 	}
 }
