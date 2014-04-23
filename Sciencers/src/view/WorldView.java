@@ -13,6 +13,7 @@ import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
 import model.World;
+import controller.InfoObserver;
 import controller.SciencersObserver;
 
 /* I thought it might be nice to have a working view for testing 
@@ -21,12 +22,19 @@ import controller.SciencersObserver;
 
 public class WorldView extends JFrame {
 	public static JFrame gameWindow;
+	public static World world;
+	
+	// panels
 	public static TerrainView terrainPanel;
 	public static AgentsView agentPanel;
 	public static BuildingsView buildingPanel;
-	public static World world;
+	public static InfoPanes infoPanes;
+	
+	// observers
 	public static SciencersObserver terrainWatch;
+	public static InfoObserver infoWatch;
 
+	// Magic Numbers
 	static Toolkit tk = Toolkit.getDefaultToolkit();
 	private final int X_SCREEN_SIZE = ((int) tk.getScreenSize().getWidth());
 	private final int Y_SCREEN_SIZE = ((int) tk.getScreenSize().getHeight());
@@ -35,8 +43,8 @@ public class WorldView extends JFrame {
 	
 	private final static int X_MAP_SIZE = 500;
 	private final static int Y_MAP_SIZE = 100;
-	
-	public static final int TILE_SIZE = 16;
+	public final static int TILE_SIZE = 16;
+	public final static int INFO_PANE_SIZE = 200;
 
 	private static int moveSpeed = 15;
 	private static int panTimerMS = 1;
@@ -49,12 +57,17 @@ public class WorldView extends JFrame {
 	}
 
 	public WorldView() {
-		terrainWatch = new SciencersObserver(this);
 		gameWindow = this;
+		setupObservers();
 		setupProperties();
 		setupModel();
 		addComponents();
 		registerListeners();
+	}
+	
+	private void setupObservers() {
+		terrainWatch = new SciencersObserver(this);
+		infoWatch = new InfoObserver(this);
 	}
 
 	private void setupProperties() {
@@ -72,6 +85,11 @@ public class WorldView extends JFrame {
 	}
 
 	private void addComponents() {
+		infoPanes = new InfoPanes(world);
+		add(infoPanes);
+		infoPanes.setSize(X_WINDOW_SIZE, INFO_PANE_SIZE);
+		infoPanes.setLocation(0,Y_WINDOW_SIZE-INFO_PANE_SIZE);
+		
 		agentPanel = new AgentsView(world);
 		add(agentPanel);
 		agentPanel.setLocation(0,0);
@@ -283,7 +301,8 @@ public class WorldView extends JFrame {
 		// here we should update all relevant panels with world info
 		updateTerrain();
 		updateAgents();
-		updateBuildings();
+		updateBuildings();;
+		updateInfo();
 	}
 	public void updateTerrain() {
 		terrainPanel.update();
@@ -293,6 +312,9 @@ public class WorldView extends JFrame {
 	}
 	public void updateBuildings() {
 		buildingPanel.update();
+	}
+	public void updateInfo() {
+		infoPanes.update();
 	}
 	
 	// getWorld method. Should only be used in the Demo tool right now.

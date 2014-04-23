@@ -2,15 +2,16 @@ package model.agentCommand;
 
 import java.awt.Point;
 
-import model.World;
-import model.building.Building;
-import model.building.Farm;
+import model.building.EBuilding;
 
 public class BuildBuildingTask implements Task {
-
 	
-	public BuildBuildingTask(Building b) {
-		
+	EBuilding building;
+	Point location;
+	
+	public BuildBuildingTask(EBuilding b, Point p) {
+		building = b;
+		location = p;
 	}
 	
 	@Override
@@ -23,6 +24,14 @@ public class BuildBuildingTask implements Task {
 		return null;
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public String toString() {
+		String taskString = "Build Building\n";
+		taskString += "Type: " + building;
+		taskString += "Location: " + location;
+				
+		return taskString;
 	}
 	
 }
