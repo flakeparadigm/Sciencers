@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import model.agentCommand.AgentDeath;
+import model.agentCommand.BuildBuildingTask;
 import model.agentCommand.HarvestTreeTask;
 import model.agentCommand.Task;
 import model.agentCommand.TaskList;
@@ -131,6 +132,24 @@ public class Agent implements Entity {
 										currentTask.getPos().y),
 								currentPosition)) {
 					System.out.println("GoHere");
+					if(currentTask instanceof BuildBuildingTask) {
+						if(!hasTool(Tool.HAMMER))
+							craftTool(Tool.HAMMER);
+						
+						if(!hasTool(Tool.HAMMER)) {
+							System.out.println("Couldn't make/get hammer. Can't build building");
+							currentTask = null;
+						}
+						
+						if(currentTask != null) {
+							if(mainTool == Tool.HAMMER) {
+								workingTool = mainTool;
+							} else {
+								workingTool = secondaryTool;
+							}
+						}
+					}
+						
 					goHere(currentTask.getPos());
 				}
 			}
@@ -143,6 +162,8 @@ public class Agent implements Entity {
 								.getPos().y))) {
 			System.out.println("execute");
 			currentTask.execute();
+			
+			workingTool = null;
 			currentTask = null;
 		}
 
