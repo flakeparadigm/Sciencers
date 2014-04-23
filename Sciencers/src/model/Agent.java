@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import model.agentCommand.AgentDeath;
+import model.agentCommand.HarvestTreeTask;
 import model.agentCommand.Task;
 import model.agentCommand.TaskList;
 import model.building.Building;
@@ -85,8 +86,14 @@ public class Agent implements Entity {
 			}
 		}
 		tickCount++;
-		System.out.println(hunger);
-		//die if hunger < 0
+		// System.out.println(hunger);
+
+		// die if hunger < 0
+		if (hunger < 0) {
+			currentTask = (new AgentDeath(this, new Point(
+					(int) currentPosition.x, (int) currentPosition.y)));
+			currentTask.execute();
+		}
 
 		if (movements.isEmpty()) {
 			if (hunger < MAX_SEEK_FOOD_HUNGER
@@ -104,9 +111,22 @@ public class Agent implements Entity {
 					// if agent doesn't have food, look for building with food.
 					setPathToBuildingWithType(Resource.FOOD);
 				}
-			} else if (!TaskList.getList().isEmpty() && currentTask == null) {
+				
+				// if no food buildings around, gather food
+				if (movements.isEmpty() && TaskList.getList().isEmpty()) {
+					TaskList.addTask(new HarvestTreeTask(this,
+							findNearestTree(), World.terrain));
+				}
+
+			}
+			if (!TaskList.getList().isEmpty() && currentTask == null) {
 				currentTask = TaskList.getList().poll();
-				if (currentTask != null) {
+				if (currentTask != null
+						&& !sameLocation(
+								new Point2D.Double(currentTask.getPos().x,
+										currentTask.getPos().y),
+								currentPosition)) {
+					System.out.println("GoHere");
 					goHere(currentTask.getPos());
 				}
 			}
@@ -117,6 +137,7 @@ public class Agent implements Entity {
 						currentPosition,
 						new Point2D.Double(currentTask.getPos().x, currentTask
 								.getPos().y))) {
+			System.out.println("execute");
 			currentTask.execute();
 			currentTask = null;
 		}
@@ -135,11 +156,6 @@ public class Agent implements Entity {
 
 		moveIncremental();
 
-		if (hunger < 0){
-			currentTask = (new AgentDeath(this, new Point((int)currentPosition.x, (int)currentPosition.y)));
-//			System.out.println("Dead");
-			currentTask.execute();
-		}
 	}
 
 	private void setPathToBuildingWithType(Resource r) {
@@ -239,6 +255,95 @@ public class Agent implements Entity {
 			return false;
 		}
 		return true;
+	}
+
+	public Point findNearestTree() {
+		if (currentPosition.equals(Tile.Wood)
+				|| currentPosition.equals(Tile.Leaves)) {
+			return new Point((int) currentPosition.x, (int) currentPosition.y);
+		}
+		for (int i = 0; i < 20; i++) {
+			if (i + (int) currentPosition.x > 0
+					&& i + (int) currentPosition.x < World.terrain
+							.getMapWidth()
+					&& (World.terrain.getTile(
+							i + (int) currentPosition.x,
+							World.terrain.getAltitude(i
+									+ (int) currentPosition.x) - 1).equals(
+							Tile.Wood) || World.terrain.getTile(
+							i + (int) currentPosition.x,
+							World.terrain.getAltitude(i
+									+ (int) currentPosition.x) - 1).equals(
+							Tile.Leaves))
+					&& !World.terrain.getTile(
+							i + (int) currentPosition.x,
+							World.terrain.getAltitude(i
+									+ (int) currentPosition.x)).equals(
+							Tile.Wood)
+					&& !World.terrain.getTile(
+							i + (int) currentPosition.x,
+							World.terrain.getAltitude(i
+									+ (int) currentPosition.x)).equals(
+							Tile.Leaves)) {
+				
+				System.out.println("Found tree");
+				return new Point(i + (int) currentPosition.x,
+						World.terrain.getAltitude(i + (int) currentPosition.x) - 1);
+				
+			}
+			if (-i + (int) currentPosition.x > 0
+					&& -i + (int) currentPosition.x < World.terrain
+							.getMapWidth()
+					&& (World.terrain.getTile(
+							-i + (int) currentPosition.x,
+							World.terrain.getAltitude(-i
+									+ (int) currentPosition.x) - 1).equals(
+							Tile.Wood) || World.terrain.getTile(
+							-i + (int) currentPosition.x,
+							World.terrain.getAltitude(-i
+									+ (int) currentPosition.x) - 1).equals(
+							Tile.Leaves))
+					&& !World.terrain.getTile(
+							-i + (int) currentPosition.x,
+							World.terrain.getAltitude(-i
+									+ (int) currentPosition.x)).equals(
+							Tile.Wood)
+					&& !World.terrain.getTile(
+							-i + (int) currentPosition.x,
+							World.terrain.getAltitude(-i
+									+ (int) currentPosition.x)).equals(
+							Tile.Leaves)) {
+				System.out.println("Found tree");
+				return new Point(-i + (int) currentPosition.x,
+						World.terrain.getAltitude(-i + (int) currentPosition.x) - 1);
+			}
+		}
+		// more complicated version in case we have trees underground. Not
+		// finished
+		// for (int i = 0; i < 20; i++) {
+		// for (int j = 0; j < 20; j++) {
+		// if (i + (int) currentPosition.x > 0
+		// && j + (int) currentPosition.y > 0
+		// && i + (int) currentPosition.x < World.terrain
+		// .getMapWidth()
+		// && j + (int) currentPosition.y < World.terrain
+		// .getMapWidth()
+		// && (World.terrain.getTile(i + (int) currentPosition.x,
+		// j + (int) currentPosition.y).equals(Tile.Wood) || World.terrain
+		// .getTile(i + (int) currentPosition.x,
+		// j + (int) currentPosition.y).equals(
+		// Tile.Leaves))
+		// && !World.terrain.getTile(i + (int) currentPosition.x,
+		// j + (int) currentPosition.y + 1).equals(
+		// Tile.Wood)
+		// && !World.terrain.getTile(i + (int) currentPosition.x,
+		// j + (int) currentPosition.y + 1).equals(
+		// Tile.Leaves)) {
+		// // return new Point();
+		// }
+		// }
+		// }
+		return null;
 	}
 
 	public Point2D getPos() {

@@ -18,6 +18,7 @@ public class HarvestTreeTask implements Task {
 		this.location = location;
 		this.terrain = terrain;
 		this.sourceAgent = sourceAgent;
+		System.out.println("Task Created");
 	}
 
 	@Override
