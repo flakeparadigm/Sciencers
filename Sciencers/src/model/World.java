@@ -82,6 +82,9 @@ public class World{
 	}
 
 	public static void reset() {
+		agentsTick.terminate();
+		buildingsTick.terminate();
+		
 		terrain = new Terrain(seed, width, height);
 		
 		agents = new ArrayList<Entity>();

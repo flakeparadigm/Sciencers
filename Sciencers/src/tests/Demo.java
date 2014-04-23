@@ -156,9 +156,6 @@ public class Demo extends JFrame {
 		}
 
 		private void testTerrainUpdate() {
-			JOptionPane
-					.showMessageDialog(WorldView,
-							"This demo should replace 50 blocks along the top of the map with Stone (X)");
 			Runnable r = new Runnable() {
 				public void run() {
 					try {
