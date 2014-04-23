@@ -3,7 +3,11 @@ package model;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import model.building.*;
+import model.agentCommand.TaskList;
+import model.building.Building;
+import model.building.EBuilding;
+import model.building.Farm;
+import model.building.Warehouse;
 import controller.GameTick;
 
 /*
@@ -90,6 +94,7 @@ public class World{
 		agents = new ArrayList<Entity>();
 		buildings = new ArrayList<Entity>();
 		projectiles = new ArrayList<Projectile>();
+		TaskList.emptyList();
 
 		agentsTick = new GameTick(agents, AGENT_TICK_TIME);
 		buildingsTick = new GameTick(buildings, BUILDING_TICK_TIME);

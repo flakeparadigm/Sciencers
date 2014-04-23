@@ -24,4 +24,8 @@ public class TaskList {
 	public static Queue<Task> getList() {
 		return tasks;
 	}
+	
+	public static void emptyList() {
+		tasks = new ArrayDeque<Task>();
+	}
 }
