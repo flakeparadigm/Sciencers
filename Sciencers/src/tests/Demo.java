@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import model.Agent;
 import model.World;
 import model.agentCommand.BuildBuildingTask;
+import model.agentCommand.HarvestTreeTask;
 import model.agentCommand.Task;
 import model.agentCommand.TaskList;
 import model.building.EBuilding;
@@ -34,6 +35,7 @@ public class Demo extends JFrame {
 	private JButton testTerrainUpdateButton = new JButton("Test Terrain Update");
 	private JButton testHungerMovementButton = new JButton("Test Hunger Movement");
 	private JButton testBuildingConstructionButton = new JButton("Test Building Construction");
+	private JButton testTreeHarvestButton = new JButton("Test Tree Harvesting");
 
 	// magic numbers
 	private final int X_SCREEN_SIZE = ((int) tk.getScreenSize().getWidth());
@@ -77,6 +79,7 @@ public class Demo extends JFrame {
 		this.add(testTerrainUpdateButton);
 		this.add(testHungerMovementButton);
 		this.add(testBuildingConstructionButton);
+		this.add(testTreeHarvestButton);
 	}
 
 	private void registerListeners() {
@@ -84,6 +87,7 @@ public class Demo extends JFrame {
 		testTerrainUpdateButton.addActionListener(new demoButtonListener());
 		testHungerMovementButton.addActionListener(new demoButtonListener());
 		testBuildingConstructionButton.addActionListener(new demoButtonListener());
+		testTreeHarvestButton.addActionListener(new demoButtonListener());
 	}
 
 	// PUT ALL TEST CASES BELOW.
@@ -100,11 +104,19 @@ public class Demo extends JFrame {
 				testHungerMovement();
 			if (event.getSource() == testBuildingConstructionButton)
 				testBuildingConstruction();
+			if (event.getSource() == testTreeHarvestButton)
+				testTreeHarvest();
 		}
 		
 		private void resetWorld() {
 			World.reset();
 			WorldView.updateAll();
+		}
+		
+		private void testTreeHarvest(){
+			World.addAgent(9);
+			World.terrain.setTile(Tile.Dirt, 20, 24);
+			TaskList.addTask(new HarvestTreeTask(new Point(18, World.terrain.getAltitude(18) - 1),World.terrain));
 		}
 		
 		private void testBuildingConstruction(){
