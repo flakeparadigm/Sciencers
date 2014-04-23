@@ -43,7 +43,7 @@ public class Agent implements Entity {
 	private Task currentTask;
 	
 	public Tool workingTool = null;
-	private Tool mainTool, secondaryTool;
+	private Tool mainTool = null, secondaryTool = null;
 
 	// player traits
 	private int intelligence, motivation, speed, strength;
@@ -380,13 +380,29 @@ public class Agent implements Entity {
 
 	public void craftTool(Tool t) {
 		if(inventory.getAmount(Resource.WOOD) >= 3) {
-			
+			if(mainTool == null) {
+				inventory.changeAmount(Resource.WOOD, -3);
+				mainTool = t;
+			} else if(secondaryTool == null) {
+				inventory.changeAmount(Resource.WOOD, -3);
+				secondaryTool = t;
+			} else {
+				System.out.println("Inventory full. Tool not crafted.");
+			}
 		} else {
-			(new HarvestTreeTask(this, new Point(22, World.terrain.getAltitude(22) - 1), World.terrain)).execute();
-			(new HarvestTreeTask(this, new Point(22, World.terrain.getAltitude(22) - 1), World.terrain)).execute();
-			(new HarvestTreeTask(this, new Point(22, World.terrain.getAltitude(22) - 1), World.terrain)).execute();
-			(new HarvestTreeTask(this, new Point(22, World.terrain.getAltitude(22) - 1), World.terrain)).execute();
-			(new HarvestTreeTask(this, new Point(22, World.terrain.getAltitude(22) - 1), World.terrain)).execute();
+			(new HarvestTreeTask(this, findNearestTree(), World.terrain)).execute();
+			craftTool(t);
 		}
+	}
+	
+	private boolean hasTool(Tool t) {
+		if(workingTool == t)
+			return true;
+		else if(mainTool == t)
+			return true;
+		else if(secondaryTool == t)
+			return true;
+		else
+			return false;
 	}
 }
