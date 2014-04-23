@@ -3,6 +3,7 @@ package model;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.Stack;
 
 import model.building.Building;
@@ -33,6 +34,7 @@ public class Agent implements Entity {
 //	private static ArrayList<Entity> buildings;
 	private Inventory inventory;
 	private int tickCount = 0;
+	private ArrayList<Tile> passableTiles;
 
 	// player traits
 	private int intelligence, motivation, speed, strength;
@@ -59,6 +61,10 @@ public class Agent implements Entity {
 				(double) currentPosition.y);
 		targetPosition = this.currentPosition;
 		inventory = new Inventory(CAPACITY);
+		
+		passableTiles = new ArrayList<Tile>();
+		passableTiles.add(Tile.Sky);
+		passableTiles.add(Tile.Wood);
 	}
 
 	public void update() {
@@ -119,7 +125,7 @@ public class Agent implements Entity {
 						(int) currentPosition.getX(),
 						(int) currentPosition.getY()),
 						(Point) World.buildings.get(i).getPos(), World.terrain,
-						Tile.Sky);
+						passableTiles);
 				if (nullPath
 						|| thePath.getPath().size() > shortestPath
 								.size()) {
@@ -202,7 +208,7 @@ public class Agent implements Entity {
 	public boolean goHere(Point destination) {
 		PathFinder thePath = new PathFinder(new Point(
 				(int) currentPosition.getX(), (int) currentPosition.getY()),
-				destination, World.terrain, Tile.Sky);
+				destination, World.terrain, passableTiles);
 		movements = thePath.getPath();
 
 		if (movements.isEmpty()) {

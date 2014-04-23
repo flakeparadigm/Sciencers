@@ -286,7 +286,7 @@ public class Terrain {
 
 	public int getAltitude(int xPos) {
 		for (int j = 0; j < mapHeight; j++) {
-			if (!terrain[xPos][j].equals(Tile.Sky)) {
+			if (!terrain[xPos][j].equals(Tile.Sky) && !terrain[xPos][j].equals(Tile.Wood)) {
 				return j;
 			}
 		}
