@@ -38,6 +38,8 @@ public class Demo extends JFrame {
 	private JButton testBuildingConstructionButton = new JButton(
 			"Test Building Construction");
 	private JButton testTreeHarvestButton = new JButton("Test Tree Harvesting");
+	private JButton testSurvivalButton = new JButton("Test Overall Survival");
+	private JButton testHungerDeathButton = new JButton("Test Hunger Death");
 
 	// magic numbers
 	private final int X_SCREEN_SIZE = ((int) tk.getScreenSize().getWidth());
@@ -82,6 +84,8 @@ public class Demo extends JFrame {
 		this.add(testHungerMovementButton);
 		this.add(testBuildingConstructionButton);
 		this.add(testTreeHarvestButton);
+		this.add(testSurvivalButton);
+		this.add(testHungerDeathButton);
 	}
 
 	private void registerListeners() {
@@ -91,6 +95,8 @@ public class Demo extends JFrame {
 		testBuildingConstructionButton
 				.addActionListener(new demoButtonListener());
 		testTreeHarvestButton.addActionListener(new demoButtonListener());
+		testSurvivalButton.addActionListener(new demoButtonListener());
+		testHungerDeathButton.addActionListener(new demoButtonListener());
 	}
 
 	// PUT ALL TEST CASES BELOW.
@@ -109,11 +115,27 @@ public class Demo extends JFrame {
 				testBuildingConstruction();
 			if (event.getSource() == testTreeHarvestButton)
 				testTreeHarvest();
+			if (event.getSource() == testSurvivalButton)
+				testSurvival();
+			if (event.getSource() == testHungerDeathButton)
+				testHungerDeath();
 		}
 
 		private void resetWorld() {
 			World.reset();
 			WorldView.updateAll();
+		}
+		
+		private void testHungerDeath(){
+			World.addAgent(9);
+			Agent hungryAgent = (Agent) World.agents.get(0);
+			hungryAgent.setHunger(5);
+		}
+		
+		private void testSurvival(){
+			World.addAgent(9);
+			Agent hungryAgent = (Agent) World.agents.get(0);
+			hungryAgent.setHunger(200);
 		}
 
 		private void testTreeHarvest() {

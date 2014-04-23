@@ -6,6 +6,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import model.agentCommand.AgentDeath;
 import model.agentCommand.Task;
 import model.agentCommand.TaskList;
 import model.building.Building;
@@ -84,6 +85,8 @@ public class Agent implements Entity {
 			}
 		}
 		tickCount++;
+		System.out.println(hunger);
+		//die if hunger < 0
 
 		if (movements.isEmpty()) {
 			if (hunger < MAX_SEEK_FOOD_HUNGER
@@ -132,6 +135,11 @@ public class Agent implements Entity {
 
 		moveIncremental();
 
+		if (hunger < 0){
+			currentTask = (new AgentDeath(this, new Point((int)currentPosition.x, (int)currentPosition.y)));
+//			System.out.println("Dead");
+			currentTask.execute();
+		}
 	}
 
 	private void setPathToBuildingWithType(Resource r) {
