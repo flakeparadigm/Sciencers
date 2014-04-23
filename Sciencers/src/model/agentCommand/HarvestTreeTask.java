@@ -13,6 +13,9 @@ public class HarvestTreeTask implements Task {
 	private Point location;
 	private Terrain terrain;
 	private Agent sourceAgent;
+	
+	private final int WOOD_VALUE = 1;
+	private final int FOOD_VALUE = 3;
 
 	public HarvestTreeTask(Agent sourceAgent, Point location, Terrain terrain) {
 		this.location = location;
@@ -25,7 +28,7 @@ public class HarvestTreeTask implements Task {
 		// TODO Auto-generated method stub
 		for (int i = 0; i < 20; i++) {
 			if (terrain.getTile(location.x, location.y - i).equals(Tile.Wood)) {
-				sourceAgent.getInventory().changeAmount(Resource.WOOD, 1);
+				sourceAgent.getInventory().changeAmount(Resource.WOOD, WOOD_VALUE);
 				terrain.setTile(
 						terrain.getTile(location.x, location.y - 1 - i),
 						location.x, location.y - i);
@@ -47,7 +50,7 @@ public class HarvestTreeTask implements Task {
 					terrain.setTile(
 							terrain.getTile(location.x - 1, location.y - 1 - i),
 							location.x - 1, location.y - i);
-					sourceAgent.getInventory().changeAmount(Resource.FOOD, 3);
+					sourceAgent.getInventory().changeAmount(Resource.FOOD, FOOD_VALUE);
 				}
 			}
 		}

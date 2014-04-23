@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import model.agentCommand.AgentDeath;
+import model.agentCommand.HarvestTreeTask;
 import model.agentCommand.Task;
 import model.agentCommand.TaskList;
 import model.building.Building;
 import model.inventory.Inventory;
 import model.inventory.Resource;
+import model.inventory.Tool;
 import view.Tile;
 
 public class Agent implements Entity {
@@ -39,6 +41,9 @@ public class Agent implements Entity {
 	private int tickCount = 0;
 	private ArrayList<Tile> passableTiles;
 	private Task currentTask;
+	
+	public Tool workingTool = null;
+	private Tool mainTool, secondaryTool;
 
 	// player traits
 	private int intelligence, motivation, speed, strength;
@@ -267,5 +272,17 @@ public class Agent implements Entity {
 	public void setBuild(boolean buildBuilding, Point position) {
 		this.buildBuilding = buildBuilding;
 		this.buildingPosition = position;
+	}
+
+	public void craftTool(Tool t) {
+		if(inventory.getAmount(Resource.WOOD) >= 3) {
+			
+		} else {
+			(new HarvestTreeTask(this, new Point(22, World.terrain.getAltitude(22) - 1), World.terrain)).execute();
+			(new HarvestTreeTask(this, new Point(22, World.terrain.getAltitude(22) - 1), World.terrain)).execute();
+			(new HarvestTreeTask(this, new Point(22, World.terrain.getAltitude(22) - 1), World.terrain)).execute();
+			(new HarvestTreeTask(this, new Point(22, World.terrain.getAltitude(22) - 1), World.terrain)).execute();
+			(new HarvestTreeTask(this, new Point(22, World.terrain.getAltitude(22) - 1), World.terrain)).execute();
+		}
 	}
 }

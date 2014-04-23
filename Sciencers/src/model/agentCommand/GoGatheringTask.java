@@ -27,6 +27,7 @@ public class GoGatheringTask implements Task {
 		 * agent clears out all of a given resource from that rectangle
 		 * 
 		 * dilemma, what part of this should go in the task, and what part should be in agent?
+		 * Other Thing: When digging, they need to collect ALL resources.
 		 */
 	}
 
