@@ -127,7 +127,18 @@ public class Demo extends JFrame {
 		}
 		
 		private void testHungerDeath(){
-			World.addAgent(9);
+			World.terrain.setTile(Tile.Dirt, 38, 31);
+			World.terrain.setTile(Tile.Dirt, 38, 30);
+			World.terrain.setTile(Tile.Dirt, 38, 29);
+			World.terrain.setTile(Tile.Dirt, 38, 28);
+			World.terrain.setTile(Tile.Dirt, 38, 27);
+			World.terrain.setTile(Tile.Dirt, 37, 27);
+			World.terrain.setTile(Tile.Dirt, 35, 27);
+			World.terrain.setTile(Tile.Dirt, 34, 27);
+			World.terrain.setTile(Tile.Dirt, 33, 27);
+			
+			World.addAgent(36);
+
 			Agent hungryAgent = (Agent) World.agents.get(0);
 			hungryAgent.setHunger(5);
 		}
