@@ -33,4 +33,8 @@ public class GetResourcesTask implements Task {
 		
 	}
 	
+	public String toString() {
+		return " ";
+	}
+	
 }

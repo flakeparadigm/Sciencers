@@ -35,5 +35,9 @@ public class GoGatheringTask implements Task {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public String toString() {
+		return " ";
+	}
 
 }
