@@ -1,5 +1,6 @@
 package model.agentCommand;
 
+import java.util.ArrayDeque;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -10,7 +11,7 @@ import java.util.Queue;
 
 public class TaskList {
 	
-	private static Queue<Task> tasks = new PriorityQueue<Task>();
+	private static Queue<Task> tasks = new ArrayDeque<Task>();
 	
 	public static void addTask(Task t) {
 		tasks.add(t);

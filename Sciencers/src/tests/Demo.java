@@ -23,7 +23,7 @@ import view.WorldView;
 public class Demo extends JFrame {
 
 	// important things
-//	private static World World;
+	// private static World World;
 	static Toolkit tk = Toolkit.getDefaultToolkit();
 
 	// Graphical elements
@@ -33,8 +33,10 @@ public class Demo extends JFrame {
 	// Test Buttons
 	private JButton resetWorldButton = new JButton("Reset World");
 	private JButton testTerrainUpdateButton = new JButton("Test Terrain Update");
-	private JButton testHungerMovementButton = new JButton("Test Hunger Movement");
-	private JButton testBuildingConstructionButton = new JButton("Test Building Construction");
+	private JButton testHungerMovementButton = new JButton(
+			"Test Hunger Movement");
+	private JButton testBuildingConstructionButton = new JButton(
+			"Test Building Construction");
 	private JButton testTreeHarvestButton = new JButton("Test Tree Harvesting");
 
 	// magic numbers
@@ -70,7 +72,7 @@ public class Demo extends JFrame {
 	}
 
 	private void setupModel() {
-//		World = WorldView.getWorld();
+		// World = WorldView.getWorld();
 		// for example: add agent and farm
 	}
 
@@ -86,7 +88,8 @@ public class Demo extends JFrame {
 		resetWorldButton.addActionListener(new demoButtonListener());
 		testTerrainUpdateButton.addActionListener(new demoButtonListener());
 		testHungerMovementButton.addActionListener(new demoButtonListener());
-		testBuildingConstructionButton.addActionListener(new demoButtonListener());
+		testBuildingConstructionButton
+				.addActionListener(new demoButtonListener());
 		testTreeHarvestButton.addActionListener(new demoButtonListener());
 	}
 
@@ -107,22 +110,28 @@ public class Demo extends JFrame {
 			if (event.getSource() == testTreeHarvestButton)
 				testTreeHarvest();
 		}
-		
+
 		private void resetWorld() {
 			World.reset();
 			WorldView.updateAll();
 		}
-		
-		private void testTreeHarvest(){
+
+		private void testTreeHarvest() {
 			World.addAgent(9);
 			World.terrain.setTile(Tile.Dirt, 20, 24);
-			TaskList.addTask(new HarvestTreeTask(new Point(18, World.terrain.getAltitude(18) - 1),World.terrain));
+			TaskList.addTask(new HarvestTreeTask((Agent) World.agents.get(0),
+					new Point(18, World.terrain.getAltitude(18) - 1),
+					World.terrain));
+			TaskList.addTask(new HarvestTreeTask((Agent) World.agents.get(0),
+					new Point(18, World.terrain.getAltitude(18) - 1),
+					World.terrain));
 		}
-		
-		private void testBuildingConstruction(){
+
+		private void testBuildingConstruction() {
 			World.addAgent(9);
 			World.terrain.setTile(Tile.Dirt, 20, 24);
-			TaskList.addTask(new BuildBuildingTask(EBuilding.FARM, new Point(25, 26)));
+			TaskList.addTask(new BuildBuildingTask(EBuilding.FARM, new Point(
+					25, 26)));
 		}
 
 		private void testHungerMovement() {

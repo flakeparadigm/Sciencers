@@ -101,17 +101,23 @@ public class Agent implements Entity {
 					// if agent doesn't have food, look for building with food.
 					setPathToBuildingWithType(Resource.FOOD);
 				}
-			} else if (!TaskList.getList().isEmpty()) {
+			} else if (!TaskList.getList().isEmpty() && currentTask == null) {
 				currentTask = TaskList.getList().poll();
-				goHere(currentTask.getPos());
+				if (currentTask != null) {
+					goHere(currentTask.getPos());
+				}
 			}
 		}
 
-		if (currentTask != null && sameLocation(currentPosition, new Point2D.Double(currentTask.getPos().x, currentTask.getPos().y))){
+		if (currentTask != null
+				&& sameLocation(
+						currentPosition,
+						new Point2D.Double(currentTask.getPos().x, currentTask
+								.getPos().y))) {
 			currentTask.execute();
 			currentTask = null;
 		}
-		
+
 		// build building code *not fully set yet
 		// if (buildBuilding) {
 		// goHere(buildingPosition);
@@ -233,6 +239,10 @@ public class Agent implements Entity {
 
 	public Dimension getSize() {
 		return new Dimension(AGENT_WIDTH, AGENT_HEIGHT);
+	}
+
+	public Inventory getInventory() {
+		return inventory;
 	}
 
 	/*
