@@ -188,20 +188,16 @@ public class PathFinder {
 
 		if (!isPassable)
 			return false;
-
 		try {
-			if (terrain.getTile(pt.x, pt.y + 1) != passable
-					.get(passableTileType))
+			if (!passable.contains(terrain.getTile(pt.x, pt.y + 1)))
 				return true;
 		} catch (ArrayIndexOutOfBoundsException e) {
 			return true;
 		}
 
 		try {
-			if ((terrain.getTile(pt.x - 1, pt.y + 1) != passable
-					.get(passableTileType))
-					|| (terrain.getTile(pt.x + 1, pt.y + 1) != passable
-							.get(passableTileType)))
+			if ((!passable.contains(terrain.getTile(pt.x - 1, pt.y + 1)))
+					|| !passable.contains(terrain.getTile(pt.x + 1, pt.y + 1)))
 				return true;
 		} catch (ArrayIndexOutOfBoundsException e) {
 			return false;

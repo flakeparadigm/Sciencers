@@ -65,6 +65,7 @@ public class Agent implements Entity {
 		passableTiles = new ArrayList<Tile>();
 		passableTiles.add(Tile.Sky);
 		passableTiles.add(Tile.Wood);
+		passableTiles.add(Tile.Leaves);
 	}
 
 	public void update() {

@@ -67,7 +67,7 @@ public class Terrain {
 	private final double uraniumDepthRatio = .0001;
 	private final double uraniumDepthExp = .8;
 	
-	private final double treePlacement = .2;
+	private final double treePlacement = .5;
 
 	public Terrain(long seed, int mapWidth, int mapHeight) {
 		this.seed = seed;
@@ -85,7 +85,13 @@ public class Terrain {
 		for (int i = 0; i< terrain.length; i++) {
 			if (random.nextDouble() < treePlacement){
 				int alt = getAltitude(i);
-				terrain[i][alt] = Tile.Wood;
+				terrain[i][alt - 1] = Tile.Wood;
+				int top = 0;
+				for (int j = 0; j <= random.nextDouble()*7; j++){
+					 terrain[i][alt - j - 1] = Tile.Wood;
+					 top = alt-j - 1;
+				}
+				terrain[i][top-1] = Tile.Leaves;
 			}
 		}
 	}
