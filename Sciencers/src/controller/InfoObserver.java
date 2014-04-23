@@ -10,7 +10,7 @@ public class InfoObserver {
 	}
 	
 	public static void updateObserver() {
-		worldView.updateInfo();
+		//worldView.updateInfo();
 	}
 	
 }

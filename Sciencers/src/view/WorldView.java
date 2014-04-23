@@ -81,16 +81,16 @@ public class WorldView extends JFrame {
 		setLayout(null);
 		setLocation(50, 50);
 		
-		this.addComponentListener(new ComponentAdapter() {
-		    @Override
-		    public void componentResized(ComponentEvent e)
-		    {
-		    	infoPanes.setSize(gameWindow.getWidth(), INFO_PANE_SIZE);
-				infoPanes.setLocation(0,gameWindow.getHeight()-INFO_PANE_SIZE-39);
-		        infoPanes.repaint();
-		        gameWindow.repaint();
-		    }
-		});
+//		this.addComponentListener(new ComponentAdapter() {
+//		    @Override
+//		    public void componentResized(ComponentEvent e)
+//		    {
+//		    	infoPanes.setSize(gameWindow.getWidth(), INFO_PANE_SIZE);
+//				infoPanes.setLocation(0,gameWindow.getHeight()-INFO_PANE_SIZE-39);
+//		        infoPanes.repaint();
+//		        gameWindow.repaint();
+//		    }
+//		});
 	}
 
 	private void setupModel() {
@@ -98,10 +98,11 @@ public class WorldView extends JFrame {
 	}
 
 	private void addComponents() {
-		infoPanes = new InfoPanes(world);
-		add(infoPanes);
-		infoPanes.setSize(X_WINDOW_SIZE, INFO_PANE_SIZE);
-		infoPanes.setLocation(0,Y_WINDOW_SIZE-INFO_PANE_SIZE-39);
+		// Removed temporarily for performance reasons
+//		infoPanes = new InfoPanes(world);
+//		add(infoPanes);
+//		infoPanes.setSize(X_WINDOW_SIZE, INFO_PANE_SIZE);
+//		infoPanes.setLocation(0,Y_WINDOW_SIZE-INFO_PANE_SIZE-39);
 		
 		agentPanel = new AgentsView(world);
 		add(agentPanel);
@@ -314,8 +315,8 @@ public class WorldView extends JFrame {
 		// here we should update all relevant panels with world info
 		updateTerrain();
 		updateAgents();
-		updateBuildings();;
-		updateInfo();
+		updateBuildings();
+//		updateInfo();
 	}
 	public void updateTerrain() {
 		terrainPanel.update();
@@ -326,10 +327,10 @@ public class WorldView extends JFrame {
 	public void updateBuildings() {
 		buildingPanel.update();
 	}
-	public void updateInfo() {
-		infoPanes.update();
-	}
-	
+//	public void updateInfo() {
+//		infoPanes.update();
+//	}
+//	
 	// getWorld method. Should only be used in the Demo tool right now.
 	public World getWorld() {
 		return world;
