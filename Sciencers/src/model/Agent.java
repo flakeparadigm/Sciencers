@@ -8,6 +8,7 @@ import java.util.Stack;
 
 import model.agentCommand.AgentDeath;
 import model.agentCommand.BuildBuildingTask;
+import model.agentCommand.DepositInBuilding;
 import model.agentCommand.HarvestTreeTask;
 import model.agentCommand.Task;
 import model.agentCommand.TaskList;
@@ -114,7 +115,8 @@ public class Agent implements Entity {
 					hunger += 10;
 				} else {
 					// if agent doesn't have food, look for building with food.
-					setPathToBuildingWithType(Resource.FOOD);
+					Building foodBuilding = getBuildingWithType(Resource.FOOD);
+					TaskList.addTask(new DepositInBuilding(this, foodBuilding, Resource.FOOD, -1));
 				}
 				
 				// if no food buildings around, gather food
@@ -183,7 +185,7 @@ public class Agent implements Entity {
 
 	}
 
-	private void setPathToBuildingWithType(Resource r) {
+	private Building getBuildingWithType(Resource r) {
 		Stack<Point> shortestPath = null;
 		Building closestFoodBuilding = null;
 		boolean nullPath = true;
@@ -203,8 +205,10 @@ public class Agent implements Entity {
 		}
 
 		if (shortestPath != null) {
-			goHere(closestFoodBuilding.getPos());
+//			goHere(closestFoodBuilding.getPos());
+			return closestFoodBuilding;
 		}
+		return null;
 	}
 
 	private void getResourceFromBuildingAtCurrentLocation(Resource r) {
