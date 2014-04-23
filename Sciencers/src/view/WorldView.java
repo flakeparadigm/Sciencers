@@ -88,6 +88,7 @@ public class WorldView extends JFrame {
 		    	infoPanes.setSize(gameWindow.getWidth(), INFO_PANE_SIZE);
 				infoPanes.setLocation(0,gameWindow.getHeight()-INFO_PANE_SIZE-39);
 		        infoPanes.repaint();
+		        gameWindow.repaint();
 		    }
 		});
 	}
