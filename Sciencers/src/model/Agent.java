@@ -111,7 +111,7 @@ public class Agent implements Entity {
 
 				// if agent has food, eat some:
 				if (inventory.getAmount(Resource.FOOD) > 0) {
-					System.out.println("ate food");
+					System.out.println("ate food : hunger is at " + hunger);
 					inventory.changeAmount(Resource.FOOD, -1);
 					hunger += 10;
 				} else {

@@ -27,7 +27,7 @@ public class Demo extends JFrame {
 	static Toolkit tk = Toolkit.getDefaultToolkit();
 
 	// Graphical elements
-	private static WorldView WorldView;
+	private static WorldView worldView;
 	private static Demo demoTools;
 
 	// Test Buttons
@@ -48,8 +48,8 @@ public class Demo extends JFrame {
 	private final int Y_WINDOW_SIZE = 700;
 
 	public static void main(String[] args) {
-		WorldView = new WorldView();
-		WorldView.setVisible(true);
+		worldView = new WorldView();
+		worldView.setVisible(true);
 
 		demoTools = new Demo();
 		demoTools.setVisible(true);
@@ -63,8 +63,8 @@ public class Demo extends JFrame {
 	}
 
 	private void setupProperties() {
-		WorldView.setSize(X_SCREEN_SIZE - X_WINDOW_SIZE - 150, Y_WINDOW_SIZE);
-		WorldView.setTitle("Sciencers Demo");
+		worldView.setSize(X_SCREEN_SIZE - X_WINDOW_SIZE - 150, Y_WINDOW_SIZE);
+		worldView.setTitle("Sciencers Demo");
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Demo Controls");
@@ -123,7 +123,7 @@ public class Demo extends JFrame {
 
 		private void resetWorld() {
 			World.reset();
-			WorldView.updateAll();
+			worldView.updateAll();
 		}
 		
 		private void testHungerDeath(){
