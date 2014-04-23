@@ -34,8 +34,7 @@ public class PathFinder {
 	public static final int MOVEMENT_COST = 10;
 
 	// sets up all of the information then calls findPath()
-	public PathFinder(Point startPoint, Point targetPoint, Terrain terrain,
-			Tile passable) {
+	public PathFinder(Point startPoint, Point targetPoint, Terrain terrain,	Tile passable) {
 		// store the terain and passable tiles
 		this.terrain = terrain;
 		this.passable = passable;
