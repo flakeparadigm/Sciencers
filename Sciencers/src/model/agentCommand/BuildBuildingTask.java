@@ -23,6 +23,5 @@ public class BuildBuildingTask implements Task {
 	public Point getPos() {
 		return building.getPos();		
 	}
-
 	
 }

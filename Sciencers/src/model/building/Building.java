@@ -16,18 +16,16 @@ public abstract class Building implements Entity {
 	protected final int BLDG_ID;
 	protected static int currentID = 0;
 	
-	/*I believe we should do these in the inventory class 
-	 * rather than have them in both each building and the inventory class
-	 * -TW*/ 
-//	public abstract int getAmount(Resource r);
-//	
-//	public abstract boolean changeQuantity(Resource r, int quantity);
+	private Point pos;
 	
 	public Building(Point pos) {
 		BLDG_ID = currentID++;
+		this.pos = pos;
 	}
 	
-	public abstract Point getPos();
+	public Point getPos() {
+		return pos;
+	}
 	
 	public abstract Dimension getSize();
 	
