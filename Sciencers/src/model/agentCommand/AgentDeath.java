@@ -18,13 +18,9 @@ public class AgentDeath implements Task{
 	
 	@Override
 	public void execute() {
-		try {
-			GameTick.sleep(50);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 		World.agents.remove(sourceAgent);
+	
 	}
 
 	@Override
