@@ -66,7 +66,7 @@ public class Terrain {
 	private final double uraniumPropagation = .1;
 	private final double uraniumDepthRatio = .0001;
 	private final double uraniumDepthExp = .8;
-	
+
 	private final double treePlacement = .5;
 
 	public Terrain(long seed, int mapWidth, int mapHeight) {
@@ -80,18 +80,27 @@ public class Terrain {
 		generateGroundDetails();
 		generateTrees();
 	}
-	
-	public void generateTrees(){
-		for (int i = 0; i< terrain.length; i++) {
-			if (random.nextDouble() < treePlacement){
+
+	public void generateTrees() {
+		for (int i = 2; i < terrain.length - 2; i++) {
+			if (random.nextDouble() < treePlacement) {
 				int alt = getAltitude(i);
 				terrain[i][alt - 1] = Tile.Wood;
 				int top = 0;
-				for (int j = 0; j <= random.nextDouble()*7; j++){
-					 terrain[i][alt - j - 1] = Tile.Wood;
-					 top = alt-j - 1;
+				for (int j = 0; j <= random.nextDouble() * 7; j++) {
+					if (alt - j - 1 > 0) {
+						terrain[i][alt - j - 1] = Tile.Wood;
+						top = alt - j - 1;
+					}
 				}
-				terrain[i][top-1] = Tile.Leaves;
+				if (top - 2 > 0) {
+					terrain[i][top - 1] = Tile.Leaves;
+					terrain[i + 1][top - 1] = Tile.Leaves;
+					terrain[i - 1][top - 1] = Tile.Leaves;
+					terrain[i + 1][top - 2] = Tile.Leaves;
+					terrain[i - 1][top - 2] = Tile.Leaves;
+					terrain[i][top - 2] = Tile.Leaves;
+				}
 			}
 		}
 	}
@@ -267,7 +276,7 @@ public class Terrain {
 
 	public void updateTile(Tile tile, int row, int col) {
 		setTile(tile, row, col);
-		
+
 		new Thread(new Runnable() {
 			public void run() {
 				SciencersObserver.updateObserver();
@@ -292,7 +301,8 @@ public class Terrain {
 
 	public int getAltitude(int xPos) {
 		for (int j = 0; j < mapHeight; j++) {
-			if (!terrain[xPos][j].equals(Tile.Sky) && !terrain[xPos][j].equals(Tile.Wood)) {
+			if (!terrain[xPos][j].equals(Tile.Sky)
+					&& !terrain[xPos][j].equals(Tile.Wood) && !terrain[xPos][j].equals(Tile.Leaves)) {
 				return j;
 			}
 		}
@@ -302,12 +312,13 @@ public class Terrain {
 	public int getMapHeight() {
 		return mapHeight;
 	}
+
 	public int getMapWidth() {
 		return mapWidth;
 	}
-	
-	public void setPathVisible(Stack<Point> movements){
-		for (int i = 0; i<movements.size(); i++){
+
+	public void setPathVisible(Stack<Point> movements) {
+		for (int i = 0; i < movements.size(); i++) {
 			terrain[movements.get(i).x][movements.get(i).y].equals(Tile.Path);
 		}
 	}
