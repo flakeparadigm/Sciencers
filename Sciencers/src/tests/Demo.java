@@ -125,6 +125,18 @@ public class Demo extends JFrame {
 			TaskList.addTask(new HarvestTreeTask((Agent) World.agents.get(0),
 					new Point(18, World.terrain.getAltitude(18) - 1),
 					World.terrain));
+			TaskList.addTask(new HarvestTreeTask((Agent) World.agents.get(0),
+					new Point(18, World.terrain.getAltitude(18) - 1),
+					World.terrain));
+			TaskList.addTask(new HarvestTreeTask((Agent) World.agents.get(0),
+					new Point(18, World.terrain.getAltitude(18) - 1),
+					World.terrain));
+			TaskList.addTask(new HarvestTreeTask((Agent) World.agents.get(0),
+					new Point(18, World.terrain.getAltitude(18) - 1),
+					World.terrain));
+			TaskList.addTask(new HarvestTreeTask((Agent) World.agents.get(0),
+					new Point(18, World.terrain.getAltitude(18) - 1),
+					World.terrain));
 		}
 
 		private void testBuildingConstruction() {

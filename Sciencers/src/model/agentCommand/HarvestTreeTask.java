@@ -24,20 +24,34 @@ public class HarvestTreeTask implements Task {
 	public void execute() {
 		// TODO Auto-generated method stub
 		for (int i = 0; i < 20; i++) {
-			if (terrain.getTile(location.x, location.y - i).equals(
-					Tile.Wood)) {
-				terrain.setTile(terrain.getTile(location.x, location.y - 1 - i), location.x, location.y - i);
+			if (terrain.getTile(location.x, location.y - i).equals(Tile.Wood)) {
+				sourceAgent.getInventory().changeAmount(Resource.WOOD, 1);
+				terrain.setTile(
+						terrain.getTile(location.x, location.y - 1 - i),
+						location.x, location.y - i);
 			}
-			if (terrain.getTile(location.x, location.y - i).equals(
-							Tile.Leaves)){
-				terrain.setTile(terrain.getTile(location.x, location.y - 1 - i), location.x, location.y - i);
-				terrain.setTile(terrain.getTile(location.x + 1, location.y - 1 - i), location.x + 1, location.y - i);
-				terrain.setTile(terrain.getTile(location.x - 1, location.y - 1 - i), location.x - 1, location.y - i);
+			if (terrain.getTile(location.x, location.y - i).equals(Tile.Leaves)) {
+				terrain.setTile(
+						terrain.getTile(location.x, location.y - 1 - i),
+						location.x, location.y - i);
+				if (terrain.getTile(location.x + 1, location.y - i).equals(
+						Tile.Leaves)|| terrain.getTile(location.x + 1, location.y - i).equals(
+								Tile.Sky)) {
+					terrain.setTile(
+							terrain.getTile(location.x + 1, location.y - 1 - i),
+							location.x + 1, location.y - i);
+				}
+				if (terrain.getTile(location.x - 1, location.y - i).equals(
+						Tile.Leaves) || terrain.getTile(location.x - 1, location.y - i).equals(
+								Tile.Sky)) {
+					terrain.setTile(
+							terrain.getTile(location.x - 1, location.y - 1 - i),
+							location.x - 1, location.y - i);
+					sourceAgent.getInventory().changeAmount(Resource.FOOD, 3);
+				}
 			}
 		}
-		
-		sourceAgent.getInventory().changeAmount(Resource.WOOD, 1);
-		
+
 	}
 
 	@Override
