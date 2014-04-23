@@ -12,6 +12,9 @@ import javax.swing.JOptionPane;
 
 import model.Agent;
 import model.World;
+import model.agentCommand.BuildBuildingTask;
+import model.agentCommand.Task;
+import model.agentCommand.TaskList;
 import model.building.EBuilding;
 import view.Tile;
 import view.WorldView;
@@ -107,8 +110,7 @@ public class Demo extends JFrame {
 		private void testBuildingConstruction(){
 			World.addAgent(9);
 			World.terrain.setTile(Tile.Dirt, 20, 24);
-			Agent builderAgent = (Agent) World.agents.get(0);
-			builderAgent.setBuild(true, new Point (29,27));
+			TaskList.addTask(new BuildBuildingTask(EBuilding.FARM, new Point(25, 26)));
 		}
 
 		private void testHungerMovement() {

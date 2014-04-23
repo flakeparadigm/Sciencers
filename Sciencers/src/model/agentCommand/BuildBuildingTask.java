@@ -2,12 +2,13 @@ package model.agentCommand;
 
 import java.awt.Point;
 
+import model.World;
 import model.building.EBuilding;
 
 public class BuildBuildingTask implements Task {
 	
-	EBuilding building;
-	Point location;
+	private EBuilding building;
+	private Point location;
 	
 	public BuildBuildingTask(EBuilding b, Point p) {
 		building = b;
@@ -16,12 +17,12 @@ public class BuildBuildingTask implements Task {
 	
 	@Override
 	public void execute() {
-
+		World.addBuilding(EBuilding.FARM, location);
 	}
 
 	@Override
 	public Point getPos() {
-		return null;
+		return location;
 		// TODO Auto-generated method stub
 		
 	}
