@@ -13,7 +13,7 @@ public class Farm extends Building {
 	
 	// Magic Numbers
 //	private final int TICKS_PER_ITEM = 50;
-	private final Point POSITION;
+//	private final Point POSITION;
 	private final int BUILDING_WIDTH = 5;
 	private final int BUILDING_HEIGHT = 1; //?
 	private final int MAX_WORKERS = 5;
@@ -24,8 +24,9 @@ public class Farm extends Building {
 	private Inventory inv;
 	private ArrayList<Agent> workers;
 	
-	public Farm(int xPos, int yPos) {
-		POSITION = new Point(xPos, yPos);
+	public Farm(Point pos) {
+		super(pos);
+//		POSITION = pos;
 		workers = new ArrayList<Agent>();
 		inv = new Inventory(CAPACITY);
 		inv.changeAmount(Resource.FOOD, 10000000);
@@ -49,10 +50,10 @@ public class Farm extends Building {
 //		return inv.changeAmount(Resource.FOOD, quantity);
 //	}
 
-	@Override
-	public Point getPos() {
-		return POSITION;
-	}
+//	@Override
+//	public Point getPos() {
+//		return POSITION;
+//	}
 
 	@Override
 	public Dimension getSize() {
@@ -84,5 +85,10 @@ public class Farm extends Building {
 	
 	public Inventory getInventory(){
 		return inv;
+	}
+
+	@Override
+	public EBuilding getType() {
+		return EBuilding.FARM;
 	}
 }

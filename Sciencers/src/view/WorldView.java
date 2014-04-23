@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
@@ -13,6 +15,7 @@ import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
 import model.World;
+import controller.InfoObserver;
 import controller.SciencersObserver;
 
 /* I thought it might be nice to have a working view for testing 
@@ -21,22 +24,29 @@ import controller.SciencersObserver;
 
 public class WorldView extends JFrame {
 	public static JFrame gameWindow;
+	public static World world;
+	
+	// panels
 	public static TerrainView terrainPanel;
 	public static AgentsView agentPanel;
 	public static BuildingsView buildingPanel;
-	public static World world;
+	public static InfoPanes infoPanes;
+	
+	// observers
 	public static SciencersObserver terrainWatch;
+	public static InfoObserver infoWatch;
 
+	// Magic Numbers
 	static Toolkit tk = Toolkit.getDefaultToolkit();
 	private final int X_SCREEN_SIZE = ((int) tk.getScreenSize().getWidth());
 	private final int Y_SCREEN_SIZE = ((int) tk.getScreenSize().getHeight());
-	private final int X_WINDOW_SIZE = 700;
-	private final int Y_WINDOW_SIZE = 700;
+	private final static int X_WINDOW_SIZE = 700;
+	private final static int Y_WINDOW_SIZE = 700;
 	
-	private final int X_MAP_SIZE = 500;
-	private final int Y_MAP_SIZE = 100;
-	
-	public static final int TILE_SIZE = 16;
+	private final static int X_MAP_SIZE = 500;
+	private final static int Y_MAP_SIZE = 100;
+	public final static int TILE_SIZE = 16;
+	public final static int INFO_PANE_SIZE = 200;
 
 	private static int moveSpeed = 15;
 	private static int panTimerMS = 1;
@@ -49,12 +59,17 @@ public class WorldView extends JFrame {
 	}
 
 	public WorldView() {
-		terrainWatch = new SciencersObserver(this);
-		
+		gameWindow = this;
+		setupObservers();
 		setupProperties();
 		setupModel();
 		addComponents();
 		registerListeners();
+	}
+	
+	private void setupObservers() {
+		terrainWatch = new SciencersObserver(this);
+		infoWatch = new InfoObserver(this);
 	}
 
 	private void setupProperties() {
@@ -65,6 +80,17 @@ public class WorldView extends JFrame {
 		setSize(X_WINDOW_SIZE, Y_WINDOW_SIZE);
 		setLayout(null);
 		setLocation(50, 50);
+		
+		this.addComponentListener(new ComponentAdapter() {
+		    @Override
+		    public void componentResized(ComponentEvent e)
+		    {
+		    	infoPanes.setSize(gameWindow.getWidth(), INFO_PANE_SIZE);
+				infoPanes.setLocation(0,gameWindow.getHeight()-INFO_PANE_SIZE-39);
+		        infoPanes.repaint();
+		        gameWindow.repaint();
+		    }
+		});
 	}
 
 	private void setupModel() {
@@ -72,6 +98,11 @@ public class WorldView extends JFrame {
 	}
 
 	private void addComponents() {
+		infoPanes = new InfoPanes(world);
+		add(infoPanes);
+		infoPanes.setSize(X_WINDOW_SIZE, INFO_PANE_SIZE);
+		infoPanes.setLocation(0,Y_WINDOW_SIZE-INFO_PANE_SIZE-39);
+		
 		agentPanel = new AgentsView(world);
 		add(agentPanel);
 		agentPanel.setLocation(0,0);
@@ -195,6 +226,8 @@ public class WorldView extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// continuous left pressed code here:
 			xPanelLocation += moveSpeed;
+			if(xPanelLocation > 0)
+				xPanelLocation = 0;
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
 			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
 			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
@@ -215,6 +248,9 @@ public class WorldView extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// continuous right pressed code here:
 			xPanelLocation-= moveSpeed;
+			int maxX = -(X_MAP_SIZE*TILE_SIZE-gameWindow.getWidth()+30);
+			if(xPanelLocation < maxX)
+				xPanelLocation = maxX;
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
 			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
 			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
@@ -235,6 +271,8 @@ public class WorldView extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// continuous up pressed code here:
 			yPanelLocation += moveSpeed;
+			if(yPanelLocation > 0)
+				yPanelLocation = 0;
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
 			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
 			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
@@ -255,6 +293,9 @@ public class WorldView extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// continuous down pressed code here:
 			yPanelLocation-= moveSpeed;
+			int maxY = -(Y_MAP_SIZE*TILE_SIZE-gameWindow.getHeight()+55);
+			if(yPanelLocation < maxY)
+				yPanelLocation = maxY;
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
 			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
 			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
@@ -273,7 +314,8 @@ public class WorldView extends JFrame {
 		// here we should update all relevant panels with world info
 		updateTerrain();
 		updateAgents();
-		updateBuildings();
+		updateBuildings();;
+		updateInfo();
 	}
 	public void updateTerrain() {
 		terrainPanel.update();
@@ -283,6 +325,9 @@ public class WorldView extends JFrame {
 	}
 	public void updateBuildings() {
 		buildingPanel.update();
+	}
+	public void updateInfo() {
+		infoPanes.update();
 	}
 	
 	// getWorld method. Should only be used in the Demo tool right now.

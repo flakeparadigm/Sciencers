@@ -28,13 +28,13 @@ public class PathFinder {
 
 	// other info
 	private Terrain terrain;
-	private Tile passable;
+	private ArrayList<Tile> passable;
 
 	// Magic Numbers
 	public static final int MOVEMENT_COST = 10;
 
 	// sets up all of the information then calls findPath()
-	public PathFinder(Point startPoint, Point targetPoint, Terrain terrain,	Tile passable) {
+	public PathFinder(Point startPoint, Point targetPoint, Terrain terrain,	ArrayList<Tile> passable) {
 		// store the terain and passable tiles
 		this.terrain = terrain;
 		this.passable = passable;
@@ -127,9 +127,9 @@ public class PathFinder {
 	}
 
 	/*
-	 * Create nodes for all of the adjacent nodes if they don't exist. This
-	 * only adds nodes that have passable tiles in their location on the
-	 * given terrain.
+	 * Create nodes for all of the adjacent nodes if they don't exist. This only
+	 * adds nodes that have passable tiles in their location on the given
+	 * terrain.
 	 */
 	private void makeAdjacentNodes(PathFinderNode checking) {
 		Point checkingPoint = checking.getPoint();
@@ -165,6 +165,7 @@ public class PathFinder {
 			makeNode(westPoint, checking);
 		}
 	}
+
 	private void makeNode(Point newPoint, PathFinderNode parent) {
 		if (isPassable(newPoint) && allNodes.get(newPoint) == null) {
 			PathFinderNode newNode = new PathFinderNode(newPoint, parent, this);
@@ -172,29 +173,35 @@ public class PathFinder {
 			addToOpenList(newNode);
 		}
 	}
-	
+
 	private boolean isPassable(Point pt) {
 		Tile myTile = terrain.getTile(pt.x, pt.y);
-		boolean isPassable = myTile == passable;
-		
-		if(!isPassable)
+		boolean isPassable = false;
+		int passableTileType = 0;
+		for (int i = 0; i < passable.size(); i++) {
+			if (myTile == passable.get(i)) {
+				isPassable = true;
+				passableTileType = i;
+			}
+		}
+
+		if (!isPassable)
 			return false;
-		
 		try {
-			if(terrain.getTile(pt.x, pt.y+1) != passable)
+			if (!passable.contains(terrain.getTile(pt.x, pt.y + 1)))
 				return true;
-		} catch(ArrayIndexOutOfBoundsException e) {
+		} catch (ArrayIndexOutOfBoundsException e) {
 			return true;
 		}
-		
 
 		try {
-			if((terrain.getTile(pt.x-1, pt.y+1) != passable) || (terrain.getTile(pt.x+1, pt.y+1) != passable))
+			if ((!passable.contains(terrain.getTile(pt.x - 1, pt.y + 1)))
+					|| !passable.contains(terrain.getTile(pt.x + 1, pt.y + 1)))
 				return true;
-		} catch(ArrayIndexOutOfBoundsException e) {
+		} catch (ArrayIndexOutOfBoundsException e) {
 			return false;
 		}
-		
+
 		return false;
 	}
 
@@ -202,9 +209,11 @@ public class PathFinder {
 	public Point getDestination() {
 		return targetPoint;
 	}
+
 	public PathFinderNode getNode(Point p) {
 		return allNodes.get(p);
 	}
+
 	public Stack<Point> getPath() {
 		return finalPath;
 	}

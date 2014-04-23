@@ -23,7 +23,7 @@ public class Terrain {
 	 * and high value for frequency. (High frequency number means the points are
 	 * farther apart).
 	 */
-	private final int averageTerrainHeight = 10;
+	private final int averageTerrainHeight = 20;
 	private final int perlin1Magnitude = 20;
 	private final int perlin2Magnitude = 2;
 	private final int perlin3Magnitude = 1;
@@ -67,6 +67,8 @@ public class Terrain {
 	private final double uraniumDepthRatio = .0001;
 	private final double uraniumDepthExp = .8;
 
+	private final double treePlacement = .5;
+
 	public Terrain(long seed, int mapWidth, int mapHeight) {
 		this.seed = seed;
 		this.mapWidth = mapWidth;
@@ -76,6 +78,31 @@ public class Terrain {
 		generateSky();
 		generateRandomTerrain();
 		generateGroundDetails();
+		generateTrees();
+	}
+
+	public void generateTrees() {
+		for (int i = 2; i < terrain.length - 2; i++) {
+			if (random.nextDouble() < treePlacement) {
+				int alt = getAltitude(i);
+				terrain[i][alt - 1] = Tile.Wood;
+				int top = 0;
+				for (int j = 0; j <= random.nextDouble() * 7; j++) {
+					if (alt - j - 1 > 0) {
+						terrain[i][alt - j - 1] = Tile.Wood;
+						top = alt - j - 1;
+					}
+				}
+				if (top - 2 > 0) {
+					terrain[i][top - 1] = Tile.Leaves;
+					terrain[i + 1][top - 1] = Tile.Leaves;
+					terrain[i - 1][top - 1] = Tile.Leaves;
+					terrain[i + 1][top - 2] = Tile.Leaves;
+					terrain[i - 1][top - 2] = Tile.Leaves;
+					terrain[i][top - 2] = Tile.Leaves;
+				}
+			}
+		}
 	}
 
 	public void generateSky() {
@@ -175,7 +202,7 @@ public class Terrain {
 	}
 
 	private int Noise1(int magnitude) {
-		// return a random float between -1 and 1
+		// return a random float between -mgnitude and magnitude
 		int Min = -magnitude;
 		int Max = magnitude;
 		return (int) (Min + (random.nextDouble() * ((Max - Min) + 1)));
@@ -249,7 +276,7 @@ public class Terrain {
 
 	public void updateTile(Tile tile, int row, int col) {
 		setTile(tile, row, col);
-		
+
 		new Thread(new Runnable() {
 			public void run() {
 				SciencersObserver.updateObserver();
@@ -274,7 +301,8 @@ public class Terrain {
 
 	public int getAltitude(int xPos) {
 		for (int j = 0; j < mapHeight; j++) {
-			if (!terrain[xPos][j].equals(Tile.Sky)) {
+			if (!terrain[xPos][j].equals(Tile.Sky)
+					&& !terrain[xPos][j].equals(Tile.Wood) && !terrain[xPos][j].equals(Tile.Leaves)) {
 				return j;
 			}
 		}
@@ -284,12 +312,13 @@ public class Terrain {
 	public int getMapHeight() {
 		return mapHeight;
 	}
+
 	public int getMapWidth() {
 		return mapWidth;
 	}
-	
-	public void setPathVisible(Stack<Point> movements){
-		for (int i = 0; i<movements.size(); i++){
+
+	public void setPathVisible(Stack<Point> movements) {
+		for (int i = 0; i < movements.size(); i++) {
 			terrain[movements.get(i).x][movements.get(i).y].equals(Tile.Path);
 		}
 	}

@@ -11,7 +11,7 @@ import model.inventory.Resource;
 public class Warehouse extends Building {
 
 	// Magic Numbers
-	private final Point POSITION;
+//	private final Point POSITION;
 	private final int BUILDING_WIDTH = 10;
 	private final int BUILDING_HEIGHT = 1; //?
 	private final int MAX_WORKERS = 2;
@@ -20,8 +20,9 @@ public class Warehouse extends Building {
 	private Inventory inv;
 	private ArrayList<Agent> workers;
 	
-	public Warehouse(int xPos, int yPos) {
-		POSITION = new Point(xPos, yPos);
+	public Warehouse(Point pos) {
+		super(pos);
+//		POSITION = pos;
 	}
 
 	@Override
@@ -39,10 +40,10 @@ public class Warehouse extends Building {
 //		return inv.changeAmount(r, quantity);
 //	}
 
-	@Override
-	public Point getPos() {
-		return POSITION;
-	}
+//	@Override
+//	public Point getPos() {
+//		return POSITION;
+//	}
 
 	@Override
 	public Dimension getSize() {
@@ -74,6 +75,11 @@ public class Warehouse extends Building {
 	
 	public Inventory getInventory(){
 		return inv;
+	}
+
+	@Override
+	public EBuilding getType() {
+		return EBuilding.WAREHOUSE;
 	}
 
 }

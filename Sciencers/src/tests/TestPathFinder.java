@@ -7,6 +7,7 @@ package tests;
  */
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Stack;
 
 import model.PathFinder;
@@ -24,7 +25,9 @@ public class TestPathFinder {
 		// create the start and end points, find the path
 		Point startPoint = new Point(18, 13);
 		Point endPoint = new Point(42, 11);
-		PathFinder pathFinder = new PathFinder(startPoint, endPoint, theLand, Tile.Sky);
+		ArrayList<Tile> tiles = new ArrayList<Tile>();
+		tiles.add(Tile.Sky);
+		PathFinder pathFinder = new PathFinder(startPoint, endPoint, theLand, tiles);
 		Stack<Point> thePath = pathFinder.getPath();
 		
 		// print out the stack of points. This is all of the points
