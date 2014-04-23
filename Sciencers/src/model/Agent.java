@@ -8,7 +8,7 @@ import java.util.Stack;
 
 import model.agentCommand.AgentDeath;
 import model.agentCommand.BuildBuildingTask;
-import model.agentCommand.DepositInBuilding;
+import model.agentCommand.AccessBuildingInventory;
 import model.agentCommand.HarvestTreeTask;
 import model.agentCommand.Task;
 import model.agentCommand.TaskList;
@@ -43,7 +43,7 @@ public class Agent implements Entity {
 	private int tickCount = 0;
 	private ArrayList<Tile> passableTiles;
 	private Task currentTask;
-	
+
 	public Tool workingTool = null;
 	private Tool mainTool = null, secondaryTool = null;
 
@@ -107,25 +107,29 @@ public class Agent implements Entity {
 				// TODO: maybe throw a random number generator in here someday
 
 				// if agent is in same place as building, get some food
-				getResourceFromBuildingAtCurrentLocation(Resource.FOOD);
+//				getResourceFromBuildingAtCurrentLocation(Resource.FOOD);
 
 				// if agent has food, eat some:
 				if (inventory.getAmount(Resource.FOOD) > 0) {
+					System.out.println("ate food");
 					inventory.changeAmount(Resource.FOOD, -1);
 					hunger += 10;
 				} else {
 					// if agent doesn't have food, look for building with food.
 					Building foodBuilding = getBuildingWithType(Resource.FOOD);
-					TaskList.addTask(new DepositInBuilding(this, foodBuilding, Resource.FOOD, -1));
+					if (foodBuilding != null) {
+						TaskList.addTask(new AccessBuildingInventory(this,
+								foodBuilding, Resource.FOOD, -5));
+					}
+					
+					// if no food buildings around, gather food
+					if (movements.isEmpty() && TaskList.getList().isEmpty()) {
+						TaskList.addTask(new HarvestTreeTask(this,
+								findNearestTree(), World.terrain));
+					}
 				}
-				
-				// if no food buildings around, gather food
-				if (movements.isEmpty() && TaskList.getList().isEmpty()) {
-					TaskList.addTask(new HarvestTreeTask(this,
-							findNearestTree(), World.terrain));
-				}
-
 			}
+			
 			if (!TaskList.getList().isEmpty() && currentTask == null) {
 				currentTask = TaskList.getList().poll();
 				if (currentTask != null
@@ -133,25 +137,25 @@ public class Agent implements Entity {
 								new Point2D.Double(currentTask.getPos().x,
 										currentTask.getPos().y),
 								currentPosition)) {
-					System.out.println("GoHere");
-					if(currentTask instanceof BuildBuildingTask) {
-						if(!hasTool(Tool.HAMMER))
+					if (currentTask instanceof BuildBuildingTask) {
+						if (!hasTool(Tool.HAMMER))
 							craftTool(Tool.HAMMER);
-						
-						if(!hasTool(Tool.HAMMER)) {
-							System.out.println("Couldn't make/get hammer. Can't build building");
+
+						if (!hasTool(Tool.HAMMER)) {
+							System.out
+									.println("Couldn't make/get hammer. Can't build building");
 							currentTask = null;
 						}
-						
-						if(currentTask != null) {
-							if(mainTool == Tool.HAMMER) {
+
+						if (currentTask != null) {
+							if (mainTool == Tool.HAMMER) {
 								workingTool = mainTool;
 							} else {
 								workingTool = secondaryTool;
 							}
 						}
 					}
-						
+
 					goHere(currentTask.getPos());
 				}
 			}
@@ -162,9 +166,8 @@ public class Agent implements Entity {
 						currentPosition,
 						new Point2D.Double(currentTask.getPos().x, currentTask
 								.getPos().y))) {
-			System.out.println("execute");
 			currentTask.execute();
-			
+
 			workingTool = null;
 			currentTask = null;
 		}
@@ -205,7 +208,7 @@ public class Agent implements Entity {
 		}
 
 		if (shortestPath != null) {
-//			goHere(closestFoodBuilding.getPos());
+			// goHere(closestFoodBuilding.getPos());
 			return closestFoodBuilding;
 		}
 		return null;
@@ -314,11 +317,11 @@ public class Agent implements Entity {
 							World.terrain.getAltitude(i
 									+ (int) currentPosition.x)).equals(
 							Tile.Leaves)) {
-				
-				System.out.println("Found tree");
-				return new Point(i + (int) currentPosition.x,
+
+				return new Point(
+						i + (int) currentPosition.x,
 						World.terrain.getAltitude(i + (int) currentPosition.x) - 1);
-				
+
 			}
 			if (-i + (int) currentPosition.x > 0
 					&& -i + (int) currentPosition.x < World.terrain
@@ -342,8 +345,8 @@ public class Agent implements Entity {
 							World.terrain.getAltitude(-i
 									+ (int) currentPosition.x)).equals(
 							Tile.Leaves)) {
-				System.out.println("Found tree");
-				return new Point(-i + (int) currentPosition.x,
+				return new Point(
+						-i + (int) currentPosition.x,
 						World.terrain.getAltitude(-i + (int) currentPosition.x) - 1);
 			}
 		}
@@ -404,28 +407,29 @@ public class Agent implements Entity {
 	}
 
 	public void craftTool(Tool t) {
-		if(inventory.getAmount(Resource.WOOD) >= 3) {
-			if(mainTool == null) {
+		if (inventory.getAmount(Resource.WOOD) >= 3) {
+			if (mainTool == null) {
 				inventory.changeAmount(Resource.WOOD, -3);
 				mainTool = t;
-			} else if(secondaryTool == null) {
+			} else if (secondaryTool == null) {
 				inventory.changeAmount(Resource.WOOD, -3);
 				secondaryTool = t;
 			} else {
 				System.out.println("Inventory full. Tool not crafted.");
 			}
 		} else {
-			(new HarvestTreeTask(this, findNearestTree(), World.terrain)).execute();
+			(new HarvestTreeTask(this, findNearestTree(), World.terrain))
+					.execute();
 			craftTool(t);
 		}
 	}
-	
+
 	private boolean hasTool(Tool t) {
-		if(workingTool == t)
+		if (workingTool == t)
 			return true;
-		else if(mainTool == t)
+		else if (mainTool == t)
 			return true;
-		else if(secondaryTool == t)
+		else if (secondaryTool == t)
 			return true;
 		else
 			return false;
