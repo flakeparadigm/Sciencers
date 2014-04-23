@@ -28,7 +28,7 @@ public class BuildBuildingTask implements Task {
 	
 	public String toString() {
 		String taskString = "Build Building\n";
-		taskString += "Type: " + building;
+		taskString += "Type: " + building + "\n";
 		taskString += "Location: " + location;
 				
 		return taskString;

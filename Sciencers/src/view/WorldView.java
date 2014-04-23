@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
@@ -78,6 +80,16 @@ public class WorldView extends JFrame {
 		setSize(X_WINDOW_SIZE, Y_WINDOW_SIZE);
 		setLayout(null);
 		setLocation(50, 50);
+		
+		this.addComponentListener(new ComponentAdapter() {
+		    @Override
+		    public void componentResized(ComponentEvent e)
+		    {
+		    	infoPanes.setSize(gameWindow.getWidth(), INFO_PANE_SIZE);
+				infoPanes.setLocation(0,gameWindow.getHeight()-INFO_PANE_SIZE-39);
+		        infoPanes.repaint();
+		    }
+		});
 	}
 
 	private void setupModel() {
@@ -88,7 +100,7 @@ public class WorldView extends JFrame {
 		infoPanes = new InfoPanes(world);
 		add(infoPanes);
 		infoPanes.setSize(X_WINDOW_SIZE, INFO_PANE_SIZE);
-		infoPanes.setLocation(0,Y_WINDOW_SIZE-INFO_PANE_SIZE);
+		infoPanes.setLocation(0,Y_WINDOW_SIZE-INFO_PANE_SIZE-39);
 		
 		agentPanel = new AgentsView(world);
 		add(agentPanel);
