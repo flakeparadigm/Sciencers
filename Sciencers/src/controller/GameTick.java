@@ -8,6 +8,7 @@ public class GameTick extends Thread {
 	
 	ArrayList<Entity> entities;
 	int tickTime;
+	boolean shouldUpdate = true;
 
 	public GameTick(ArrayList<Entity> entities, int tickTime) {
 		this.entities = entities;
@@ -16,7 +17,7 @@ public class GameTick extends Thread {
 	
 	@Override
 	public void run() {
-		while(true){
+		while(shouldUpdate){
 			try {
 			
 				// Until the game ends, always update the given list of entities
@@ -35,5 +36,4 @@ public class GameTick extends Thread {
 			}
 		}
 	}
-
 }
