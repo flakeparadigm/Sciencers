@@ -1,4 +1,4 @@
-package model.agentCommand;
+package model.task;
 
 import java.awt.Point;
 import java.awt.Rectangle;

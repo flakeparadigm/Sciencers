@@ -17,9 +17,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import model.World;
-import model.agentCommand.BuildBuildingTask;
-import model.agentCommand.Task;
 import model.building.EBuilding;
+import model.task.BuildBuildingTask;
+import model.task.Task;
 
 public class InfoPanes extends JPanel {
 	

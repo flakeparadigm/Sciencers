@@ -12,11 +12,11 @@ import javax.swing.JOptionPane;
 
 import model.Agent;
 import model.World;
-import model.agentCommand.BuildBuildingTask;
-import model.agentCommand.HarvestTreeTask;
-import model.agentCommand.Task;
-import model.agentCommand.TaskList;
 import model.building.EBuilding;
+import model.task.BuildBuildingTask;
+import model.task.HarvestTreeTask;
+import model.task.Task;
+import model.task.TaskList;
 import view.Tile;
 import view.WorldView;
 

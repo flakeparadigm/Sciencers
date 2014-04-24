@@ -3,11 +3,11 @@ package model;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import model.agentCommand.TaskList;
 import model.building.Building;
 import model.building.EBuilding;
 import model.building.Farm;
 import model.building.Warehouse;
+import model.task.TaskList;
 import controller.GameTick;
 
 /*

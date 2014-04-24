@@ -1,4 +1,4 @@
-package model.agentCommand;
+package model.task;
 
 import java.util.ArrayDeque;
 import java.util.PriorityQueue;

@@ -6,16 +6,16 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import model.agentCommand.AgentDeath;
-import model.agentCommand.BuildBuildingTask;
-import model.agentCommand.AccessBuildingInventory;
-import model.agentCommand.HarvestTreeTask;
-import model.agentCommand.Task;
-import model.agentCommand.TaskList;
 import model.building.Building;
 import model.inventory.Inventory;
 import model.inventory.Resource;
 import model.inventory.Tool;
+import model.task.AccessBuildingInventory;
+import model.task.AgentDeath;
+import model.task.BuildBuildingTask;
+import model.task.HarvestTreeTask;
+import model.task.Task;
+import model.task.TaskList;
 import view.Tile;
 
 public class Agent implements Entity {
