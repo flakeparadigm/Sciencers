@@ -12,7 +12,7 @@ import model.inventory.Resource;
 public class Farm extends Building {
 	
 	// Magic Numbers
-//	private final int TICKS_PER_ITEM = 50;
+	private final int TICKS_PER_ITEM = 50;
 //	private final Point POSITION;
 	private final int BUILDING_WIDTH = 5;
 	private final int BUILDING_HEIGHT = 1; //?
