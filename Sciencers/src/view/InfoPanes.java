@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -12,11 +13,13 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import model.Agent;
 import model.Research;
 import model.World;
 import model.building.EBuilding;
@@ -34,7 +37,7 @@ public class InfoPanes extends JPanel {
 	private final int INFO_PANE_SIZE = 200;
 	private final int TASK_BOX_WIDTH = 150;
 	private final int TASK_BOX_HEIGHT = 60;
-	private final int STATS_PANE_WIDTH = 150;
+	private final int STATS_PANE_WIDTH = 90;
 	private final int STATS_PANE_HEIGHT = 60;
 	
 	public InfoPanes(World world){
@@ -140,13 +143,21 @@ public class InfoPanes extends JPanel {
 			lResearch.setForeground(Color.white);
 			this.add(lResearch);
 			
+			JLabel lBuildings = new JLabel();
+			lBuildings.setText("Buildings: " + World.buildings.size());
+			lBuildings.setForeground(Color.white);
+			this.add(lBuildings);
+			
 //			this.setPreferredSize(new Dimension(150, 65 * this.getComponentCount() + 5));
 		}
 		
 		@Override
 		public void repaint() {
 			super.repaint();
-			this.setPreferredSize(new Dimension(TASK_BOX_WIDTH, (TASK_BOX_HEIGHT+5) * this.getComponentCount() + 5));
+			for(Component j : this.getComponents()) {
+				j.repaint();
+			}
+//			this.setPreferredSize(new Dimension(TASK_BOX_WIDTH, (TASK_BOX_HEIGHT+5) * this.getComponentCount() + 5));
 			
 		}
 	}
