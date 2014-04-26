@@ -7,7 +7,12 @@ import model.inventory.Tool;
 
 public class CraftToolTask implements Task {
 	
+	private Tool t;
+	private Agent a;
+	
 	public CraftToolTask(Tool t, Agent a) {
+		this.t= t;
+		this.a = a;
 		a.craftTool(t);
 	}
 
@@ -19,8 +24,14 @@ public class CraftToolTask implements Task {
 
 	@Override
 	public Point getPos() {
-		// TODO Auto-generated method stub
-		return null;
+		return (Point) a.getPos();
+	}
+	
+	public String toString() {		
+		String taskString = "Craft tool\n";
+		taskString += "Type: " + t.name().toLowerCase();
+		
+		return taskString;
 	}
 
 }

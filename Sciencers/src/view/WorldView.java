@@ -99,10 +99,10 @@ public class WorldView extends JFrame {
 
 	private void addComponents() {
 		// Removed temporarily for performance reasons
-//		infoPanes = new InfoPanes(world);
-//		add(infoPanes);
-//		infoPanes.setSize(X_WINDOW_SIZE, INFO_PANE_SIZE);
-//		infoPanes.setLocation(0,Y_WINDOW_SIZE-INFO_PANE_SIZE-39);
+		infoPanes = new InfoPanes(world);
+		add(infoPanes);
+		infoPanes.setSize(X_WINDOW_SIZE, INFO_PANE_SIZE);
+		infoPanes.setLocation(0,Y_WINDOW_SIZE-INFO_PANE_SIZE-39);
 		
 		agentPanel = new AgentsView(world);
 		add(agentPanel);

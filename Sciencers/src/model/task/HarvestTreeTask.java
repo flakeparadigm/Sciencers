@@ -62,5 +62,14 @@ public class HarvestTreeTask implements Task {
 	public Point getPos() {
 		return location;
 	}
+	
+	public String toString() {
+		String pointString = location.x + ", " + location.y;
+		
+		String taskString = "Harvest tree\n";
+		taskString += "Location: " + pointString;
+				
+		return taskString;
+	}
 
 }

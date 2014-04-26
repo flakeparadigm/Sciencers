@@ -28,9 +28,11 @@ public class BuildBuildingTask implements Task {
 	}
 	
 	public String toString() {
+		String pointString = location.x + ", " + location.y;
+		
 		String taskString = "Build Building\n";
-		taskString += "Type: " + building + "\n";
-		taskString += "Location: " + location;
+		taskString += "Type: " + building.name().toLowerCase() + "\n";
+		taskString += "Location: " + pointString;
 				
 		return taskString;
 	}

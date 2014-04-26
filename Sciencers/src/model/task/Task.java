@@ -8,4 +8,6 @@ public interface Task {
 	
 	public abstract Point getPos();
 	
+	public abstract String toString();
+	
 }

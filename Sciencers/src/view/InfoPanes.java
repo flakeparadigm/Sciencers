@@ -70,7 +70,7 @@ public class InfoPanes extends JPanel {
 			this.setBackground(new Color(0,0,0,0));
 			
 			for(int i = 0; i < 10; i++) {
-				TaskBox newTask = new TaskBox(new BuildBuildingTask(EBuilding.FARM, new Point(5,2*i)));
+				TaskBox newTask = new TaskBox(new BuildBuildingTask(EBuilding.FARM, new Point(5,2*i))); // demo only
 				this.add(newTask);
 			}
 			this.setPreferredSize(new Dimension(150, 65 * this.getComponentCount() + 5));

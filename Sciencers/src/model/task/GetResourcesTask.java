@@ -28,13 +28,17 @@ public class GetResourcesTask implements Task {
 
 	@Override
 	public Point getPos() {
-		return null;
-		// TODO Auto-generated method stub
-		
+		return building.getPos();		
 	}
 	
 	public String toString() {
-		return " ";
+		String pointString = building.getPos().x + ", " + building.getPos().y;
+		
+		String taskString = "Get resources\n";
+		taskString += "Type: " + building.getType().name().toLowerCase() + "\n";
+		taskString += "Location: " + pointString;
+				
+		return taskString;
 	}
 	
 }

@@ -38,7 +38,14 @@ public class GoGatheringTask implements Task {
 	}
 	
 	public String toString() {
-		return " ";
+		
+		String taskString = "Gather resources\n";
+		taskString += "Top: " + rect.getMaxY() + "\n";
+		taskString += "Bottom: " + rect.getMinY() + "\n";
+		taskString += "Left: " + rect.getMinX() + "\n";
+		taskString += "Right: " + rect.getMaxX();
+				
+		return taskString;
 	}
 
 }
