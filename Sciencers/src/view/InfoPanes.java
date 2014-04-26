@@ -22,8 +22,6 @@ import model.task.BuildBuildingTask;
 import model.task.Task;
 
 public class InfoPanes extends JPanel {
-	
-	World world;
 
 	DefaultListModel<String> taskListModel = new DefaultListModel<String>();
 	JList<String> taskList = new JList<String>(taskListModel);
@@ -35,7 +33,6 @@ public class InfoPanes extends JPanel {
 	private final int TASK_BOX_HEIGHT = 60;
 	
 	public InfoPanes(World world){
-		this.world = world;
 		this.setBackground(new Color(0,0,0,180)); 
 		this.setLayout(null);
 		
@@ -53,9 +50,9 @@ public class InfoPanes extends JPanel {
 	        }
 	    });
 		
-		this.add(new JLabel("Hi"));
-
-		this.add(new JLabel("Hi"));
+//		this.add(new JLabel("Hi"));
+//
+//		this.add(new JLabel("Hi"));
 		
 	}
 
@@ -69,10 +66,10 @@ public class InfoPanes extends JPanel {
 			this.setLayout(new FlowLayout());
 			this.setBackground(new Color(0,0,0,0));
 			
-			for(int i = 0; i < 10; i++) {
-				TaskBox newTask = new TaskBox(new BuildBuildingTask(EBuilding.FARM, new Point(5,2*i))); // demo only
-				this.add(newTask);
-			}
+//			for(int i = 0; i < 10; i++) {
+//				TaskBox newTask = new TaskBox(new BuildBuildingTask(EBuilding.FARM, new Point(5,2*i))); // demo only
+//				this.add(newTask);
+//			}
 			this.setPreferredSize(new Dimension(150, 65 * this.getComponentCount() + 5));
 		}
 		
