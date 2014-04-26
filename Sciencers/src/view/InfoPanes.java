@@ -3,6 +3,7 @@ package view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
@@ -16,6 +17,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import model.Research;
 import model.World;
 import model.building.EBuilding;
 import model.task.BuildBuildingTask;
@@ -23,19 +25,25 @@ import model.task.Task;
 
 public class InfoPanes extends JPanel {
 
-	DefaultListModel<String> taskListModel = new DefaultListModel<String>();
-	JList<String> taskList = new JList<String>(taskListModel);
-	JScrollPane notificationScroller, tasksScroller;
+	private DefaultListModel<String> taskListModel = new DefaultListModel<String>();
+	private JList<String> taskList = new JList<String>(taskListModel);
+	private JScrollPane notificationScroller, tasksScroller;
+	private JPanel statsPane;
 	
 	// Magic Numbers
 	private final int INFO_PANE_SIZE = 200;
 	private final int TASK_BOX_WIDTH = 150;
 	private final int TASK_BOX_HEIGHT = 60;
+	private final int STATS_PANE_WIDTH = 150;
+	private final int STATS_PANE_HEIGHT = 60;
 	
 	public InfoPanes(World world){
 		this.setBackground(new Color(0,0,0,180)); 
 		this.setLayout(null);
 		
+		int xTemp = 0; //keeps track of assignment position for each new panel
+		
+		//Task Pane
 		tasksScroller = new JScrollPane();
 		tasksScroller.setViewportView(new TaskPane());
 		tasksScroller.setOpaque(false);
@@ -49,6 +57,18 @@ public class InfoPanes extends JPanel {
 	            tasksScroller.repaint();
 	        }
 	    });
+		
+		xTemp += tasksScroller.getWidth() + 10;
+		
+		//Stats Pane
+		statsPane = new StatsPane();
+		statsPane.setBorder(null);
+		statsPane.setOpaque(false);
+		this.add(statsPane);
+		statsPane.setSize(STATS_PANE_WIDTH + 30, STATS_PANE_HEIGHT);
+		statsPane.setLocation(xTemp, 0);
+		
+		xTemp += statsPane.getWidth() + 10;
 		
 //		this.add(new JLabel("Hi"));
 //
@@ -102,6 +122,32 @@ public class InfoPanes extends JPanel {
 			int x = 5, y = 0;
 		    for (String line : task.toString().split("\n"))
 		        g2.drawString(line, x, y += g.getFontMetrics().getHeight());
+		}
+	}
+	
+	private class StatsPane extends JPanel {
+		public StatsPane() {
+			this.setLayout(new FlowLayout());
+			this.setBackground(new Color(0,0,0,0));
+			
+			JLabel lAgents = new JLabel();
+			lAgents.setText("Agents: " + World.agents.size());
+			lAgents.setForeground(Color.white);
+			this.add(lAgents);
+
+			JLabel lResearch = new JLabel();
+			lResearch.setText("Research: " + Research.get());
+			lResearch.setForeground(Color.white);
+			this.add(lResearch);
+			
+//			this.setPreferredSize(new Dimension(150, 65 * this.getComponentCount() + 5));
+		}
+		
+		@Override
+		public void repaint() {
+			super.repaint();
+			this.setPreferredSize(new Dimension(TASK_BOX_WIDTH, (TASK_BOX_HEIGHT+5) * this.getComponentCount() + 5));
+			
 		}
 	}
 	

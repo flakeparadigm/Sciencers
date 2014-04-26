@@ -31,7 +31,7 @@ public class Lab extends Building {
 
 	@Override
 	public void update() {
-		Research.changeResearch(TICK_RESEARCH * workers.size());
+		Research.change(TICK_RESEARCH * workers.size());
 	}
 
 	@Override
