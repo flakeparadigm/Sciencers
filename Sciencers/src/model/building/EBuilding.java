@@ -1,5 +1,5 @@
 package model.building;
 
 public enum EBuilding {
-	FARM, WAREHOUSE
+	FARM, WAREHOUSE, FACTORY, LAB, HR
 }
