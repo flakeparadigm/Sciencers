@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import model.Agent;
+import model.AgentReplacement;
 import model.Entity;
 import model.World;
 import model.inventory.Tool;
@@ -43,7 +44,7 @@ public class AgentsView extends JPanel{
 //			g2.drawString("A", WorldView.TILE_SIZE*(e.getPos().x + 1), WorldView.TILE_SIZE*(e.getPos().y + 1));
 			
 			g2.drawImage(placeholder, (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getX() + 1)), (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getY() + 1)), null);
-			Agent a = ((Agent) e);
+			AgentReplacement a = ((AgentReplacement) e);
 			if(a.workingTool != null) {
 				g2.drawImage(tools.get(a.workingTool), (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getX() + 1)), (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getY() + 1)), null);
 			}

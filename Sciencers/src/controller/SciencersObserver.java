@@ -1,6 +1,7 @@
 package controller;
 
 import model.Agent;
+import model.AgentReplacement;
 import model.Entity;
 import model.building.Building;
 import view.WorldView;
@@ -17,7 +18,7 @@ public class SciencersObserver {
 	}
 	
 	public static void updateObserver(Entity e) {
-		if(e instanceof Agent)
+		if(e instanceof AgentReplacement)
 			worldView.updateAgents();
 		else if(e instanceof Building)
 			worldView.updateBuildings();

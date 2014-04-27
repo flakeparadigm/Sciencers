@@ -11,6 +11,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import model.Agent;
+import model.AgentReplacement;
+import model.EAgent;
 import model.World;
 import model.building.EBuilding;
 import model.task.BuildBuildingTask;
@@ -142,53 +144,54 @@ public class Demo extends JFrame {
 			World.terrain.setTile(Tile.Dirt, 34, 27);
 			World.terrain.setTile(Tile.Dirt, 33, 27);
 			
-			World.addAgent(36);
+			World.addAgent(EAgent.FARMER, 36);
 
-			Agent hungryAgent = (Agent) World.agents.get(0);
+			AgentReplacement hungryAgent = (AgentReplacement) World.agents.get(0);
 			hungryAgent.setHunger(5);
 		}
 		
 		private void testGatherAndStore(){
-			World.addAgent(9);
+			World.addAgent(EAgent.FARMER, 9);
 			World.terrain.setTile(Tile.Dirt, 20, 24);
 			TaskList.addTask(new BuildBuildingTask(EBuilding.FARM, new Point(
 					25, 26)));
-			Agent gatherAgent = (Agent) World.agents.get(0);
-			gatherAgent.setToGather();
+			AgentReplacement gatherAgent = (AgentReplacement) World.agents.get(0);
+			System.out.println("Unfinished");
+//			gatherAgent.setToGather();
 		}
 		
 		private void testSurvival(){
-			World.addAgent(9);
-			Agent hungryAgent = (Agent) World.agents.get(0);
+			World.addAgent(EAgent.FARMER, 9);
+			AgentReplacement hungryAgent = (AgentReplacement) World.agents.get(0);
 			hungryAgent.setHunger(200);
 			
 		}
 
 		private void testTreeHarvest() {
-			World.addAgent(9);
+			World.addAgent(EAgent.FARMER, 9);
 			World.terrain.setTile(Tile.Dirt, 20, 24);
-			TaskList.addTask(new HarvestTreeTask((Agent) World.agents.get(0),
+			TaskList.addTask(new HarvestTreeTask((AgentReplacement) World.agents.get(0),
 					new Point(18, World.terrain.getAltitude(18) - 1),
 					World.terrain));
-			TaskList.addTask(new HarvestTreeTask((Agent) World.agents.get(0),
+			TaskList.addTask(new HarvestTreeTask((AgentReplacement) World.agents.get(0),
 					new Point(18, World.terrain.getAltitude(18) - 1),
 					World.terrain));
-			TaskList.addTask(new HarvestTreeTask((Agent) World.agents.get(0),
+			TaskList.addTask(new HarvestTreeTask((AgentReplacement) World.agents.get(0),
 					new Point(18, World.terrain.getAltitude(18) - 1),
 					World.terrain));
-			TaskList.addTask(new HarvestTreeTask((Agent) World.agents.get(0),
+			TaskList.addTask(new HarvestTreeTask((AgentReplacement) World.agents.get(0),
 					new Point(18, World.terrain.getAltitude(18) - 1),
 					World.terrain));
-			TaskList.addTask(new HarvestTreeTask((Agent) World.agents.get(0),
+			TaskList.addTask(new HarvestTreeTask((AgentReplacement) World.agents.get(0),
 					new Point(18, World.terrain.getAltitude(18) - 1),
 					World.terrain));
-			TaskList.addTask(new HarvestTreeTask((Agent) World.agents.get(0),
+			TaskList.addTask(new HarvestTreeTask((AgentReplacement) World.agents.get(0),
 					new Point(18, World.terrain.getAltitude(18) - 1),
 					World.terrain));
 		}
 
 		private void testBuildingConstruction() {
-			World.addAgent(9);
+			World.addAgent(EAgent.FARMER, 9);
 			World.terrain.setTile(Tile.Dirt, 20, 24);
 			TaskList.addTask(new BuildBuildingTask(EBuilding.FARM, new Point(
 					25, 26)));
@@ -196,9 +199,9 @@ public class Demo extends JFrame {
 
 		private void testHungerMovement() {
 			World.addBuilding(EBuilding.FARM, new Point(29, 27));
-			World.addAgent(9);
+			World.addAgent(EAgent.FARMER, 9);
 			World.terrain.setTile(Tile.Dirt, 20, 24);
-			Agent hungryAgent = (Agent) World.agents.get(0);
+			AgentReplacement hungryAgent = (AgentReplacement) World.agents.get(0);
 			hungryAgent.setHunger(200);
 		}
 

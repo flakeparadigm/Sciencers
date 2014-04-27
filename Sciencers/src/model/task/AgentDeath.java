@@ -4,14 +4,15 @@ import java.awt.Point;
 
 import controller.GameTick;
 import model.Agent;
+import model.AgentReplacement;
 import model.World;
 
 public class AgentDeath implements Task{
 
-	private Agent sourceAgent;
+	private AgentReplacement sourceAgent;
 	private Point position;
 	
-	public AgentDeath(Agent sourceAgent, Point agentPos){
+	public AgentDeath(AgentReplacement sourceAgent, Point agentPos){
 		this.sourceAgent = sourceAgent;
 		this.position = agentPos;
 	}

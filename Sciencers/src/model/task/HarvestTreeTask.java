@@ -4,6 +4,7 @@ import java.awt.Point;
 
 import view.Tile;
 import model.Agent;
+import model.AgentReplacement;
 import model.Terrain;
 import model.World;
 import model.inventory.Resource;
@@ -12,16 +13,15 @@ public class HarvestTreeTask implements Task {
 
 	private Point location;
 	private Terrain terrain;
-	private Agent sourceAgent;
+	private AgentReplacement sourceAgent;
 	
 	private final int WOOD_VALUE = 1;
 	private final int FOOD_VALUE = 3;
 
-	public HarvestTreeTask(Agent sourceAgent, Point location, Terrain terrain) {
+	public HarvestTreeTask(AgentReplacement sourceAgent, Point location, Terrain terrain) {
 		this.location = location;
 		this.terrain = terrain;
 		this.sourceAgent = sourceAgent;
-		System.out.println("Task Created");
 	}
 
 	@Override

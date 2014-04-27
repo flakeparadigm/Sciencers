@@ -24,7 +24,7 @@ public class World{
 	// tick Info
 	private static GameTick agentsTick;
 	private static GameTick buildingsTick;
-	private static final int AGENT_TICK_TIME = 5;
+	private static final int AGENT_TICK_TIME = 200;
 	private static final int BUILDING_TICK_TIME = 100;
 	
 	// resources
@@ -52,9 +52,15 @@ public class World{
 		buildingsTick.start();
 	}
 	
-	public static void addAgent(int xPos){
+	public static void addAgent(EAgent type, int xPos){
 		//this adds an Agent at the highest point on the terrain at a certain point
-		Agent agent = new Agent(new Point(xPos, terrain.getAltitude(xPos) - 1));
+		AgentReplacement agent = null;
+		if(type == EAgent.FARMER)
+			agent = new FarmerAgent(new Point(xPos, terrain.getAltitude(xPos) - 1)) ;
+		//add other agent types here
+		
+		if(agent == null)
+			System.out.println("Building is null! World.addBuilding()");
 		agents.add(agent);
 	}
 	
