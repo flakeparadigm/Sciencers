@@ -18,15 +18,15 @@ public abstract class AgentReplacement implements Entity {
 	// agent id tracking
 	private static int currentId = 0;
 	public final int MY_ID;
-	public final double SPEED = .3;
+	public final double SPEED = .1;
 	public final int CAPACITY = 100;
 	// every 100 ticks, hunger goes down
 	public final int HUNGER_SPEED = 100;
 	protected int hunger = 1000;
 	protected int fatigue = 1000;
 	boolean isWorking = false;
-	private final double INITIAL_JUMP_VELOCITY = -1;
-	private final double GRAVITY_CONSTANT = -.0981;
+	private final double INITIAL_JUMP_VELOCITY = -.6;
+	private final double GRAVITY_CONSTANT = .0981;
 
 	private Inventory inventory;
 	private ArrayList<Tile> passableTiles;
@@ -62,13 +62,14 @@ public abstract class AgentReplacement implements Entity {
 			}
 
 			if (jumpTick != 0) {
-				System.out.println(dy);
 				dy = GRAVITY_CONSTANT * jumpTick + INITIAL_JUMP_VELOCITY;
+				System.out.println(dy);
 				jumpTick++;
 			}
 
 			if (jumpTick == 0
 					&& (double) movements.peek().getY() - currentPosition.getY() < -.1) {
+				System.out.println("jump");
 				jumpTick = 1;
 			}
 
@@ -78,7 +79,7 @@ public abstract class AgentReplacement implements Entity {
 			// adjust tolerances to allow correct stopping after jump:
 			if (sameLocation(currentPosition,
 					new Point2D.Double(movements.peek().x, movements.peek().y),
-					1, .1)) {
+					.3, .1)) {
 				if (dy > 0) {
 					jumpTick = 0;
 					System.out.println("End jump");
@@ -87,7 +88,8 @@ public abstract class AgentReplacement implements Entity {
 			// adjust to allow correct switching of target tiles
 			if (sameLocation(currentPosition,
 					new Point2D.Double(movements.peek().x, movements.peek().y),
-					.1, .1)) {
+					.1, 1.5)) {
+				System.out.println(movements.peek());
 				movements.pop();
 				System.out.println("POP!");
 			}

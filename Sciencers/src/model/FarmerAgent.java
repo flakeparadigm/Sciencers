@@ -51,16 +51,29 @@ public class FarmerAgent extends AgentReplacement {
 		if (hunger < SEEK_FOOD_HUNGER && currentTask == null) {
 			currentTask = new HarvestTreeTask(this,
 					findNearestTree(currentPosition), World.terrain);
+			System.out.println("GoGetTree");
 		}
 
 		if (currentTask != null) {
-			if (sameLocation(currentPosition, new Point2D.Double(currentTask
-					.getPos().getX(), currentTask.getPos().getY()), .1, .1)) {
-				currentTask.execute();
-				currentTask = null;
-			} else {
+			// if current task exists:
+			if (movements.isEmpty()
+					&& !sameLocation(currentPosition, new Point2D.Double(
+							currentTask.getPos().getX(), currentTask.getPos()
+									.getY()), .1, .1)) {
+				// if movements needs updated:
+				System.out.println("movementsChanged");
+				System.out.println(currentTask.getPos());
 				movements = goHere(currentPosition, currentTask.getPos());
 			}
+
+			if (sameLocation(currentPosition, new Point2D.Double(currentTask
+					.getPos().getX(), currentTask.getPos().getY()), .1, .1)) {
+				// if in location of current task:
+				System.out.println("execute");
+				currentTask.execute();
+				currentTask = null;
+			}
+
 		}
 
 		updateMovement(currentPosition, movements);
