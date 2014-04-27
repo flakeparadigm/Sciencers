@@ -199,7 +199,7 @@ public class Demo extends JFrame {
 
 		private void testHungerMovement() {
 			World.addBuilding(EBuilding.FARM, new Point(29, 27));
-			World.addAgent(EAgent.FARMER, 9);
+			World.addAgent(EAgent.FARMER, 17);
 			World.terrain.setTile(Tile.Dirt, 20, 24);
 			AgentReplacement hungryAgent = (AgentReplacement) World.agents.get(0);
 			hungryAgent.setHunger(200);

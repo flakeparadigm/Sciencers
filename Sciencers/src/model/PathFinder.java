@@ -34,7 +34,8 @@ public class PathFinder {
 	public static final int MOVEMENT_COST = 10;
 
 	// sets up all of the information then calls findPath()
-	public PathFinder(Point startPoint, Point targetPoint, Terrain terrain,	ArrayList<Tile> passable) {
+	public PathFinder(Point startPoint, Point targetPoint, Terrain terrain,
+			ArrayList<Tile> passable) {
 		// store the terain and passable tiles
 		this.terrain = terrain;
 		this.passable = passable;
@@ -195,8 +196,10 @@ public class PathFinder {
 		}
 
 		try {
-			if ((!passable.contains(terrain.getTile(pt.x - 1, pt.y + 1)))
-					|| !passable.contains(terrain.getTile(pt.x + 1, pt.y + 1)))
+			if ((!passable.contains(terrain.getTile(pt.x - 1, pt.y + 1)) && passable
+					.contains(terrain.getTile(pt.x - 1, pt.y)))
+					|| (!passable.contains(terrain.getTile(pt.x + 1, pt.y + 1)) && passable
+							.contains(terrain.getTile(pt.x + 1, pt.y))))
 				return true;
 		} catch (ArrayIndexOutOfBoundsException e) {
 			return false;

@@ -49,6 +49,7 @@ public class FarmerAgent extends AgentReplacement {
 
 		// seek food if hungry
 		if (hunger < SEEK_FOOD_HUNGER && currentTask == null) {
+			
 			currentTask = new HarvestTreeTask(this,
 					findNearestTree(currentPosition), World.terrain);
 			System.out.println("GoGetTree");

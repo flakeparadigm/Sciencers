@@ -25,7 +25,7 @@ public abstract class AgentReplacement implements Entity {
 	protected int hunger = 1000;
 	protected int fatigue = 1000;
 	boolean isWorking = false;
-	private final double INITIAL_JUMP_VELOCITY = -.6;
+	private double jumpVelocity = -.6;
 	private final double GRAVITY_CONSTANT = .0981;
 
 	private Inventory inventory;
@@ -62,15 +62,25 @@ public abstract class AgentReplacement implements Entity {
 			}
 
 			if (jumpTick != 0) {
-				dy = GRAVITY_CONSTANT * jumpTick + INITIAL_JUMP_VELOCITY;
+				dy = GRAVITY_CONSTANT * jumpTick + jumpVelocity;
 				System.out.println(dy);
 				jumpTick++;
 			}
-
+			//for jumping:
 			if (jumpTick == 0
-					&& (double) movements.peek().getY() - currentPosition.getY() < -.1) {
+					&& (double) movements.peek().getY()
+							- currentPosition.getY() < -.5) {
 				System.out.println("jump");
 				jumpTick = 1;
+				jumpVelocity = -.6;
+			}
+			//for falling:
+			if (jumpTick == 0
+					&& (double) movements.peek().getY()
+							- currentPosition.getY() > .1) {
+				System.out.println("fall");
+				jumpTick = 1;
+				jumpVelocity = 0;
 			}
 
 			currentPosition.setLocation((double) (currentPosition.getX() + dx),
@@ -79,24 +89,37 @@ public abstract class AgentReplacement implements Entity {
 			// adjust tolerances to allow correct stopping after jump:
 			if (sameLocation(currentPosition,
 					new Point2D.Double(movements.peek().x, movements.peek().y),
-					.3, .1)) {
+					2.5, .1)) {
 				if (dy > 0) {
 					jumpTick = 0;
 					System.out.println("End jump");
 				}
 			}
-			// adjust to allow correct switching of target tiles
-			if (sameLocation(currentPosition,
+			
+			// adjust to allow correct switching of target tiles (for jumping and falling and standard)
+			if ((double) movements.peek().getY()
+					- currentPosition.getY() < -.1 && sameLocation(currentPosition,
 					new Point2D.Double(movements.peek().x, movements.peek().y),
 					.1, 1.5)) {
-				System.out.println(movements.peek());
 				movements.pop();
-				System.out.println("POP!");
+				System.out.println("POP!jumping");
+			} else if ((double) movements.peek().getY()
+					- currentPosition.getY() > .1 && sameLocation(currentPosition,
+					new Point2D.Double(movements.peek().x, movements.peek().y),
+					1.5, .1)) {
+				movements.pop();
+				System.out.println("POP!falling");
+			}else if (sameLocation(currentPosition,
+					new Point2D.Double(movements.peek().x, movements.peek().y),
+					.1, .1)) {
+				movements.pop();
+				System.out.println("POP!standard");
 			}
 		}
 	}
 
-	protected Stack<Point> goHere(Point2D.Double currentPosition, Point destination) {
+	protected Stack<Point> goHere(Point2D.Double currentPosition,
+			Point destination) {
 		Stack<Point> movements = new Stack<Point>();
 		PathFinder thePath = new PathFinder(new Point(
 				(int) currentPosition.getX(), (int) currentPosition.getY()),
@@ -165,10 +188,14 @@ public abstract class AgentReplacement implements Entity {
 							World.terrain.getAltitude(i
 									+ (int) currentPosition.x)).equals(
 							Tile.Leaves)) {
-
-				return new Point(
-						i + (int) currentPosition.x,
-						World.terrain.getAltitude(i + (int) currentPosition.x) - 1);
+				if (goHere(
+						currentPosition,
+						new Point(i + (int) currentPosition.x, World.terrain
+								.getAltitude(i + (int) currentPosition.x) - 1)) != null) {
+					return new Point(i + (int) currentPosition.x,
+							World.terrain.getAltitude(i
+									+ (int) currentPosition.x) - 1);
+				}
 
 			}
 			if (-i + (int) currentPosition.x > 0
@@ -193,9 +220,14 @@ public abstract class AgentReplacement implements Entity {
 							World.terrain.getAltitude(-i
 									+ (int) currentPosition.x)).equals(
 							Tile.Leaves)) {
-				return new Point(
-						-i + (int) currentPosition.x,
-						World.terrain.getAltitude(-i + (int) currentPosition.x) - 1);
+				if (goHere(
+						currentPosition,
+						new Point(-i + (int) currentPosition.x, World.terrain
+								.getAltitude(-i + (int) currentPosition.x) - 1)) != null) {
+					return new Point(-i + (int) currentPosition.x,
+							World.terrain.getAltitude(-i
+									+ (int) currentPosition.x) - 1);
+				}
 			}
 		}
 		return null;
