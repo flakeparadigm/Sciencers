@@ -3,6 +3,7 @@ package model;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -63,57 +64,60 @@ public abstract class AgentReplacement implements Entity {
 
 			if (jumpTick != 0) {
 				dy = GRAVITY_CONSTANT * jumpTick + jumpVelocity;
-				System.out.println(dy);
 				jumpTick++;
 			}
-			//for jumping:
+			// for jumping:
 			if (jumpTick == 0
 					&& (double) movements.peek().getY()
 							- currentPosition.getY() < -.5) {
-				System.out.println("jump");
 				jumpTick = 1;
 				jumpVelocity = -.6;
 			}
-			//for falling:
+			// for falling:
 			if (jumpTick == 0
 					&& (double) movements.peek().getY()
 							- currentPosition.getY() > .1) {
-				System.out.println("fall");
 				jumpTick = 1;
 				jumpVelocity = 0;
 			}
 
-			currentPosition.setLocation((double) (currentPosition.getX() + dx),
-					(double) (currentPosition.getY() + dy));
-
-			// adjust tolerances to allow correct stopping after jump:
-			if (sameLocation(currentPosition,
-					new Point2D.Double(movements.peek().x, movements.peek().y),
-					2.5, .1)) {
-				if (dy > 0) {
-					jumpTick = 0;
-					System.out.println("End jump");
-				}
+			// safety block for jumping
+			if (currentPosition.getY() + dy
+					- World.terrain.getAltitude((int) currentPosition.getX()) > .1) {
+				System.out.println("Safety Block");
+				currentPosition.setLocation(
+						(double) (currentPosition.getX() + dx),
+						(double) (World.terrain
+								.getAltitude((int) currentPosition.getX()) + 1));
+			} else {
+				currentPosition.setLocation(
+						(double) (currentPosition.getX() + dx),
+						(double) (currentPosition.getY() + dy));
 			}
 			
-			// adjust to allow correct switching of target tiles (for jumping and falling and standard)
-			if ((double) movements.peek().getY()
-					- currentPosition.getY() < -.1 && sameLocation(currentPosition,
+			// adjust tolerances to allow correct stopping after jump or fall:
+			if (sameLocation(currentPosition,
 					new Point2D.Double(movements.peek().x, movements.peek().y),
-					.1, 1.5)) {
+					2.5, .15)) {
+				if (dy > 0) {
+					jumpTick = 0;
+				}
+			}
+
+			// adjust to allow correct switching of target tiles (for jumping
+			// and falling and standard)
+			if ((double) movements.peek().getY() - currentPosition.getY() < -.1
+					&& sameLocation(currentPosition, new Point2D.Double(
+							movements.peek().x, movements.peek().y), .1, 1.5)) {
 				movements.pop();
-				System.out.println("POP!jumping");
 			} else if ((double) movements.peek().getY()
-					- currentPosition.getY() > .1 && sameLocation(currentPosition,
-					new Point2D.Double(movements.peek().x, movements.peek().y),
-					1.5, .1)) {
+					- currentPosition.getY() > .1
+					&& sameLocation(currentPosition, new Point2D.Double(
+							movements.peek().x, movements.peek().y), 1.5, .1)) {
 				movements.pop();
-				System.out.println("POP!falling");
-			}else if (sameLocation(currentPosition,
-					new Point2D.Double(movements.peek().x, movements.peek().y),
-					.1, .1)) {
+			} else if (sameLocation(currentPosition, new Point2D.Double(
+					movements.peek().x, movements.peek().y), .1, .1)) {
 				movements.pop();
-				System.out.println("POP!standard");
 			}
 		}
 	}
