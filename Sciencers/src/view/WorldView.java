@@ -316,7 +316,7 @@ public class WorldView extends JFrame {
 		updateTerrain();
 		updateAgents();
 		updateBuildings();
-//		updateInfo();
+		updateInfo();
 	}
 	public void updateTerrain() {
 		terrainPanel.update();
@@ -327,9 +327,9 @@ public class WorldView extends JFrame {
 	public void updateBuildings() {
 		buildingPanel.update();
 	}
-//	public void updateInfo() {
-//		infoPanes.update();
-//	}
+	public void updateInfo() {
+		infoPanes.update();
+	}
 //	
 	// getWorld method. Should only be used in the Demo tool right now.
 	public World getWorld() {

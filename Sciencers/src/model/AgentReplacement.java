@@ -13,6 +13,7 @@ import model.inventory.Inventory;
 import model.inventory.Resource;
 import model.inventory.Tool;
 import model.task.Task;
+import model.task.TaskList;
 
 public abstract class AgentReplacement implements Entity {
 
@@ -163,7 +164,7 @@ public abstract class AgentReplacement implements Entity {
 		}
 		return null;
 	}
-
+	
 	protected Point findNearestTree(Point2D.Double currentPosition) {
 		if (currentPosition.equals(Tile.Wood)
 				|| currentPosition.equals(Tile.Leaves)) {

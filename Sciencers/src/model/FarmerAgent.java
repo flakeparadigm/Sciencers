@@ -55,14 +55,19 @@ public class FarmerAgent extends AgentReplacement {
 			if (findNearestTree(currentPosition) != null) {
 				currentTask = new HarvestTreeTask(this,
 						findNearestTree(currentPosition), World.terrain);
-				System.out.println("Harvest");
 			}
 		}
 		
 		//get task from list if agent doesn't have one
+		getAndExecuteNextTask();
+
+		updateMovement(currentPosition, movements);
+
+	}
+
+	private void getAndExecuteNextTask() {
 		if (currentTask == null && !TaskList.getList().isEmpty()){
 			currentTask = TaskList.getList().poll();
-			System.out.println("GotTaskFromList");
 		}
 		
 		if (currentTask != null) {
@@ -83,9 +88,6 @@ public class FarmerAgent extends AgentReplacement {
 			}
 
 		}
-
-		updateMovement(currentPosition, movements);
-
 	}
 
 	public Point2D getPos() {

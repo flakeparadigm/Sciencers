@@ -81,6 +81,7 @@ public class InfoPanes extends JPanel {
 
 	public void update() {
 		repaint();
+		statsPane.repaint();
 	}
 	
 	private class TaskPane extends JPanel {
