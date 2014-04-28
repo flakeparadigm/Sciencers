@@ -12,6 +12,7 @@ import model.building.Building;
 import model.inventory.Inventory;
 import model.inventory.Resource;
 import model.inventory.Tool;
+import model.task.HarvestTreeTask;
 import model.task.Task;
 import model.task.TaskList;
 
@@ -253,7 +254,7 @@ public abstract class AgentReplacement implements Entity {
 				- b.getX()) < xTolerance);
 	}
 
-	private boolean hasTool(Tool t) {
+	protected boolean hasTool(Tool t) {
 		if (workingTool == t)
 			return true;
 		else if (mainTool == t)
@@ -262,6 +263,24 @@ public abstract class AgentReplacement implements Entity {
 			return true;
 		else
 			return false;
+	}
+	
+	public void craftTool(Tool t) {
+		if (inventory.getAmount(Resource.WOOD) >= 3) {
+			if (mainTool == null) {
+				inventory.changeAmount(Resource.WOOD, -3);
+				mainTool = t;
+			} else if (secondaryTool == null) {
+				inventory.changeAmount(Resource.WOOD, -3);
+				secondaryTool = t;
+			} else {
+				System.out.println("Inventory full. Tool not crafted.");
+			}
+		} else {
+			(new HarvestTreeTask(this, findNearestTree((Double) getPos()), World.terrain))
+					.execute();
+			craftTool(t);
+		}
 	}
 
 	// for testing

@@ -3,28 +3,29 @@ package model.task;
 import java.awt.Point;
 
 import model.Agent;
+import model.AgentReplacement;
 import model.inventory.Tool;
 
 public class CraftToolTask implements Task {
 	
 	private Tool t;
-	private Agent a;
+	private AgentReplacement a;
+	private Point agentPosition;
 	
-	public CraftToolTask(Tool t, Agent a) {
+	public CraftToolTask(Tool t, AgentReplacement a, Point agentPosition) {
 		this.t= t;
 		this.a = a;
-		a.craftTool(t);
+		this.agentPosition = agentPosition;
 	}
 
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
-
+		a.craftTool(t);
 	}
 
 	@Override
 	public Point getPos() {
-		return (Point) a.getPos();
+		return agentPosition;
 	}
 	
 	public String toString() {		

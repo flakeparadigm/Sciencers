@@ -6,7 +6,11 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
 import java.util.Stack;
 
+import model.inventory.Resource;
+import model.inventory.Tool;
 import model.task.AgentDeath;
+import model.task.BuildBuildingTask;
+import model.task.CraftToolTask;
 import model.task.HarvestTreeTask;
 import model.task.Task;
 import model.task.TaskList;
@@ -17,6 +21,7 @@ public class FarmerAgent extends AgentReplacement {
 	private Point2D.Double currentPosition;
 	// private Point2D.Double targetPosition;
 	private Task currentTask;
+	private int taskTimer;
 	private Stack<Point> movements;
 	private int SEEK_FOOD_HUNGER = 800;
 
@@ -25,6 +30,7 @@ public class FarmerAgent extends AgentReplacement {
 				(double) currentPosition.y);
 		// targetPosition = this.currentPosition;
 		currentTask = null;
+		taskTimer = 0;
 		movements = new Stack<Point>();
 	}
 
@@ -40,14 +46,17 @@ public class FarmerAgent extends AgentReplacement {
 			}
 		}
 		tickCount++;
-//		System.out.println(tickCount);
+		taskTimer--;
+		// System.out.println(tickCount);
 		/*
-		 * The following code should be focused upon specific tasks for this type of Agent
+		 * The following code should be focused upon specific tasks for this
+		 * type of Agent
 		 */
 		// die if hunger < 0
-		if (hunger < 0) {
+		if (hunger < 0 && currentTask == null) {
 			currentTask = (new AgentDeath(this, new Point(
 					(int) currentPosition.x, (int) currentPosition.y)));
+			taskTimer = 0;
 		}
 
 		// seek food if hungry
@@ -55,21 +64,33 @@ public class FarmerAgent extends AgentReplacement {
 			if (findNearestTree(currentPosition) != null) {
 				currentTask = new HarvestTreeTask(this,
 						findNearestTree(currentPosition), World.terrain);
+				taskTimer = 10;
 			}
 		}
-		
-		//get task from list if agent doesn't have one
-		getAndExecuteNextTask();
+
+		// get task from list if agent doesn't have one
+		getNextTaskIfNotBusy();
+
+		// build hammer before building Building
+		if (currentTask instanceof BuildBuildingTask && !hasTool(Tool.HAMMER)) {
+			if (getInventory().getAmount(Resource.WOOD) > 3) {
+				currentTask = new HarvestTreeTask(this,
+						findNearestTree(currentPosition), World.terrain);
+				taskTimer = 10;
+			} else {
+				currentTask = new CraftToolTask(Tool.HAMMER, this, new Point(
+						(int) currentPosition.getX(),
+						(int) currentPosition.getY()));
+			}
+		}
+
+		executeCurrentTask();
 
 		updateMovement(currentPosition, movements);
 
 	}
 
-	private void getAndExecuteNextTask() {
-		if (currentTask == null && !TaskList.getList().isEmpty()){
-			currentTask = TaskList.getList().poll();
-		}
-		
+	private void executeCurrentTask() {
 		if (currentTask != null) {
 			// if current task exists:
 			if (movements.isEmpty()
@@ -81,12 +102,22 @@ public class FarmerAgent extends AgentReplacement {
 			}
 
 			if (sameLocation(currentPosition, new Point2D.Double(currentTask
-					.getPos().getX(), currentTask.getPos().getY()), .1, .1)) {
+					.getPos().getX(), currentTask.getPos().getY()), .1, .1)
+					&& taskTimer < 0) {
 				// if in location of current task:
 				currentTask.execute();
+				if (currentTask.equals(TaskList.getList().peek())) {
+					TaskList.getList().poll();
+				}
 				currentTask = null;
 			}
 
+		}
+	}
+
+	private void getNextTaskIfNotBusy() {
+		if (currentTask == null && !TaskList.getList().isEmpty()) {
+			currentTask = TaskList.getList().peek();
 		}
 	}
 
