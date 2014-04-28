@@ -40,7 +40,10 @@ public class FarmerAgent extends AgentReplacement {
 			}
 		}
 		tickCount++;
-
+//		System.out.println(tickCount);
+		/*
+		 * The following code should be focused upon specific tasks for this type of Agent
+		 */
 		// die if hunger < 0
 		if (hunger < 0) {
 			currentTask = (new AgentDeath(this, new Point(
@@ -52,27 +55,29 @@ public class FarmerAgent extends AgentReplacement {
 			if (findNearestTree(currentPosition) != null) {
 				currentTask = new HarvestTreeTask(this,
 						findNearestTree(currentPosition), World.terrain);
-				System.out.println("GoGetTree");
+				System.out.println("Harvest");
 			}
 		}
-
+		
+		//get task from list if agent doesn't have one
+		if (currentTask == null && !TaskList.getList().isEmpty()){
+			currentTask = TaskList.getList().poll();
+			System.out.println("GotTaskFromList");
+		}
+		
 		if (currentTask != null) {
 			// if current task exists:
-			System.out.println(currentPosition);
 			if (movements.isEmpty()
 					&& !sameLocation(currentPosition, new Point2D.Double(
 							currentTask.getPos().getX(), currentTask.getPos()
 									.getY()), .1, .1)) {
 				// if movements needs updated:
-				System.out.println("movementsChanged");
-				System.out.println(currentTask.getPos());
 				movements = goHere(currentPosition, currentTask.getPos());
 			}
 
 			if (sameLocation(currentPosition, new Point2D.Double(currentTask
 					.getPos().getX(), currentTask.getPos().getY()), .1, .1)) {
 				// if in location of current task:
-				System.out.println("execute");
 				currentTask.execute();
 				currentTask = null;
 			}
