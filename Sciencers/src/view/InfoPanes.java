@@ -35,10 +35,14 @@ public class InfoPanes extends JPanel {
 	
 	// Magic Numbers
 	private final int INFO_PANE_SIZE = 200;
+	
+	//Panes
+	private final int STATS_PANE_WIDTH = 90;
+	//Boxes
 	private final int TASK_BOX_WIDTH = 150;
 	private final int TASK_BOX_HEIGHT = 60;
-	private final int STATS_PANE_WIDTH = 90;
-	private final int STATS_PANE_HEIGHT = 60;
+	private final int ALERTS_BOX_WIDTH = 150;
+	private final int ALERTS_BOX_HEIGHT = 60;
 	
 	public InfoPanes(World world){
 		this.setBackground(new Color(0,0,0,180)); 
@@ -68,7 +72,7 @@ public class InfoPanes extends JPanel {
 		statsPane.setBorder(null);
 		statsPane.setOpaque(false);
 		this.add(statsPane);
-		statsPane.setSize(STATS_PANE_WIDTH + 30, STATS_PANE_HEIGHT);
+		statsPane.setSize(STATS_PANE_WIDTH + 30, INFO_PANE_SIZE);
 		statsPane.setLocation(xTemp, 0);
 		
 		xTemp += statsPane.getWidth() + 10;
@@ -94,7 +98,7 @@ public class InfoPanes extends JPanel {
 //				TaskBox newTask = new TaskBox(new BuildBuildingTask(EBuilding.FARM, new Point(5,2*i))); // demo only
 //				this.add(newTask);
 //			}
-			this.setPreferredSize(new Dimension(150, 65 * this.getComponentCount() + 5));
+			this.setPreferredSize(new Dimension(TASK_BOX_WIDTH, (TASK_BOX_HEIGHT+5) * this.getComponentCount() + 5));
 		}
 		
 		@Override
@@ -160,6 +164,48 @@ public class InfoPanes extends JPanel {
 			}
 //			this.setPreferredSize(new Dimension(TASK_BOX_WIDTH, (TASK_BOX_HEIGHT+5) * this.getComponentCount() + 5));
 			
+		}
+	}
+	
+	private class AlertsPane extends JPanel {
+		public AlertsPane() {
+			this.setLayout(new FlowLayout());
+			this.setBackground(new Color(0,0,0,0));
+			this.setPreferredSize(new Dimension(ALERTS_BOX_WIDTH, (ALERTS_BOX_HEIGHT+5) * this.getComponentCount() + 5));
+			
+			AlertsBox a = new AlertsBox("We require more pylons!");
+			this.add(a);
+			AlertsBox b = new AlertsBox("All ur base r belong to us");
+			this.add(b);
+		}
+		
+		@Override
+		public void repaint() {
+			super.repaint();
+			this.setPreferredSize(new Dimension(ALERTS_BOX_WIDTH, (ALERTS_BOX_HEIGHT+5) * this.getComponentCount() + 5));
+		}
+	}
+	
+	private class AlertsBox extends JPanel {
+		
+		private String alert;
+		
+		public AlertsBox(String a) {
+			alert = a;
+			this.setBackground(new Color(255,255,255,100));
+			this.setSize(new Dimension(ALERTS_BOX_WIDTH, ALERTS_BOX_HEIGHT));
+			this.setPreferredSize(new Dimension(ALERTS_BOX_WIDTH, ALERTS_BOX_HEIGHT));
+		}
+		
+		@Override
+		public void paintComponent(Graphics g){
+			super.paintComponent(g);
+			Graphics2D g2 = (Graphics2D) g;
+
+			g2.setColor(Color.WHITE);
+			
+			int x = 5, y = 0;
+		    g2.drawString(alert, x, y += g.getFontMetrics().getHeight());
 		}
 	}
 	
