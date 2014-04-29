@@ -23,9 +23,13 @@ public class TaskList {
 			farmerTasks.add(t);
 		} else if (agentType.equals(EAgent.MINER)){
 			minerTasks.add(t);
-		} else {
+		} else { //i.e. if agentType == null
 			genericTasks.add(t);
 		}
+	}
+	
+	public static void addTask(Task t) {
+		addTask(t, null);	
 	}
 	
 //	public static Task nextTask(EAgent agentType) {
@@ -51,4 +55,6 @@ public class TaskList {
 	public static void emptyList() {
 		genericTasks = new ArrayDeque<Task>();
 	}
+
+	
 }
