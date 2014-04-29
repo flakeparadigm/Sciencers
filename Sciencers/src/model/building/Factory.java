@@ -5,7 +5,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
 
-import model.agent.Agent;
+import model.agent.AgentReplacement;
 import model.inventory.Inventory;
 import model.inventory.Resource;
 
@@ -21,7 +21,7 @@ public class Factory extends Building {
 	
 	//Variables
 	private Inventory inv;
-	private ArrayList<Agent> workers;
+	private ArrayList<AgentReplacement> workers;
 
 	public Factory(Point pos) {
 		super(pos);
@@ -44,7 +44,7 @@ public class Factory extends Building {
 	}
 
 	@Override
-	public boolean addWorker(Agent a) {
+	public boolean addWorker(AgentReplacement a) {
 		if(workers.size() <= MAX_WORKERS)
 			return false;
 		
@@ -53,7 +53,7 @@ public class Factory extends Building {
 	}
 
 	@Override
-	public boolean removeWorker(Agent a) {
+	public boolean removeWorker(AgentReplacement a) {
 		if(!workers.contains(a))
 			return false;
 		

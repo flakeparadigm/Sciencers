@@ -5,7 +5,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
 
-import model.agent.Agent;
+import model.agent.AgentReplacement;
 import model.inventory.Inventory;
 import model.inventory.Resource;
 
@@ -22,12 +22,12 @@ public class Farm extends Building {
 	
 	//Variables
 	private Inventory inv;
-	private ArrayList<Agent> workers;
+	private ArrayList<AgentReplacement> workers;
 	
 	public Farm(Point pos) {
 		super(pos);
 //		POSITION = pos;
-		workers = new ArrayList<Agent>();
+		workers = new ArrayList<AgentReplacement>();
 		inv = new Inventory(CAPACITY);
 		inv.changeAmount(Resource.FOOD, 10000000);
 	}
@@ -61,7 +61,7 @@ public class Farm extends Building {
 	}
 
 	@Override
-	public boolean addWorker(Agent a) {
+	public boolean addWorker(AgentReplacement a) {
 		if(workers.size() <= MAX_WORKERS)
 			return false;
 		
@@ -70,7 +70,7 @@ public class Farm extends Building {
 	}
 
 	@Override
-	public boolean removeWorker(Agent a) {
+	public boolean removeWorker(AgentReplacement a) {
 		if(!workers.contains(a))
 			return false;
 		

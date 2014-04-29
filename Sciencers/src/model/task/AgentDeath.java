@@ -4,7 +4,6 @@ import java.awt.Point;
 
 import controller.GameTick;
 import model.World;
-import model.agent.Agent;
 import model.agent.AgentReplacement;
 
 public class AgentDeath implements Task{

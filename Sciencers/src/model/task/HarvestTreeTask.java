@@ -5,7 +5,6 @@ import java.awt.Point;
 import view.Tile;
 import model.Terrain;
 import model.World;
-import model.agent.Agent;
 import model.agent.AgentReplacement;
 import model.inventory.Resource;
 

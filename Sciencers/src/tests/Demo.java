@@ -11,7 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import model.World;
-import model.agent.Agent;
 import model.agent.AgentReplacement;
 import model.agent.EAgent;
 import model.building.EBuilding;
@@ -153,8 +152,7 @@ public class Demo extends JFrame {
 		private void testGatherAndStore(){
 			World.addAgent(EAgent.FARMER, 9);
 			World.terrain.setTile(Tile.Dirt, 20, 24);
-			TaskList.addTask(new BuildBuildingTask(EBuilding.FARM, new Point(
-					25, 26)));
+			TaskList.addTask(new BuildBuildingTask(EBuilding.FARM, new Point(25, 26)));
 			AgentReplacement gatherAgent = (AgentReplacement) World.agents.get(0);
 			System.out.println("Unfinished");
 //			gatherAgent.setToGather();

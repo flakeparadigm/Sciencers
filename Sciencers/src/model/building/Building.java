@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 
 import model.Entity;
-import model.agent.Agent;
+import model.agent.AgentReplacement;
 import model.inventory.Inventory;
 import model.inventory.Resource;
 
@@ -33,9 +33,9 @@ public abstract class Building implements Entity {
 	
 	public abstract Inventory getInventory();
 	
-	public abstract boolean addWorker(Agent a);
+	public abstract boolean addWorker(AgentReplacement a);
 	
-	public abstract boolean removeWorker(Agent a);
+	public abstract boolean removeWorker(AgentReplacement a);
 	
 	public abstract int getNumWorkers();
 

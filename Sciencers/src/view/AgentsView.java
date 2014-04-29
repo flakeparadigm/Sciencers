@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 
 import model.Entity;
 import model.World;
-import model.agent.Agent;
 import model.agent.AgentReplacement;
 import model.inventory.Tool;
 

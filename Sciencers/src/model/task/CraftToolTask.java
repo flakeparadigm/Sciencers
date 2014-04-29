@@ -2,7 +2,6 @@ package model.task;
 
 import java.awt.Point;
 
-import model.agent.Agent;
 import model.agent.AgentReplacement;
 import model.inventory.Tool;
 

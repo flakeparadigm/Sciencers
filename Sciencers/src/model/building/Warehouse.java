@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import model.agent.Agent;
+import model.agent.AgentReplacement;
 import model.inventory.Inventory;
 import model.inventory.Resource;
 
@@ -18,7 +18,7 @@ public class Warehouse extends Building {
 	
 	// Variables
 	private Inventory inv;
-	private ArrayList<Agent> workers;
+	private ArrayList<AgentReplacement> workers;
 	
 	public Warehouse(Point pos) {
 		super(pos);
@@ -51,7 +51,7 @@ public class Warehouse extends Building {
 	}
 	
 	@Override
-	public boolean addWorker(Agent a) {
+	public boolean addWorker(AgentReplacement a) {
 		if(workers.size() <= MAX_WORKERS)
 			return false;
 		
@@ -60,7 +60,7 @@ public class Warehouse extends Building {
 	}
 
 	@Override
-	public boolean removeWorker(Agent a) {
+	public boolean removeWorker(AgentReplacement a) {
 		if(!workers.contains(a))
 			return false;
 		
