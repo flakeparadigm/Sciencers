@@ -16,7 +16,7 @@ import model.task.HarvestTreeTask;
 import model.task.Task;
 import model.task.TaskList;
 
-public class FarmerAgent extends AgentReplacement {
+public class MinerAgent extends AgentReplacement {
 
 	private int tickCount;
 	private Point2D.Double currentPosition;
@@ -26,9 +26,10 @@ public class FarmerAgent extends AgentReplacement {
 	private Stack<Point> movements;
 	private int SEEK_FOOD_HUNGER = 800;
 
-	public FarmerAgent(Point currentPosition) {
+	public MinerAgent(Point currentPosition) {
 		this.currentPosition = new Point2D.Double((double) currentPosition.x,
 				(double) currentPosition.y);
+		// targetPosition = this.currentPosition;
 		currentTask = null;
 		taskTimer = 0;
 		movements = new Stack<Point>();
@@ -107,17 +108,18 @@ public class FarmerAgent extends AgentReplacement {
 					&& taskTimer < 0) {
 				// if in location of current task:
 				currentTask.execute();
-				if (currentTask.equals(TaskList.getList(EAgent.FARMER).peek())) {
-					TaskList.getList(EAgent.FARMER).poll();
+				if (currentTask.equals(TaskList.getList(EAgent.MINER).peek())) {
+					TaskList.getList(EAgent.MINER).poll();
 				}
 				currentTask = null;
 			}
+
 		}
 	}
 
 	private void getNextTaskIfNotBusy() {
-		if (currentTask == null && !TaskList.getList(EAgent.FARMER).isEmpty()) {
-			currentTask = TaskList.getList(EAgent.FARMER).peek();
+		if (currentTask == null && !TaskList.getList(EAgent.MINER).isEmpty()) {
+			currentTask = TaskList.getList(EAgent.MINER).peek();
 		}
 	}
 
