@@ -41,8 +41,8 @@ public class World{
 	public World(long seed, int width, int height) {
 		terrain = new Terrain(seed, width, height);
 		World.seed = seed;
-		this.width = width;
-		this.height = height;
+		World.width = width;
+		World.height = height;
 		
 		agents = new ArrayList<Entity>();
 		buildings = new ArrayList<Entity>();
