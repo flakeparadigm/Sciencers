@@ -2,7 +2,7 @@ package model.task;
 
 import java.awt.Point;
 
-import model.Agent;
+import model.agent.Agent;
 import model.building.Building;
 import model.inventory.Resource;
 

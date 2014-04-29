@@ -19,9 +19,9 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import model.Agent;
 import model.Research;
 import model.World;
+import model.agent.Agent;
 import model.building.EBuilding;
 import model.task.BuildBuildingTask;
 import model.task.Task;

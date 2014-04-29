@@ -1,4 +1,4 @@
-package model;
+package model.agent;
 
 import java.awt.Dimension;
 import java.awt.Point;
@@ -6,6 +6,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
 import java.util.Stack;
 
+import model.World;
 import model.inventory.Resource;
 import model.inventory.Tool;
 import model.task.AgentDeath;
@@ -81,6 +82,7 @@ public class FarmerAgent extends AgentReplacement {
 				currentTask = new CraftToolTask(Tool.HAMMER, this, new Point(
 						(int) currentPosition.getX(),
 						(int) currentPosition.getY()));
+				taskTimer = 100;
 			}
 		}
 

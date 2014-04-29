@@ -5,7 +5,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
 
-import model.Agent;
+import model.agent.Agent;
 import model.inventory.Inventory;
 import model.inventory.Resource;
 

@@ -3,9 +3,9 @@ package model.task;
 import java.awt.Point;
 
 import controller.GameTick;
-import model.Agent;
-import model.AgentReplacement;
 import model.World;
+import model.agent.Agent;
+import model.agent.AgentReplacement;
 
 public class AgentDeath implements Task{
 

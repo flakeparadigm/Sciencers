@@ -10,10 +10,10 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import model.Agent;
-import model.AgentReplacement;
 import model.Entity;
 import model.World;
+import model.agent.Agent;
+import model.agent.AgentReplacement;
 import model.inventory.Tool;
 
 public class AgentsView extends JPanel{

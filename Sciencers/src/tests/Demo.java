@@ -10,10 +10,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import model.Agent;
-import model.AgentReplacement;
-import model.EAgent;
 import model.World;
+import model.agent.Agent;
+import model.agent.AgentReplacement;
+import model.agent.EAgent;
 import model.building.EBuilding;
 import model.task.BuildBuildingTask;
 import model.task.HarvestTreeTask;

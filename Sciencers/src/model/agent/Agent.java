@@ -1,4 +1,4 @@
-package model;
+package model.agent;
 
 import java.awt.Dimension;
 import java.awt.Point;
@@ -6,6 +6,9 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import model.Entity;
+import model.PathFinder;
+import model.World;
 import model.building.Building;
 import model.inventory.Inventory;
 import model.inventory.Resource;
@@ -66,6 +69,7 @@ public class Agent implements Entity {
 	boolean gather = false;
 
 	public Agent(Point currentPosition) {
+		System.out.println("Problem!");
 		MY_ID = currentId++;
 		movements = new Stack<Point>();
 

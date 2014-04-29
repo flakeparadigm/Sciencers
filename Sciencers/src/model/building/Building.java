@@ -3,8 +3,8 @@ package model.building;
 import java.awt.Dimension;
 import java.awt.Point;
 
-import model.Agent;
 import model.Entity;
+import model.agent.Agent;
 import model.inventory.Inventory;
 import model.inventory.Resource;
 

@@ -4,8 +4,8 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import model.Agent;
 import model.Research;
+import model.agent.Agent;
 import model.inventory.Inventory;
 
 public class Lab extends Building {

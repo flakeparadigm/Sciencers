@@ -1,4 +1,4 @@
-package model;
+package model.agent;
 
 import java.awt.Dimension;
 import java.awt.Point;
@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import view.Tile;
+import model.Entity;
+import model.PathFinder;
+import model.World;
 import model.building.Building;
 import model.inventory.Inventory;
 import model.inventory.Resource;

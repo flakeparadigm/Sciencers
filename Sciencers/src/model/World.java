@@ -3,6 +3,9 @@ package model;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import model.agent.AgentReplacement;
+import model.agent.EAgent;
+import model.agent.FarmerAgent;
 import model.building.Building;
 import model.building.EBuilding;
 import model.building.Farm;

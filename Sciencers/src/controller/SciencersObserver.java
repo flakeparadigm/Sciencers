@@ -1,8 +1,8 @@
 package controller;
 
-import model.Agent;
-import model.AgentReplacement;
 import model.Entity;
+import model.agent.Agent;
+import model.agent.AgentReplacement;
 import model.building.Building;
 import view.WorldView;
 

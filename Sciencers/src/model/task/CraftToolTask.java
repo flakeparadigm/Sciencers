@@ -2,8 +2,8 @@ package model.task;
 
 import java.awt.Point;
 
-import model.Agent;
-import model.AgentReplacement;
+import model.agent.Agent;
+import model.agent.AgentReplacement;
 import model.inventory.Tool;
 
 public class CraftToolTask implements Task {
