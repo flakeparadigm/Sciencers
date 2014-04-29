@@ -9,13 +9,19 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -30,13 +36,12 @@ public class InfoPanes extends JPanel {
 	private DefaultListModel<String> taskListModel = new DefaultListModel<String>();
 	private JList<String> taskList = new JList<String>(taskListModel);
 	private JScrollPane tasksScroller, alertsScroller;
-	private JPanel statsPane;
+	private JPanel statsPane, playerButtonsPane;
 
-	// Magic Numbers
 	private final int INFO_PANE_SIZE = 200;
-
 	// Panes
 	private final int STATS_PANE_WIDTH = 90;
+	private final int PLAYER_BUTTONS_WIDTH = 150;
 	// Boxes
 	private final int TASK_BOX_WIDTH = 150;
 	private final int TASK_BOX_HEIGHT = 60;
@@ -48,6 +53,15 @@ public class InfoPanes extends JPanel {
 		this.setLayout(null);
 
 		int xTemp = 0; // keeps track of assignment position for each new panel
+		
+		playerButtonsPane = new PlayerButtonsPane();
+		playerButtonsPane.setBorder(null);
+		playerButtonsPane.setOpaque(false);
+		this.add(playerButtonsPane);
+		playerButtonsPane.setSize(PLAYER_BUTTONS_WIDTH + 30, PLAYER_BUTTONS_WIDTH);
+		playerButtonsPane.setLocation(xTemp, 0);
+
+		xTemp += playerButtonsPane.getWidth() + 10;
 
 		// Task Pane
 		tasksScroller = new JScrollPane();
@@ -56,6 +70,7 @@ public class InfoPanes extends JPanel {
 		tasksScroller.setBorder(null);
 		this.add(tasksScroller);
 		tasksScroller.setSize(TASK_BOX_WIDTH + 30, INFO_PANE_SIZE);
+		tasksScroller.setLocation(xTemp, 0);
 
 		tasksScroller.getVerticalScrollBar().addAdjustmentListener(
 				new AdjustmentListener() {
@@ -102,8 +117,68 @@ public class InfoPanes extends JPanel {
 	}
 
 	public void update() {
-		repaint();
-		statsPane.repaint();
+//		repaint();
+//		statsPane.repaint();
+		tasksScroller.getViewport().update(this.getGraphics());
+		statsPane.update(this.getGraphics());
+		alertsScroller.getViewport().update(this.getGraphics());
+	}
+	
+	private class PlayerButtonsPane extends JPanel {
+		
+//		private JButton buildButton;
+		private JButton hireButton;
+		private JComboBox<String> buildMenu;
+		
+		public PlayerButtonsPane() {
+			this.setLayout(new FlowLayout());
+			this.setBackground(new Color(0, 0, 0, 0));
+			setUpButtons();
+		}
+		
+		private void setUpButtons() {
+			
+//			ArrayList<String> buildingTypes = new ArrayList<String>();
+			
+
+			//Create the combo box, select item at index 4.
+			//Indices start at 0, so 4 specifies the pig.
+			buildMenu = new JComboBox<String>();
+			for(EBuilding b : EBuilding.values()) {
+				buildMenu.addItem(b.name()); //TODO make this proper case instead of all caps
+			}
+			
+			buildMenu.setSelectedIndex(4);
+			buildMenu.addActionListener(new MenuListener());
+			
+			add(buildMenu);
+			
+//			buildButton = new JButton("Build Something");
+//			add(buildButton);
+			
+			hireButton = new JButton("Hire Somebody");
+			add(hireButton);
+		}
+		
+		private class MenuListener implements ActionListener {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Building a building through the InfoPane is not yet implemented.");
+			}
+		}
+		
+		private class PlayerButtonListener implements ActionListener {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+//				if(arg0.getSource() == buildButton) {
+//					JOptionPane.showOptionDialog(null, "Choose a building. Make it awesome.", "Build a building", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new String[]{"Farm", "Storeroom", "Lab"}, "Farm");
+//				}
+			}
+
+
+			
+		}
 	}
 
 	private class TaskPane extends JPanel {

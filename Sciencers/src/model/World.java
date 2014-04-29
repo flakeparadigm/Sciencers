@@ -12,6 +12,7 @@ import model.building.Farm;
 import model.building.Warehouse;
 import model.task.TaskList;
 import controller.GameTick;
+import controller.InfoObserver;
 
 /*
  * Currently, this class is just set up to provide a method to access terrain from the view
@@ -69,15 +70,22 @@ public class World{
 	
 	public static void addBuilding(EBuilding type, Point pos){
 		Building building = null;
-		if(type == EBuilding.FARM)
+		if(type == EBuilding.FARM) {
 			building = new Farm(pos);
-		else if(type == EBuilding.WAREHOUSE)
+			updateInfo("Building");
+		}
+		else if(type == EBuilding.WAREHOUSE) {
 			building = new Warehouse(pos);
+		}
 		if(building == null)
 			System.out.println("Building is null! World.addBuilding()");
 		buildings.add(building);
 	}
 	
+	public static void updateInfo(String string) {
+		InfoObserver.updateObserver();
+	}
+
 	/*
 	 * these should be unnecessary as long as their variables are public static
 	 */
