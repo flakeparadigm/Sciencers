@@ -63,11 +63,10 @@ public class World{
 		//add other agent types here
 		
 		if(agent == null)
-			System.out.println("Building is null! World.addBuilding()");
+			System.out.println("Building is null! World.addAgent()");
 		agents.add(agent);
 	}
 	
-	// WE WILL NEED TO REFACTOR THIS EVENTUALLY TO addBuilding(type, pos);
 	public static void addBuilding(EBuilding type, Point pos){
 		Building building = null;
 		if(type == EBuilding.FARM)
