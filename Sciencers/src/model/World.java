@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import model.agent.AgentReplacement;
 import model.agent.EAgent;
 import model.agent.FarmerAgent;
+import model.agent.MinerAgent;
 import model.building.Building;
 import model.building.EBuilding;
 import model.building.Farm;
@@ -61,6 +62,8 @@ public class World{
 		AgentReplacement agent = null;
 		if(type == EAgent.FARMER)
 			agent = new FarmerAgent(new Point(xPos, terrain.getAltitude(xPos) - 1)) ;
+		if(type == EAgent.MINER)
+			agent = new MinerAgent(new Point(xPos, terrain.getAltitude(xPos) - 1)) ;
 		//add other agent types here
 		
 		if(agent == null)

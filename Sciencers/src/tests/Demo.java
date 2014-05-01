@@ -15,6 +15,7 @@ import model.agent.AgentReplacement;
 import model.agent.EAgent;
 import model.building.EBuilding;
 import model.task.BuildBuildingTask;
+import model.task.ClearTileTask;
 import model.task.HarvestTreeTask;
 import model.task.Task;
 import model.task.TaskList;
@@ -42,6 +43,7 @@ public class Demo extends JFrame {
 	private JButton testSurvivalButton = new JButton("Test Overall Survival");
 	private JButton testHungerDeathButton = new JButton("Test Hunger Death");
 	private JButton testGatherAndStoreButton = new JButton("Gather and Store Food");
+	private JButton testMineTile = new JButton("Mine One Tile");
 
 	// magic numbers
 	private final int X_SCREEN_SIZE = ((int) tk.getScreenSize().getWidth());
@@ -89,6 +91,7 @@ public class Demo extends JFrame {
 		this.add(testSurvivalButton);
 		this.add(testHungerDeathButton);
 		this.add(testGatherAndStoreButton);
+		this.add(testMineTile);
 	}
 
 	private void registerListeners() {
@@ -101,6 +104,7 @@ public class Demo extends JFrame {
 		testSurvivalButton.addActionListener(new demoButtonListener());
 		testHungerDeathButton.addActionListener(new demoButtonListener());
 		testGatherAndStoreButton.addActionListener(new demoButtonListener());
+		testMineTile.addActionListener(new demoButtonListener());
 	}
 
 	// PUT ALL TEST CASES BELOW.
@@ -125,6 +129,8 @@ public class Demo extends JFrame {
 				testHungerDeath();
 			if (event.getSource() == testGatherAndStoreButton)
 				testGatherAndStore();
+			if (event.getSource() == testMineTile)
+				testMineTile();
 		}
 
 		private void resetWorld() {
@@ -147,6 +153,19 @@ public class Demo extends JFrame {
 
 			AgentReplacement hungryAgent = (AgentReplacement) World.agents.get(0);
 			hungryAgent.setHunger(5);
+		}
+		
+		private void testMineTile(){
+			World.addAgent(EAgent.MINER, 9);
+			AgentReplacement miningAgent = (AgentReplacement) World.agents.get(0);
+			TaskList.addTask(new ClearTileTask(miningAgent, new Point(9, 21)), EAgent.MINER);
+			TaskList.addTask(new ClearTileTask(miningAgent, new Point(9, 22)), EAgent.MINER);
+			TaskList.addTask(new ClearTileTask(miningAgent, new Point(9, 23)), EAgent.MINER);
+			TaskList.addTask(new ClearTileTask(miningAgent, new Point(9, 24)), EAgent.MINER);
+			TaskList.addTask(new ClearTileTask(miningAgent, new Point(9, 25)), EAgent.MINER);
+			TaskList.addTask(new ClearTileTask(miningAgent, new Point(9, 26)), EAgent.MINER);
+			TaskList.addTask(new ClearTileTask(miningAgent, new Point(9, 27)), EAgent.MINER);
+				System.out.println(TaskList.getList(EAgent.MINER).size());
 		}
 		
 		private void testGatherAndStore(){

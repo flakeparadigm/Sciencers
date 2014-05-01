@@ -30,7 +30,7 @@ public abstract class AgentReplacement implements Entity {
 	public final int HUNGER_SPEED = 100;
 	private final double GRAVITY_CONSTANT = .0981;
 	protected int SEEK_FOOD_HUNGER = 800;
-	
+
 	protected int hunger = 1000;
 	protected int fatigue = 1000;
 	boolean isWorking = false;
@@ -41,8 +41,6 @@ public abstract class AgentReplacement implements Entity {
 	protected Stack<Point> movements;
 	protected Task currentTask;
 	protected int taskTimer;
-	
-
 
 	private Inventory inventory;
 	private ArrayList<Tile> passableTiles;
@@ -60,7 +58,7 @@ public abstract class AgentReplacement implements Entity {
 		passableTiles.add(Tile.Leaves);
 
 		inventory = new Inventory(CAPACITY);
-		
+
 		this.currentPosition = new Point2D.Double((double) currentPosition.x,
 				(double) currentPosition.y);
 		currentTask = null;
@@ -70,12 +68,15 @@ public abstract class AgentReplacement implements Entity {
 	}
 
 	public abstract void update();
-	
 
 	protected void executeCurrentTask() {
 		if (currentTask != null) {
+			if (currentTask.getPos() != null) {
+				System.out.println("Null Task Position!");
+			}
 			// if current task exists:
 			if (movements.isEmpty()
+					&& currentTask.getPos() != null
 					&& !sameLocation(currentPosition, new Point2D.Double(
 							currentTask.getPos().getX(), currentTask.getPos()
 									.getY()), .1, .1)) {
@@ -91,6 +92,9 @@ public abstract class AgentReplacement implements Entity {
 				if (currentTask.equals(TaskList.getList(EAgent.FARMER).peek())) {
 					TaskList.getList(EAgent.FARMER).poll();
 				}
+				if (currentTask.equals(TaskList.getList(EAgent.MINER).peek())){
+					TaskList.getList(EAgent.MINER).poll();
+				}
 				if (currentTask.equals(TaskList.getList(EAgent.GENERIC).peek())) {
 					TaskList.getList(EAgent.GENERIC).poll();
 				}
@@ -98,14 +102,12 @@ public abstract class AgentReplacement implements Entity {
 			}
 		}
 	}
-	
-	
 
-	protected void getNextTaskIfNotBusy() {
-		if (currentTask == null && !TaskList.getList(EAgent.FARMER).isEmpty()) {
-			currentTask = TaskList.getList(EAgent.FARMER).peek();
+	protected void getNextTaskIfNotBusy(EAgent type) {
+		if (currentTask == null && !TaskList.getList(type).isEmpty()) {
+			currentTask = TaskList.getList(type).peek();
 		}
-		
+
 		if (currentTask == null && !TaskList.getList(EAgent.GENERIC).isEmpty()) {
 			currentTask = TaskList.getList(EAgent.GENERIC).peek();
 		}
@@ -115,7 +117,11 @@ public abstract class AgentReplacement implements Entity {
 		return currentPosition;
 	}
 	
-	protected void updateStats(){
+	public void setPos(Point2D.Double position){
+		currentPosition = position;
+	}
+
+	protected void updateStats() {
 		if (tickCount % HUNGER_SPEED == 0) {
 			if (isWorking) {
 				hunger -= 6;
@@ -164,16 +170,17 @@ public abstract class AgentReplacement implements Entity {
 			if (currentPosition.getY() + dy
 					- World.terrain.getAltitude((int) currentPosition.getX()) > .1) {
 				System.out.println("Safety Block");
-				currentPosition.setLocation(
-						(double) (currentPosition.getX() + dx),
-						(double) (World.terrain
-								.getAltitude((int) currentPosition.getX()) + 1));
+				currentPosition
+						.setLocation((double) (currentPosition.getX() + dx),
+								(double) (World.terrain
+										.getAltitude((int) currentPosition
+												.getX()) + 1));
 			} else {
 				currentPosition.setLocation(
 						(double) (currentPosition.getX() + dx),
 						(double) (currentPosition.getY() + dy));
 			}
-			
+
 			// adjust tolerances to allow correct stopping after jump or fall:
 			if (sameLocation(currentPosition,
 					new Point2D.Double(movements.peek().x, movements.peek().y),
@@ -198,6 +205,11 @@ public abstract class AgentReplacement implements Entity {
 					movements.peek().x, movements.peek().y), .1, .1)) {
 				movements.pop();
 			}
+		} else {
+			System.out.println("Out");
+			currentPosition.setLocation(
+					(double) (currentPosition.getX()),
+					(double) (currentPosition.getY()-SPEED));
 		}
 	}
 
@@ -242,7 +254,7 @@ public abstract class AgentReplacement implements Entity {
 		}
 		return null;
 	}
-	
+
 	protected Point findNearestTree(Point2D.Double currentPosition) {
 		if (currentPosition.equals(Tile.Wood)
 				|| currentPosition.equals(Tile.Leaves)) {
@@ -339,7 +351,7 @@ public abstract class AgentReplacement implements Entity {
 		else
 			return false;
 	}
-	
+
 	public void craftTool(Tool t) {
 		if (inventory.getAmount(Resource.WOOD) >= 3) {
 			if (mainTool == null) {
@@ -352,8 +364,8 @@ public abstract class AgentReplacement implements Entity {
 				System.out.println("Inventory full. Tool not crafted.");
 			}
 		} else {
-			(new HarvestTreeTask(this, findNearestTree((Double) getPos()), World.terrain))
-					.execute();
+			(new HarvestTreeTask(this, findNearestTree((Double) getPos()),
+					World.terrain)).execute();
 			craftTool(t);
 		}
 	}

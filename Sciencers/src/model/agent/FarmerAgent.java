@@ -1,10 +1,7 @@
 package model.agent;
 
-import java.awt.Dimension;
+
 import java.awt.Point;
-import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
-import java.util.Stack;
 
 import model.World;
 import model.inventory.Resource;
@@ -13,8 +10,7 @@ import model.task.AgentDeath;
 import model.task.BuildBuildingTask;
 import model.task.CraftToolTask;
 import model.task.HarvestTreeTask;
-import model.task.Task;
-import model.task.TaskList;
+
 
 public class FarmerAgent extends AgentReplacement {
 
@@ -46,7 +42,7 @@ public class FarmerAgent extends AgentReplacement {
 		}
 
 		// get task from list if agent doesn't have one
-		getNextTaskIfNotBusy();
+		getNextTaskIfNotBusy(EAgent.FARMER);
 
 		// build hammer before building Building
 		if (currentTask instanceof BuildBuildingTask && !hasTool(Tool.HAMMER)) {
