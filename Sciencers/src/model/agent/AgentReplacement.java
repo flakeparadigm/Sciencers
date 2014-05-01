@@ -214,7 +214,7 @@ public abstract class AgentReplacement implements Entity {
 					- World.terrain.getAltitude((int) currentPosition.getX()) > .1) {
 				System.out.println("Safety Block");
 				// safety block for jumping
-				System.out.println(dy);
+				System.out.println("Variable dy used for jumping:" + dy);
 				currentPosition
 						.setLocation((double) (currentPosition.getX() + dx),
 								(double) (World.terrain
