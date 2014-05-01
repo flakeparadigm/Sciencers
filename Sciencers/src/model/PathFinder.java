@@ -177,6 +177,11 @@ public class PathFinder {
 
 	private boolean isPassable(Point pt) {
 		Tile myTile = terrain.getTile(pt.x, pt.y);
+		
+		if(myTile == Tile.Ladder) {
+			return true;
+		}
+		
 		boolean isPassable = false;
 		int passableTileType = 0;
 		for (int i = 0; i < passable.size(); i++) {
