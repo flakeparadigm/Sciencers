@@ -18,36 +18,13 @@ import model.task.TaskList;
 
 public class FarmerAgent extends AgentReplacement {
 
-	private int tickCount;
-	private Point2D.Double currentPosition;
-	// private Point2D.Double targetPosition;
-	private Task currentTask;
-	private int taskTimer;
-	private Stack<Point> movements;
-	private int SEEK_FOOD_HUNGER = 800;
-
 	public FarmerAgent(Point currentPosition) {
-		this.currentPosition = new Point2D.Double((double) currentPosition.x,
-				(double) currentPosition.y);
-		currentTask = null;
-		taskTimer = 0;
-		movements = new Stack<Point>();
+		super(currentPosition);
 	}
 
 	@Override
 	public void update() {
-		if (tickCount % HUNGER_SPEED == 0) {
-			if (isWorking) {
-				hunger -= 6;
-				fatigue -= 3;
-			} else {
-				hunger -= 1;
-				fatigue -= 1;
-			}
-		}
-		tickCount++;
-		taskTimer--;
-		// System.out.println(tickCount);
+		updateStats();
 		/*
 		 * The following code should be focused upon specific tasks for this
 		 * type of Agent
@@ -89,46 +66,5 @@ public class FarmerAgent extends AgentReplacement {
 
 		updateMovement(currentPosition, movements);
 
-	}
-
-	private void executeCurrentTask() {
-		if (currentTask != null) {
-			// if current task exists:
-			if (movements.isEmpty()
-					&& !sameLocation(currentPosition, new Point2D.Double(
-							currentTask.getPos().getX(), currentTask.getPos()
-									.getY()), .1, .1)) {
-				// if movements needs updated:
-				movements = goHere(currentPosition, currentTask.getPos());
-			}
-
-			if (sameLocation(currentPosition, new Point2D.Double(currentTask
-					.getPos().getX(), currentTask.getPos().getY()), .1, .1)
-					&& taskTimer < 0) {
-				// if in location of current task:
-				currentTask.execute();
-				if (currentTask.equals(TaskList.getList(EAgent.FARMER).peek())) {
-					TaskList.getList(EAgent.FARMER).poll();
-				}
-				if (currentTask.equals(TaskList.getList(EAgent.GENERIC).peek())) {
-					TaskList.getList(EAgent.GENERIC).poll();
-				}
-				currentTask = null;
-			}
-		}
-	}
-
-	private void getNextTaskIfNotBusy() {
-		if (currentTask == null && !TaskList.getList(EAgent.FARMER).isEmpty()) {
-			currentTask = TaskList.getList(EAgent.FARMER).peek();
-		}
-		
-		if (currentTask == null && !TaskList.getList(EAgent.GENERIC).isEmpty()) {
-			currentTask = TaskList.getList(EAgent.GENERIC).peek();
-		}
-	}
-
-	public Point2D getPos() {
-		return currentPosition;
 	}
 }

@@ -28,11 +28,21 @@ public abstract class AgentReplacement implements Entity {
 	public final int CAPACITY = 100;
 	// every 100 ticks, hunger goes down
 	public final int HUNGER_SPEED = 100;
+	private final double GRAVITY_CONSTANT = .0981;
+	protected int SEEK_FOOD_HUNGER = 800;
+	
 	protected int hunger = 1000;
 	protected int fatigue = 1000;
 	boolean isWorking = false;
 	private double jumpVelocity = -.6;
-	private final double GRAVITY_CONSTANT = .0981;
+
+	protected int tickCount;
+	protected Point2D.Double currentPosition;
+	protected Stack<Point> movements;
+	protected Task currentTask;
+	protected int taskTimer;
+	
+
 
 	private Inventory inventory;
 	private ArrayList<Tile> passableTiles;
@@ -41,7 +51,7 @@ public abstract class AgentReplacement implements Entity {
 
 	private int jumpTick = 0;
 
-	public AgentReplacement() {
+	public AgentReplacement(Point currentPosition) {
 		MY_ID = currentId++;
 
 		passableTiles = new ArrayList<Tile>();
@@ -50,10 +60,74 @@ public abstract class AgentReplacement implements Entity {
 		passableTiles.add(Tile.Leaves);
 
 		inventory = new Inventory(CAPACITY);
+		
+		this.currentPosition = new Point2D.Double((double) currentPosition.x,
+				(double) currentPosition.y);
+		currentTask = null;
+		taskTimer = 0;
+		movements = new Stack<Point>();
 
 	}
 
 	public abstract void update();
+	
+
+	protected void executeCurrentTask() {
+		if (currentTask != null) {
+			// if current task exists:
+			if (movements.isEmpty()
+					&& !sameLocation(currentPosition, new Point2D.Double(
+							currentTask.getPos().getX(), currentTask.getPos()
+									.getY()), .1, .1)) {
+				// if movements needs updated:
+				movements = goHere(currentPosition, currentTask.getPos());
+			}
+
+			if (sameLocation(currentPosition, new Point2D.Double(currentTask
+					.getPos().getX(), currentTask.getPos().getY()), .1, .1)
+					&& taskTimer < 0) {
+				// if in location of current task:
+				currentTask.execute();
+				if (currentTask.equals(TaskList.getList(EAgent.FARMER).peek())) {
+					TaskList.getList(EAgent.FARMER).poll();
+				}
+				if (currentTask.equals(TaskList.getList(EAgent.GENERIC).peek())) {
+					TaskList.getList(EAgent.GENERIC).poll();
+				}
+				currentTask = null;
+			}
+		}
+	}
+	
+	
+
+	protected void getNextTaskIfNotBusy() {
+		if (currentTask == null && !TaskList.getList(EAgent.FARMER).isEmpty()) {
+			currentTask = TaskList.getList(EAgent.FARMER).peek();
+		}
+		
+		if (currentTask == null && !TaskList.getList(EAgent.GENERIC).isEmpty()) {
+			currentTask = TaskList.getList(EAgent.GENERIC).peek();
+		}
+	}
+
+	public Point2D getPos() {
+		return currentPosition;
+	}
+	
+	protected void updateStats(){
+		if (tickCount % HUNGER_SPEED == 0) {
+			if (isWorking) {
+				hunger -= 6;
+				fatigue -= 3;
+			} else {
+				hunger -= 1;
+				fatigue -= 1;
+			}
+		}
+		tickCount++;
+		taskTimer--;
+	}
 
 	protected void updateMovement(Point2D.Double currentPosition,
 			Stack<Point> movements) {
@@ -241,8 +315,6 @@ public abstract class AgentReplacement implements Entity {
 		}
 		return null;
 	}
-
-	public abstract Point2D getPos();
 
 	@Override
 	public Dimension getSize() {
