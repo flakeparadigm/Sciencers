@@ -110,6 +110,9 @@ public class FarmerAgent extends AgentReplacement {
 				if (currentTask.equals(TaskList.getList(EAgent.FARMER).peek())) {
 					TaskList.getList(EAgent.FARMER).poll();
 				}
+				if (currentTask.equals(TaskList.getList(EAgent.GENERIC).peek())) {
+					TaskList.getList(EAgent.GENERIC).poll();
+				}
 				currentTask = null;
 			}
 		}
@@ -118,6 +121,10 @@ public class FarmerAgent extends AgentReplacement {
 	private void getNextTaskIfNotBusy() {
 		if (currentTask == null && !TaskList.getList(EAgent.FARMER).isEmpty()) {
 			currentTask = TaskList.getList(EAgent.FARMER).peek();
+		}
+		
+		if (currentTask == null && !TaskList.getList(EAgent.GENERIC).isEmpty()) {
+			currentTask = TaskList.getList(EAgent.GENERIC).peek();
 		}
 	}
 

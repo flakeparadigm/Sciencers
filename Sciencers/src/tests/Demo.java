@@ -192,7 +192,7 @@ public class Demo extends JFrame {
 			World.addAgent(EAgent.FARMER, 9);
 			World.terrain.setTile(Tile.Dirt, 20, 24);
 			TaskList.addTask(new BuildBuildingTask(EBuilding.FARM, new Point(
-					25, 26)));
+					25, 26)), EAgent.GENERIC);
 		}
 
 		private void testHungerMovement() {

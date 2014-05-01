@@ -23,7 +23,7 @@ public class TaskList {
 			farmerTasks.add(t);
 		} else if (agentType.equals(EAgent.MINER)){
 			minerTasks.add(t);
-		} else { //i.e. if agentType == null
+		} else {
 			genericTasks.add(t);
 		}
 	}
