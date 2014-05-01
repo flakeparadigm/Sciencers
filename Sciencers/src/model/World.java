@@ -29,7 +29,7 @@ public class World{
 	// tick Info
 	private static GameTick agentsTick;
 	private static GameTick buildingsTick;
-	private static final int AGENT_TICK_TIME = 10;
+	private static final int AGENT_TICK_TIME = 50;
 	private static final int BUILDING_TICK_TIME = 100;
 	
 	// resources

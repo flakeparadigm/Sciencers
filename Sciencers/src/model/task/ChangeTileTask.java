@@ -25,6 +25,7 @@ public class ChangeTileTask implements Task {
 		passableTiles.add(Tile.Sky);
 		passableTiles.add(Tile.Wood);
 		passableTiles.add(Tile.Leaves);
+		passableTiles.add(Tile.Ladder);
 		this.tileType = tileType;
 	}
 	
@@ -40,6 +41,10 @@ public class ChangeTileTask implements Task {
 		} else if (World.terrain.getTile(position.x, position.y).equals(Tile.Wood)){
 			sourceAgent.getInventory().changeAmount(Resource.WOOD, 1);
 		} 
+		
+		if (tileType.equals(Tile.Ladder)){
+			sourceAgent.getInventory().changeAmount(Resource.WOOD, -1);
+		}
 	}
 
 	@Override
@@ -53,5 +58,9 @@ public class ChangeTileTask implements Task {
 		}
 		System.out.println("Error! Agent cannot reach tile!");
 		return null;
+	}
+	
+	public void changeTileType(Tile tileType){
+		this.tileType = tileType;
 	}
 }

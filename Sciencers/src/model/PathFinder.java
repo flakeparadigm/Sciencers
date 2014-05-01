@@ -177,11 +177,11 @@ public class PathFinder {
 
 	private boolean isPassable(Point pt) {
 		Tile myTile = terrain.getTile(pt.x, pt.y);
-		
-		if(myTile == Tile.Ladder) {
+
+		if (myTile == Tile.Ladder) {
 			return true;
 		}
-		
+
 		boolean isPassable = false;
 		int passableTileType = 0;
 		for (int i = 0; i < passable.size(); i++) {
@@ -194,8 +194,10 @@ public class PathFinder {
 		if (!isPassable)
 			return false;
 		try {
-			if (!passable.contains(terrain.getTile(pt.x, pt.y + 1)))
+			if (!passable.contains(terrain.getTile(pt.x, pt.y + 1))
+					|| terrain.getTile(pt.x, pt.y + 1).equals(Tile.Ladder)) {
 				return true;
+			}
 		} catch (ArrayIndexOutOfBoundsException e) {
 			return true;
 		}

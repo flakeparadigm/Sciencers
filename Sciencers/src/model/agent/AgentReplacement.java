@@ -56,6 +56,7 @@ public abstract class AgentReplacement implements Entity {
 		passableTiles.add(Tile.Sky);
 		passableTiles.add(Tile.Wood);
 		passableTiles.add(Tile.Leaves);
+		passableTiles.add(Tile.Ladder);
 
 		inventory = new Inventory(CAPACITY);
 
@@ -168,11 +169,26 @@ public abstract class AgentReplacement implements Entity {
 				jumpTick = 1;
 				jumpVelocity = 0;
 			}
-
-			// safety block for jumping
-			if (currentPosition.getY() + dy
+			
+//			for ladders:
+			System.out.println(World.terrain.getTile((int)currentPosition.getX() + 1, (int)currentPosition.getY()));
+			if (World.terrain.getTile((int)currentPosition.getX() + 1, (int)currentPosition.getY()).equals(Tile.Ladder)){
+				jumpTick = 0;
+				if ((double) movements.peek().getY()
+							- currentPosition.getY() < -.5){
+					dy = -SPEED;
+				} else {
+					dy = SPEED;
+				}
+				currentPosition.setLocation(
+						(double) (currentPosition.getX()),
+						(double) (currentPosition.getY() + dy));
+			} else 
+				if (currentPosition.getY() + dy
 					- World.terrain.getAltitude((int) currentPosition.getX()) > .1) {
 				System.out.println("Safety Block");
+				// safety block for jumping
+				System.out.println(dy);
 				currentPosition
 						.setLocation((double) (currentPosition.getX() + dx),
 								(double) (World.terrain
@@ -223,9 +239,6 @@ public abstract class AgentReplacement implements Entity {
 				destination, World.terrain, passableTiles);
 		movements = thePath.getPath();
 
-		if (movements.isEmpty()) {
-//			return null;
-		}
 		return movements;
 	}
 
@@ -288,7 +301,7 @@ public abstract class AgentReplacement implements Entity {
 				if (goHere(
 						currentPosition,
 						new Point(i + (int) currentPosition.x, World.terrain
-								.getAltitude(i + (int) currentPosition.x) - 1)) != null) {
+								.getAltitude(i + (int) currentPosition.x) - 1)).size()>0) {
 					return new Point(i + (int) currentPosition.x,
 							World.terrain.getAltitude(i
 									+ (int) currentPosition.x) - 1);
@@ -320,7 +333,7 @@ public abstract class AgentReplacement implements Entity {
 				if (goHere(
 						currentPosition,
 						new Point(-i + (int) currentPosition.x, World.terrain
-								.getAltitude(-i + (int) currentPosition.x) - 1)) != null) {
+								.getAltitude(-i + (int) currentPosition.x) - 1)).size() > 0) {
 					return new Point(-i + (int) currentPosition.x,
 							World.terrain.getAltitude(-i
 									+ (int) currentPosition.x) - 1);

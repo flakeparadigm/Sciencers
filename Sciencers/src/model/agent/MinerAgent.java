@@ -3,6 +3,7 @@ package model.agent;
 
 import java.awt.Point;
 
+import view.Tile;
 import model.World;
 import model.inventory.Resource;
 import model.inventory.Tool;
@@ -58,7 +59,14 @@ public class MinerAgent extends AgentReplacement {
 				taskTimer = 100;
 			}
 		} else if (currentTask instanceof ChangeTileTask){
-//			taskTimer = 1000;
+			//build ladder if digging down
+			if (getInventory().getAmount(Resource.WOOD) < 3){
+				currentTask = new HarvestTreeTask(this,
+						findNearestTree(currentPosition), World.terrain);
+				taskTimer = 10;
+			} else if (!World.terrain.getTile(currentTask.getPos().x, currentTask.getPos().y + 1).equals(Tile.Ladder)){
+				((ChangeTileTask) currentTask).changeTileType(Tile.Ladder);
+			}
 		}
 
 		executeCurrentTask();
