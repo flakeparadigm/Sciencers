@@ -2,11 +2,13 @@ package model.agent;
 
 
 import java.awt.Point;
+
 import model.World;
 import model.inventory.Resource;
 import model.inventory.Tool;
 import model.task.AgentDeath;
 import model.task.BuildBuildingTask;
+import model.task.ClearTileTask;
 import model.task.CraftToolTask;
 import model.task.HarvestTreeTask;
 
@@ -55,6 +57,8 @@ public class MinerAgent extends AgentReplacement {
 						(int) currentPosition.getY()));
 				taskTimer = 100;
 			}
+		} else if (currentTask instanceof ClearTileTask){
+//			taskTimer = 1000;
 		}
 
 		executeCurrentTask();

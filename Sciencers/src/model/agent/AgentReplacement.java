@@ -74,7 +74,7 @@ public abstract class AgentReplacement implements Entity {
 			if (currentTask.getPos() == null) {
 				System.out.println("Null Task Position!");
 			}
-			// if current task exists:
+			// if current task exists
 			if (movements.isEmpty()
 					&& currentTask.getPos() != null
 					&& !sameLocation(currentPosition, new Point2D.Double(
@@ -139,6 +139,8 @@ public abstract class AgentReplacement implements Entity {
 			Stack<Point> movements) {
 		double dx = 0;
 		double dy = 0;
+		boolean error = false;
+
 		if (!movements.isEmpty()) {
 
 			if ((double) movements.peek().getX() - currentPosition.getX() > .1) {
@@ -205,12 +207,11 @@ public abstract class AgentReplacement implements Entity {
 					movements.peek().x, movements.peek().y), .1, .1)) {
 				movements.pop();
 			}
-			System.out.println("NotHere");
 		} else {
-			System.out.println("Out");
-			currentPosition.setLocation(
-					(double) (currentPosition.getX()),
-					(double) (currentPosition.getY()+SPEED));
+//			currentPosition.setLocation(
+//					(double) (currentPosition.getX()),
+//					(double) (currentPosition.getY()+SPEED));
+//			movements = goHere(currentPosition, new Point((int)currentPosition.x, (int)currentPosition.y));
 		}
 	}
 
@@ -223,7 +224,7 @@ public abstract class AgentReplacement implements Entity {
 		movements = thePath.getPath();
 
 		if (movements.isEmpty()) {
-			return null;
+//			return null;
 		}
 		return movements;
 	}
