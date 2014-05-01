@@ -43,7 +43,7 @@ public class Demo extends JFrame {
 	private JButton testSurvivalButton = new JButton("Test Overall Survival");
 	private JButton testHungerDeathButton = new JButton("Test Hunger Death");
 	private JButton testGatherAndStoreButton = new JButton("Gather and Store Food");
-	private JButton testMineTile = new JButton("Mine One Tile");
+	private JButton testMineTile = new JButton("Mine Tiles");
 
 	// magic numbers
 	private final int X_SCREEN_SIZE = ((int) tk.getScreenSize().getWidth());

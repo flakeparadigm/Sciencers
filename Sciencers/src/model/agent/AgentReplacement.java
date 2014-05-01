@@ -71,7 +71,7 @@ public abstract class AgentReplacement implements Entity {
 
 	protected void executeCurrentTask() {
 		if (currentTask != null) {
-			if (currentTask.getPos() != null) {
+			if (currentTask.getPos() == null) {
 				System.out.println("Null Task Position!");
 			}
 			// if current task exists:
@@ -140,6 +140,7 @@ public abstract class AgentReplacement implements Entity {
 		double dx = 0;
 		double dy = 0;
 		if (!movements.isEmpty()) {
+
 			if ((double) movements.peek().getX() - currentPosition.getX() > .1) {
 				dx = SPEED;
 			}
@@ -189,7 +190,6 @@ public abstract class AgentReplacement implements Entity {
 					jumpTick = 0;
 				}
 			}
-
 			// adjust to allow correct switching of target tiles (for jumping
 			// and falling and standard)
 			if ((double) movements.peek().getY() - currentPosition.getY() < -.1
@@ -205,11 +205,12 @@ public abstract class AgentReplacement implements Entity {
 					movements.peek().x, movements.peek().y), .1, .1)) {
 				movements.pop();
 			}
+			System.out.println("NotHere");
 		} else {
 			System.out.println("Out");
 			currentPosition.setLocation(
 					(double) (currentPosition.getX()),
-					(double) (currentPosition.getY()-SPEED));
+					(double) (currentPosition.getY()+SPEED));
 		}
 	}
 
