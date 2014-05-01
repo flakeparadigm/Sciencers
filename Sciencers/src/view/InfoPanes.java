@@ -36,7 +36,8 @@ public class InfoPanes extends JPanel {
 	private DefaultListModel<String> taskListModel = new DefaultListModel<String>();
 	private JList<String> taskList = new JList<String>(taskListModel);
 	private JScrollPane tasksScroller, alertsScroller;
-	private JPanel statsPane, playerButtonsPane;
+	private StatsPane statsPane;
+	private PlayerButtonsPane playerButtonsPane;
 
 	private final int INFO_PANE_SIZE = 200;
 	// Panes
@@ -48,7 +49,7 @@ public class InfoPanes extends JPanel {
 	private final int ALERTS_BOX_WIDTH = 150;
 	private final int ALERTS_BOX_HEIGHT = 60;
 
-	public InfoPanes(World world) {
+	public InfoPanes() {
 		this.setBackground(new Color(0, 0, 0, 180));
 		this.setLayout(null);
 
@@ -116,12 +117,13 @@ public class InfoPanes extends JPanel {
 
 	}
 
-	public void update() {
+	public void performUpdate() {
 //		repaint();
 //		statsPane.repaint();
-		tasksScroller.getViewport().update(this.getGraphics());
-		statsPane.update(this.getGraphics());
-		alertsScroller.getViewport().update(this.getGraphics());
+//		tasksScroller.getViewport().update(this.getGraphics());
+		
+		statsPane.performUpdate();
+//		alertsScroller.getViewport().update(this.getGraphics());
 	}
 	
 	private class PlayerButtonsPane extends JPanel {
@@ -175,9 +177,6 @@ public class InfoPanes extends JPanel {
 //					JOptionPane.showOptionDialog(null, "Choose a building. Make it awesome.", "Build a building", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new String[]{"Farm", "Storeroom", "Lab"}, "Farm");
 //				}
 			}
-
-
-			
 		}
 	}
 
@@ -241,29 +240,23 @@ public class InfoPanes extends JPanel {
 			lResearch = new JLabel();
 			lBuildings = new JLabel();
 			
-			setLabels();
-		}
-
-		@Override
-		public void repaint() {
-			super.repaint();
-			for (Component j : this.getComponents()) {
-				j.repaint();
-			}
-		}
-		
-		private void setLabels() {
-			lAgents.setText("Agents: " + World.agents.size());
+			performUpdate();
+			
 			lAgents.setForeground(Color.white);
 			this.add(lAgents);
 			
-			lResearch.setText("Research: " + Research.get());
 			lResearch.setForeground(Color.white);
 			this.add(lResearch);
 			
-			lBuildings.setText("Buildings: " + World.buildings.size());
 			lBuildings.setForeground(Color.white);
 			this.add(lBuildings);
+		}
+		
+		public void performUpdate() {
+			lAgents.setText("Agents: " + World.agents.size());
+			lResearch.setText("Research: " + Research.get());
+			lBuildings.setText("Buildings: " + World.buildings.size());
+			repaint();
 		}
 	}
 
