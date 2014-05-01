@@ -40,6 +40,7 @@ public abstract class AgentReplacement implements Entity {
 	protected Point2D.Double currentPosition;
 	protected Stack<Point> movements;
 	protected Task currentTask;
+	protected Stack<Task> tasks;
 	protected int taskTimer;
 
 	private Inventory inventory;
@@ -65,10 +66,34 @@ public abstract class AgentReplacement implements Entity {
 		currentTask = null;
 		taskTimer = 0;
 		movements = new Stack<Point>();
+		tasks = new Stack<Task>();
 
 	}
 
 	public abstract void update();
+
+//	protected void executeLocalTask() {
+//		if (tasks.peek().getPos() == null) {
+//			System.out.println("Null Local Task Position!");
+//		}
+//		// if current task exists
+//		if (movements.isEmpty()
+//				&& tasks.peek().getPos() != null
+//				&& !sameLocation(currentPosition, new Point2D.Double(
+//						tasks.peek().getPos().getX(), tasks.peek().getPos()
+//								.getY()), .1, .1)) {
+//			// if movements needs updated:
+//			movements = goHere(currentPosition, tasks.peek().getPos());
+//		}
+//
+//		if (sameLocation(currentPosition, new Point2D.Double(tasks.peek()
+//				.getPos().getX(), tasks.peek().getPos().getY()), .1, .1)
+//				&& taskTimer < 0) {
+//			// if in location of current task:
+//			tasks.pop().execute();
+//		}
+//
+//	}
 
 	protected void executeCurrentTask() {
 		if (currentTask != null) {
@@ -93,7 +118,7 @@ public abstract class AgentReplacement implements Entity {
 				if (currentTask.equals(TaskList.getList(EAgent.FARMER).peek())) {
 					TaskList.getList(EAgent.FARMER).poll();
 				}
-				if (currentTask.equals(TaskList.getList(EAgent.MINER).peek())){
+				if (currentTask.equals(TaskList.getList(EAgent.MINER).peek())) {
 					TaskList.getList(EAgent.MINER).poll();
 				}
 				if (currentTask.equals(TaskList.getList(EAgent.GENERIC).peek())) {
@@ -105,20 +130,24 @@ public abstract class AgentReplacement implements Entity {
 	}
 
 	protected void getNextTaskIfNotBusy(EAgent type) {
+		if (currentTask == null && tasks.size() != 0){
+			currentTask = tasks.pop();
+		}
+		
 		if (currentTask == null && !TaskList.getList(type).isEmpty()) {
-			currentTask = TaskList.getList(type).peek();
+			currentTask = TaskList.getList(type).poll();
 		}
 
 		if (currentTask == null && !TaskList.getList(EAgent.GENERIC).isEmpty()) {
-			currentTask = TaskList.getList(EAgent.GENERIC).peek();
+			currentTask = TaskList.getList(EAgent.GENERIC).poll();
 		}
 	}
 
 	public Point2D getPos() {
 		return currentPosition;
 	}
-	
-	public void setPos(Point2D.Double position){
+
+	public void setPos(Point2D.Double position) {
 		currentPosition = position;
 	}
 
@@ -169,22 +198,19 @@ public abstract class AgentReplacement implements Entity {
 				jumpTick = 1;
 				jumpVelocity = 0;
 			}
-			
-//			for ladders:
-			System.out.println(World.terrain.getTile((int)currentPosition.getX() + 1, (int)currentPosition.getY()));
-			if (World.terrain.getTile((int)currentPosition.getX() + 1, (int)currentPosition.getY()).equals(Tile.Ladder)){
+
+			// for ladders:
+			if (World.terrain.getTile((int) currentPosition.getX() + 1,
+					(int) currentPosition.getY()).equals(Tile.Ladder)) {
 				jumpTick = 0;
-				if ((double) movements.peek().getY()
-							- currentPosition.getY() < -.5){
+				if ((double) movements.peek().getY() - currentPosition.getY() < -.5) {
 					dy = -SPEED;
 				} else {
 					dy = SPEED;
 				}
-				currentPosition.setLocation(
-						(double) (currentPosition.getX()),
+				currentPosition.setLocation((double) (currentPosition.getX()),
 						(double) (currentPosition.getY() + dy));
-			} else 
-				if (currentPosition.getY() + dy
+			} else if (currentPosition.getY() + dy
 					- World.terrain.getAltitude((int) currentPosition.getX()) > .1) {
 				System.out.println("Safety Block");
 				// safety block for jumping
@@ -224,10 +250,11 @@ public abstract class AgentReplacement implements Entity {
 				movements.pop();
 			}
 		} else {
-//			currentPosition.setLocation(
-//					(double) (currentPosition.getX()),
-//					(double) (currentPosition.getY()+SPEED));
-//			movements = goHere(currentPosition, new Point((int)currentPosition.x, (int)currentPosition.y));
+			// currentPosition.setLocation(
+			// (double) (currentPosition.getX()),
+			// (double) (currentPosition.getY()+SPEED));
+			// movements = goHere(currentPosition, new
+			// Point((int)currentPosition.x, (int)currentPosition.y));
 		}
 	}
 
@@ -301,7 +328,8 @@ public abstract class AgentReplacement implements Entity {
 				if (goHere(
 						currentPosition,
 						new Point(i + (int) currentPosition.x, World.terrain
-								.getAltitude(i + (int) currentPosition.x) - 1)).size()>0) {
+								.getAltitude(i + (int) currentPosition.x) - 1))
+						.size() > 0) {
 					return new Point(i + (int) currentPosition.x,
 							World.terrain.getAltitude(i
 									+ (int) currentPosition.x) - 1);
@@ -333,7 +361,8 @@ public abstract class AgentReplacement implements Entity {
 				if (goHere(
 						currentPosition,
 						new Point(-i + (int) currentPosition.x, World.terrain
-								.getAltitude(-i + (int) currentPosition.x) - 1)).size() > 0) {
+								.getAltitude(-i + (int) currentPosition.x) - 1))
+						.size() > 0) {
 					return new Point(-i + (int) currentPosition.x,
 							World.terrain.getAltitude(-i
 									+ (int) currentPosition.x) - 1);
