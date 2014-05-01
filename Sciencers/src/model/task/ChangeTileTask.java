@@ -10,13 +10,14 @@ import model.World;
 import model.agent.AgentReplacement;
 import model.inventory.Resource;
 
-public class ClearTileTask implements Task {
+public class ChangeTileTask implements Task {
 
 	private Point position;
 	private AgentReplacement sourceAgent;
 	private ArrayList<Tile> passableTiles;
+	private Tile tileType;
 	
-	public ClearTileTask(AgentReplacement sourceAgent, Point position) { 
+	public ChangeTileTask(AgentReplacement sourceAgent, Point position, Tile tileType) { 
 		//i think the player should select a rectangle to be mined
 		this.position = position;
 		this.sourceAgent = sourceAgent;
@@ -24,11 +25,12 @@ public class ClearTileTask implements Task {
 		passableTiles.add(Tile.Sky);
 		passableTiles.add(Tile.Wood);
 		passableTiles.add(Tile.Leaves);
+		this.tileType = tileType;
 	}
 	
 	@Override
 	public void execute() {
-		World.terrain.setTile(Tile.Sky, position.x, position.y);
+		World.terrain.setTile(tileType, position.x, position.y);
 		if (World.terrain.getTile(position.x, position.y).equals(Tile.Stone)){
 			sourceAgent.getInventory().changeAmount(Resource.STONE, 1);
 		} else if (World.terrain.getTile(position.x, position.y).equals(Tile.Iron)){

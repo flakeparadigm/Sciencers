@@ -8,7 +8,7 @@ import model.inventory.Resource;
 import model.inventory.Tool;
 import model.task.AgentDeath;
 import model.task.BuildBuildingTask;
-import model.task.ClearTileTask;
+import model.task.ChangeTileTask;
 import model.task.CraftToolTask;
 import model.task.HarvestTreeTask;
 
@@ -57,7 +57,7 @@ public class MinerAgent extends AgentReplacement {
 						(int) currentPosition.getY()));
 				taskTimer = 100;
 			}
-		} else if (currentTask instanceof ClearTileTask){
+		} else if (currentTask instanceof ChangeTileTask){
 //			taskTimer = 1000;
 		}
 

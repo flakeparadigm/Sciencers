@@ -15,7 +15,7 @@ import model.agent.AgentReplacement;
 import model.agent.EAgent;
 import model.building.EBuilding;
 import model.task.BuildBuildingTask;
-import model.task.ClearTileTask;
+import model.task.ChangeTileTask;
 import model.task.HarvestTreeTask;
 import model.task.Task;
 import model.task.TaskList;
@@ -158,13 +158,13 @@ public class Demo extends JFrame {
 		private void testMineTile(){
 			World.addAgent(EAgent.MINER, 9);
 			AgentReplacement miningAgent = (AgentReplacement) World.agents.get(0);
-			TaskList.addTask(new ClearTileTask(miningAgent, new Point(10, 21)), EAgent.MINER);
-			TaskList.addTask(new ClearTileTask(miningAgent, new Point(10, 22)), EAgent.MINER);
-			TaskList.addTask(new ClearTileTask(miningAgent, new Point(10, 23)), EAgent.MINER);
-			TaskList.addTask(new ClearTileTask(miningAgent, new Point(10, 24)), EAgent.MINER);
-			TaskList.addTask(new ClearTileTask(miningAgent, new Point(10, 25)), EAgent.MINER);
-			TaskList.addTask(new ClearTileTask(miningAgent, new Point(10, 26)), EAgent.MINER);
-			TaskList.addTask(new ClearTileTask(miningAgent, new Point(10, 27)), EAgent.MINER);
+			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 21), Tile.Sky), EAgent.MINER);
+			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 22), Tile.Sky), EAgent.MINER);
+			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 23), Tile.Sky), EAgent.MINER);
+			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 24), Tile.Sky), EAgent.MINER);
+			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 25), Tile.Sky), EAgent.MINER);
+			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 26), Tile.Sky), EAgent.MINER);
+			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 27), Tile.Sky), EAgent.MINER);
 		}
 		
 		private void testGatherAndStore(){
