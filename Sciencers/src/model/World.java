@@ -52,8 +52,6 @@ public class World implements Serializable {
 		buildings = new ArrayList<Entity>();
 		projectiles = new ArrayList<Projectile>();
 		tasks = new TaskList();
-		
-		startTicks();
 	}
 	
 	public static void addAgent(EAgent type, int xPos){

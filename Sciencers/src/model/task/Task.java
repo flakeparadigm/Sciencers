@@ -1,8 +1,9 @@
 package model.task;
 
 import java.awt.Point;
+import java.io.Serializable;
 
-public interface Task {
+public interface Task extends Serializable {
 
 	public abstract void execute();
 	

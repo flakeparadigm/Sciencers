@@ -8,8 +8,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import javax.swing.AbstractAction;
@@ -52,6 +54,8 @@ public class WorldView extends JFrame {
 	private final static int Y_MAP_SIZE = 100;
 	public final static int TILE_SIZE = 16;
 	public final static int INFO_PANE_SIZE = 200;
+	
+	private final String SAVE_LOCATION = "world.save";
 
 	private static int moveSpeed = 15;
 	private static int panTimerMS = 1;
@@ -70,6 +74,8 @@ public class WorldView extends JFrame {
 		setupModel();
 		addComponents();
 		registerListeners();
+		
+		World.startTicks();
 	}
 
 	private void setupObservers() {
@@ -101,11 +107,19 @@ public class WorldView extends JFrame {
 	}
 
 	private void setupModel() {
-		world = new World(12345, X_MAP_SIZE, Y_MAP_SIZE);
+		int loadWorld = JOptionPane.showConfirmDialog(gameWindow,
+				"Would you like to load the previous game?", "Load Game?",
+				JOptionPane.YES_NO_OPTION);
+
+		if (loadWorld == JOptionPane.YES_OPTION) {
+			loadSavedWorld();
+		} else {
+			makeNewWorld();
+		}
 	}
 
 	private void addComponents() {
-		
+
 		infoPanes = new InfoPanes();
 		add(infoPanes);
 		infoPanes.setSize(X_WINDOW_SIZE, INFO_PANE_SIZE);
@@ -359,6 +373,36 @@ public class WorldView extends JFrame {
 	public void updateInfo() {
 		infoPanes.performUpdate();
 	}
+	
+
+	// CREATE, LOAD, AND SAVE WORLDS
+	
+	private void makeNewWorld() {
+		world = new World(12345, X_MAP_SIZE, Y_MAP_SIZE);
+	}
+
+	private void loadSavedWorld() {
+		File file = new File(SAVE_LOCATION);
+		if(!file.exists()) {
+			JOptionPane.showMessageDialog(gameWindow, "No save file was found.\nSorry.");
+			return;
+		}
+		
+		try {
+			FileInputStream loadFile = new FileInputStream(SAVE_LOCATION);
+			ObjectInputStream loadWorld = new ObjectInputStream(loadFile);
+			
+			world = (World) loadWorld.readObject();
+			world.loadSaveables();
+
+			loadWorld.close();
+			loadFile.close();
+			
+		} catch(Exception ex) {
+			JOptionPane.showMessageDialog(gameWindow, "Save file failed to load.\nSorry.");
+			makeNewWorld();
+		}
+	}
 
 	//
 	// getWorld method. Should only be used in the Demo tool right now.
@@ -370,14 +414,14 @@ public class WorldView extends JFrame {
 	private class WindowClosingListener extends WindowAdapter {
 		@Override
 		public void windowClosing(WindowEvent e) {
-			world.stopTicks();
+			World.stopTicks();
 
 			int shouldSave = JOptionPane.showConfirmDialog(gameWindow,
 					"Would you like to save your game?", "Save Game?",
 					JOptionPane.YES_NO_OPTION);
 			// If the user wanted to save the game, save it! :)
 			if (shouldSave == JOptionPane.YES_OPTION) {
-				File file = new File("world.save");
+				File file = new File(SAVE_LOCATION);
 				if (!file.exists()) {
 					try {
 						// Try creating the file
@@ -391,17 +435,17 @@ public class WorldView extends JFrame {
 				}
 
 				try {
-					FileOutputStream saveFile = new FileOutputStream(
-							"world.save");
-					ObjectOutputStream worldObject = new ObjectOutputStream(
+					FileOutputStream saveFile = new FileOutputStream(SAVE_LOCATION);
+					ObjectOutputStream saveWorld = new ObjectOutputStream(
 							saveFile);
 
 					world.makeSaveable();
-					worldObject.writeObject(world);
-					worldObject.flush();
+					saveWorld.writeObject(world);
+					saveWorld.flush();
 
-					worldObject.close();
+					saveWorld.close();
 					saveFile.close();
+					
 				} catch (Exception ex) {
 					ex.printStackTrace();
 					JOptionPane

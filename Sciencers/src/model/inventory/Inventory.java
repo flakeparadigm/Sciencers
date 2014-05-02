@@ -1,8 +1,9 @@
 package model.inventory;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class Inventory {
+public class Inventory implements Serializable {
 	
 	private HashMap<Resource, Integer> inv;
 	private final int CAPACITY;
