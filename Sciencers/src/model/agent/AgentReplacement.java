@@ -184,14 +184,17 @@ public abstract class AgentReplacement implements Entity {
 
 			// for ladders:
 			System.out.println(World.terrain.getTile((int) Math.round(currentPosition.getX()),
-					(int) Math.round(currentPosition.getY() - 1)));
+					(int) Math.round(currentPosition.getY())));
 			if (World.terrain.getTile((int) Math.round(currentPosition.getX()),
-					(int) Math.round(currentPosition.getY() - 1)).equals(Tile.Ladder)) {
+					(int) Math.ceil(currentPosition.getY())).equals(Tile.Ladder) || World.terrain.getTile((int) Math.round(currentPosition.getX()),
+							(int) Math.floor(currentPosition.getY())).equals(Tile.Ladder)) {
 				jumpTick = 0;
-				if ((double) movements.peek().getY() - currentPosition.getY() < -.5) {
-					dy = -SPEED;
-				} else if ((double) movements.peek().getY() - currentPosition.getY() > .5) {
-					dy = SPEED;
+				if ((double) movements.peek().getY() - currentPosition.getY() < -.1) {
+					dy = -SPEED/2;
+					System.out.println("Going up");
+				} else if ((double) movements.peek().getY() - currentPosition.getY() > .1) {
+					dy = SPEED/2;
+					System.out.println("Going down");
 				}
 				currentPosition.setLocation((double) (currentPosition.getX()),
 						(double) (currentPosition.getY() + dy));
@@ -200,11 +203,11 @@ public abstract class AgentReplacement implements Entity {
 				System.out.println("Safety Block");
 				// safety block for jumping
 				System.out.println("Variable dy used for jumping:" + dy);
-				currentPosition
-						.setLocation((double) (currentPosition.getX() + dx),
-								(double) (World.terrain
-										.getAltitude((int) currentPosition
-												.getX()) + 1));
+//				currentPosition
+//						.setLocation((double) (currentPosition.getX() + dx),
+//								(double) (World.terrain
+//										.getAltitude((int) currentPosition
+//												.getX()) + 1));
 			} else {
 				currentPosition.setLocation(
 						(double) (currentPosition.getX() + dx),

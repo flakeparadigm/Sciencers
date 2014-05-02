@@ -174,7 +174,7 @@ public class Demo extends JFrame {
 //			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 22), Tile.Sky), EAgent.MINER);
 //			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 23), Tile.Sky), EAgent.MINER);
 //			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 24), Tile.Sky), EAgent.MINER);
-			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(6, 25), Tile.Sky), EAgent.MINER);
+			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(12, 30), Tile.Sky), EAgent.MINER);
 //			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 21), Tile.Sky), EAgent.MINER);
 //			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 27), Tile.Sky), EAgent.MINER);
 		}
