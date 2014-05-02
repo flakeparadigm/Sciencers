@@ -4,13 +4,18 @@ import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
@@ -25,13 +30,13 @@ import controller.SciencersObserver;
 public class WorldView extends JFrame {
 	public static JFrame gameWindow;
 	public static World world;
-	
+
 	// panels
 	public static TerrainView terrainPanel;
 	public static AgentsView agentPanel;
 	public static BuildingsView buildingPanel;
 	public static InfoPanes infoPanes;
-	
+
 	// observers
 	public static SciencersObserver terrainWatch;
 	public static InfoObserver infoWatch;
@@ -42,7 +47,7 @@ public class WorldView extends JFrame {
 	private final int Y_SCREEN_SIZE = ((int) tk.getScreenSize().getHeight());
 	private final static int X_WINDOW_SIZE = 700;
 	private final static int Y_WINDOW_SIZE = 700;
-	
+
 	private final static int X_MAP_SIZE = 500;
 	private final static int Y_MAP_SIZE = 100;
 	public final static int TILE_SIZE = 16;
@@ -66,7 +71,7 @@ public class WorldView extends JFrame {
 		addComponents();
 		registerListeners();
 	}
-	
+
 	private void setupObservers() {
 		terrainWatch = new SciencersObserver(this);
 		infoWatch = new InfoObserver(this);
@@ -76,21 +81,23 @@ public class WorldView extends JFrame {
 		// in the future, we may want to make the window either maximized or
 		// scaled to screen size (or both, which would be nice)
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.addWindowListener(new WindowClosingListener());
 		setTitle("Sciencers");
 		setSize(X_WINDOW_SIZE, Y_WINDOW_SIZE);
 		setLayout(null);
 		setLocation(50, 50);
-		
-//		this.addComponentListener(new ComponentAdapter() {
-//		    @Override
-//		    public void componentResized(ComponentEvent e)
-//		    {
-//		    	infoPanes.setSize(gameWindow.getWidth(), INFO_PANE_SIZE);
-//				infoPanes.setLocation(0,gameWindow.getHeight()-INFO_PANE_SIZE-39);
-//		        infoPanes.repaint();
-//		        gameWindow.repaint();
-//		    }
-//		});
+
+		// this.addComponentListener(new ComponentAdapter() {
+		// @Override
+
+		// public void componentResized(ComponentEvent e)
+		// {
+		// infoPanes.setSize(gameWindow.getWidth(), INFO_PANE_SIZE);
+		// infoPanes.setLocation(0,gameWindow.getHeight()-INFO_PANE_SIZE-39);
+		// infoPanes.repaint();
+		// gameWindow.repaint();
+		// }
+		// });
 	}
 
 	private void setupModel() {
@@ -102,49 +109,54 @@ public class WorldView extends JFrame {
 		infoPanes = new InfoPanes(world);
 		add(infoPanes);
 		infoPanes.setSize(X_WINDOW_SIZE, INFO_PANE_SIZE);
-		infoPanes.setLocation(0,Y_WINDOW_SIZE-INFO_PANE_SIZE-39);
-		
+		infoPanes.setLocation(0, Y_WINDOW_SIZE - INFO_PANE_SIZE - 39);
+
 		agentPanel = new AgentsView(world);
 		add(agentPanel);
-		agentPanel.setLocation(0,0);
-		agentPanel.setSize(X_MAP_SIZE*TILE_SIZE, Y_MAP_SIZE*TILE_SIZE);
+		agentPanel.setLocation(0, 0);
+		agentPanel.setSize(X_MAP_SIZE * TILE_SIZE, Y_MAP_SIZE * TILE_SIZE);
 		agentPanel.setOpaque(false);
-		agentPanel.setBackground(new Color(0,0,0,0));
-		
+		agentPanel.setBackground(new Color(0, 0, 0, 0));
+
 		buildingPanel = new BuildingsView(world);
 		add(buildingPanel);
-		buildingPanel.setLocation(0,0);
-		buildingPanel.setSize(X_MAP_SIZE*TILE_SIZE, Y_MAP_SIZE*TILE_SIZE);
+		buildingPanel.setLocation(0, 0);
+		buildingPanel.setSize(X_MAP_SIZE * TILE_SIZE, Y_MAP_SIZE * TILE_SIZE);
 		buildingPanel.setOpaque(false);
-		buildingPanel.setBackground(new Color(0,0,0,0));
-		
+		buildingPanel.setBackground(new Color(0, 0, 0, 0));
+
 		terrainPanel = new TerrainView(world);
 		add(terrainPanel);
 		terrainPanel.setLocation(0, 0);
-		//TODO: figure out correct panel size
-		terrainPanel.setSize(X_MAP_SIZE*TILE_SIZE, Y_MAP_SIZE*TILE_SIZE);
+		// TODO: figure out correct panel size
+		terrainPanel.setSize(X_MAP_SIZE * TILE_SIZE, Y_MAP_SIZE * TILE_SIZE);
 		terrainPanel.setOpaque(false);
-		terrainPanel.setBackground(new Color(0,0,0,0));
+		terrainPanel.setBackground(new Color(0, 0, 0, 0));
 	}
 
 	private void registerListeners() {
 		// These will allow the user to pan around the panel
-		
+
 		// Left movement with Left Arrow and A keys.
 		KeyStroke left = KeyStroke.getKeyStroke("LEFT");
 		KeyStroke a = KeyStroke.getKeyStroke("A");
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(left, "moveLeft");
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(a, "moveLeft");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(left,
+				"moveLeft");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(a,
+				"moveLeft");
 		getRootPane().getActionMap().put("moveLeft", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				leftPress();
 			}
 		});
-		KeyStroke leftReleased = KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, true);
+		KeyStroke leftReleased = KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0,
+				true);
 		KeyStroke aReleased = KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, true);
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(leftReleased, "releaseLeft");
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(aReleased, "releaseLeft");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+				leftReleased, "releaseLeft");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+				aReleased, "releaseLeft");
 		getRootPane().getActionMap().put("releaseLeft", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -155,30 +167,37 @@ public class WorldView extends JFrame {
 		// Right movement with Right Arrow and D keys.
 		KeyStroke right = KeyStroke.getKeyStroke("RIGHT");
 		KeyStroke d = KeyStroke.getKeyStroke("D");
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(right, "moveRight");
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(d,	"moveRight");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(right,
+				"moveRight");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(d,
+				"moveRight");
 		getRootPane().getActionMap().put("moveRight", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				rightPress();
 			}
 		});
-		KeyStroke rightReleased = KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, true);
+		KeyStroke rightReleased = KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0,
+				true);
 		KeyStroke dReleased = KeyStroke.getKeyStroke(KeyEvent.VK_D, 0, true);
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(rightReleased, "releaseRight");
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(dReleased, "releaseRight");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+				rightReleased, "releaseRight");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+				dReleased, "releaseRight");
 		getRootPane().getActionMap().put("releaseRight", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				rightRelease();
 			}
 		});
-		
+
 		// Up movement with Up Arrow and W keys.
 		KeyStroke up = KeyStroke.getKeyStroke("UP");
 		KeyStroke w = KeyStroke.getKeyStroke("W");
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(up, "moveUp");
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(w, "moveUp");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(up,
+				"moveUp");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(w,
+				"moveUp");
 		getRootPane().getActionMap().put("moveUp", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -187,8 +206,10 @@ public class WorldView extends JFrame {
 		});
 		KeyStroke upReleased = KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, true);
 		KeyStroke wReleased = KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, true);
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(upReleased, "releaseUp");
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(wReleased, "releaseUp");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+				upReleased, "releaseUp");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+				wReleased, "releaseUp");
 		getRootPane().getActionMap().put("releaseUp", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -199,18 +220,23 @@ public class WorldView extends JFrame {
 		// Down movement with Down Arrow and S keys.
 		KeyStroke down = KeyStroke.getKeyStroke("DOWN");
 		KeyStroke s = KeyStroke.getKeyStroke("S");
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(down, "moveDown");
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(s, "moveDown");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(down,
+				"moveDown");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(s,
+				"moveDown");
 		getRootPane().getActionMap().put("moveDown", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				downPress();
 			}
 		});
-		KeyStroke downReleased = KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, true);
+		KeyStroke downReleased = KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0,
+				true);
 		KeyStroke sReleased = KeyStroke.getKeyStroke(KeyEvent.VK_S, 0, true);
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(downReleased, "releaseDown");
-		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(sReleased, "releaseDown");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+				downReleased, "releaseDown");
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+				sReleased, "releaseDown");
 		getRootPane().getActionMap().put("releaseDown", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -227,7 +253,7 @@ public class WorldView extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// continuous left pressed code here:
 			xPanelLocation += moveSpeed;
-			if(xPanelLocation > 0)
+			if (xPanelLocation > 0)
 				xPanelLocation = 0;
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
 			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
@@ -248,9 +274,9 @@ public class WorldView extends JFrame {
 	static ActionListener rightTimerAction = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			// continuous right pressed code here:
-			xPanelLocation-= moveSpeed;
-			int maxX = -(X_MAP_SIZE*TILE_SIZE-gameWindow.getWidth()+30);
-			if(xPanelLocation < maxX)
+			xPanelLocation -= moveSpeed;
+			int maxX = -(X_MAP_SIZE * TILE_SIZE - gameWindow.getWidth() + 30);
+			if (xPanelLocation < maxX)
 				xPanelLocation = maxX;
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
 			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
@@ -263,7 +289,7 @@ public class WorldView extends JFrame {
 		// right released code here:
 		rightButtonTimer.stop();
 	}
-	
+
 	public static void upPress() {
 		upButtonTimer.start();
 	}
@@ -272,7 +298,7 @@ public class WorldView extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// continuous up pressed code here:
 			yPanelLocation += moveSpeed;
-			if(yPanelLocation > 0)
+			if (yPanelLocation > 0)
 				yPanelLocation = 0;
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
 			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
@@ -293,9 +319,9 @@ public class WorldView extends JFrame {
 	static ActionListener downTimerAction = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			// continuous down pressed code here:
-			yPanelLocation-= moveSpeed;
-			int maxY = -(Y_MAP_SIZE*TILE_SIZE-gameWindow.getHeight()+55);
-			if(yPanelLocation < maxY)
+			yPanelLocation -= moveSpeed;
+			int maxY = -(Y_MAP_SIZE * TILE_SIZE - gameWindow.getHeight() + 55);
+			if (yPanelLocation < maxY)
 				yPanelLocation = maxY;
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
 			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
@@ -309,7 +335,6 @@ public class WorldView extends JFrame {
 		downButtonTimer.stop();
 	}
 
-	
 	// UPDATE METHODS for updating the view panels.
 	public void updateAll() {
 		// here we should update all relevant panels with world info
@@ -318,21 +343,72 @@ public class WorldView extends JFrame {
 		updateBuildings();
 		updateInfo();
 	}
+
 	public void updateTerrain() {
 		terrainPanel.update();
 	}
+
 	public void updateAgents() {
 		agentPanel.update();
 	}
+
 	public void updateBuildings() {
 		buildingPanel.update();
 	}
+
 	public void updateInfo() {
 		infoPanes.update();
 	}
-//	
+
+	//
 	// getWorld method. Should only be used in the Demo tool right now.
 	public World getWorld() {
 		return world;
+	}
+
+	// Save the world on exit!
+	private class WindowClosingListener extends WindowAdapter {
+		@Override
+		public void windowClosing(WindowEvent e) {
+			world.stopTicks();
+
+			int shouldSave = JOptionPane.showConfirmDialog(gameWindow,
+					"Would you like to save your game?", "Save Game?",
+					JOptionPane.YES_NO_OPTION);
+			// If the user wanted to save the game, save it! :)
+			if (shouldSave == JOptionPane.YES_OPTION) {
+				File file = new File("world.save");
+				if (!file.exists()) {
+					try {
+						// Try creating the file
+						file.createNewFile();
+					} catch (IOException ioe) {
+						ioe.printStackTrace();
+						JOptionPane
+								.showMessageDialog(gameWindow,
+										"Failed to save. (Could not create save file)\nSorry.");
+					}
+				}
+
+				try {
+					FileOutputStream saveFile = new FileOutputStream(
+							"world.save");
+					ObjectOutputStream worldObject = new ObjectOutputStream(
+							saveFile);
+
+					world.makeSaveable();
+					worldObject.writeObject(world);
+					worldObject.flush();
+
+					worldObject.close();
+					saveFile.close();
+				} catch (Exception ex) {
+					ex.printStackTrace();
+					JOptionPane
+							.showMessageDialog(gameWindow,
+									"Failed to save. (Could not write to save file)\nSorry.");
+				}
+			}
+		}
 	}
 }

@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import model.agent.AgentReplacement;
@@ -19,12 +20,13 @@ import controller.InfoObserver;
  * Currently, this class is just set up to provide a method to access terrain from the view
  */
 
-public class World{
+public class World implements Serializable {
 	// objects within the world
 	public static Terrain terrain;
 	public static ArrayList<Entity> agents;
 	public static ArrayList<Entity> buildings;
 	public static ArrayList<Projectile> projectiles;
+	public static TaskList tasks;
 	
 	// tick Info
 	private static GameTick agentsTick;
@@ -49,12 +51,9 @@ public class World{
 		agents = new ArrayList<Entity>();
 		buildings = new ArrayList<Entity>();
 		projectiles = new ArrayList<Projectile>();
+		tasks = new TaskList();
 		
-		agentsTick = new GameTick(agents, AGENT_TICK_TIME);
-		buildingsTick = new GameTick(buildings, BUILDING_TICK_TIME);
-
-		agentsTick.start();
-		buildingsTick.start();
+		startTicks();
 	}
 	
 	public static void addAgent(EAgent type, int xPos){
@@ -103,10 +102,69 @@ public class World{
 	public ArrayList<Entity> getBuildings(){
 		return buildings;
 	}
-
-	public static void reset() {
+	
+	public static void stopTicks() {
 		agentsTick.terminate();
 		buildingsTick.terminate();
+	}
+	
+	public static void startTicks() {
+		agentsTick = new GameTick(agents, AGENT_TICK_TIME);
+		buildingsTick = new GameTick(buildings, BUILDING_TICK_TIME);
+
+		agentsTick.start();
+		buildingsTick.start();
+	}
+
+	// Saving info.
+	private Terrain saveTerrain;
+	private ArrayList<Entity> saveAgents;
+	private ArrayList<Entity> saveBuildings;
+	private ArrayList<Projectile> saveProjectiles;
+//	private TaskList saveTasks;
+	private int savePlayerScience;
+	private int savePlayerMoney;
+	private long saveSeed;
+	private int saveWidth,saveHeight;
+	
+	public void makeSaveable() {
+		saveTerrain = terrain;
+		saveAgents = agents;
+		saveBuildings = buildings;
+		saveProjectiles = projectiles;
+//		saveTasks = tasks;
+		savePlayerScience = playerScience;
+		savePlayerMoney = playerMoney;
+		saveSeed = seed;
+		saveWidth = width;
+		saveHeight = height;
+	}
+	
+	public void loadSaveables() {
+		terrain = saveTerrain;
+		saveTerrain = null;
+		agents = saveAgents;
+		saveAgents = null;
+		buildings = saveBuildings;
+		saveBuildings = null;
+		projectiles = saveProjectiles;
+		saveProjectiles = null;
+//		tasks = saveTasks;
+//		saveTasks = null;
+		playerScience = savePlayerScience;
+		savePlayerScience = 0;
+		playerMoney = savePlayerMoney;
+		savePlayerScience = 0;
+		seed = saveSeed;
+		saveSeed = 0;
+		width = saveWidth;
+		saveWidth = 0;
+		height = saveHeight;
+		saveHeight = 0;
+	}
+
+	public static void reset() {
+		stopTicks();
 		
 		terrain = new Terrain(seed, width, height);
 		
@@ -114,11 +172,7 @@ public class World{
 		buildings = new ArrayList<Entity>();
 		projectiles = new ArrayList<Projectile>();
 		TaskList.emptyList();
-
-		agentsTick = new GameTick(agents, AGENT_TICK_TIME);
-		buildingsTick = new GameTick(buildings, BUILDING_TICK_TIME);
-
-		agentsTick.start();
-		buildingsTick.start();
+		
+		startTicks();
 	}
 }

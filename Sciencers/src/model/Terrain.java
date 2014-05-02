@@ -1,13 +1,14 @@
 package model;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.Random;
 import java.util.Stack;
 
-import controller.SciencersObserver;
 import view.Tile;
+import controller.SciencersObserver;
 
-public class Terrain {
+public class Terrain implements Serializable {
 	private Tile[][] terrain;
 	private long seed;
 	private Random random;
