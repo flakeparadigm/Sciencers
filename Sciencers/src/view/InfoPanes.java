@@ -27,6 +27,7 @@ import javax.swing.JScrollPane;
 
 import model.Research;
 import model.World;
+import model.agent.EAgent;
 import model.building.EBuilding;
 import model.task.BuildBuildingTask;
 import model.task.Task;
@@ -127,55 +128,79 @@ public class InfoPanes extends JPanel {
 	}
 	
 	private class PlayerButtonsPane extends JPanel {
-		
-//		private JButton buildButton;
-		private JButton hireButton;
+	
 		private JComboBox<String> buildMenu;
+		private JButton buildButton;
+		private JComboBox<String> hireMenu;
+		private JButton hireButton;
+		
+		private String selectedBuilding;
+		private String selectedAgent;
 		
 		public PlayerButtonsPane() {
-			this.setLayout(new FlowLayout());
+			this.setLayout(new GridLayout(4, 1));
 			this.setBackground(new Color(0, 0, 0, 0));
 			setUpButtons();
 		}
 		
 		private void setUpButtons() {
-			
-//			ArrayList<String> buildingTypes = new ArrayList<String>();
-			
 
-			//Create the combo box, select item at index 4.
-			//Indices start at 0, so 4 specifies the pig.
 			buildMenu = new JComboBox<String>();
+			buildMenu.addItem("Select Building");
 			for(EBuilding b : EBuilding.values()) {
 				buildMenu.addItem(b.name()); //TODO make this proper case instead of all caps
 			}
-			
-			buildMenu.setSelectedIndex(4);
 			buildMenu.addActionListener(new MenuListener());
-			
 			add(buildMenu);
 			
-//			buildButton = new JButton("Build Something");
-//			add(buildButton);
+			buildButton = new JButton("GO");
+			buildButton.addActionListener(new ButtonListener());
+			add(buildButton);
 			
-			hireButton = new JButton("Hire Somebody");
+			hireMenu = new JComboBox<String>();
+			hireMenu.addItem("Select Dood");
+			for(EAgent a : EAgent.values()) {
+				hireMenu.addItem(a.name()); //TODO make pretty
+			}
+			hireMenu.addActionListener(new MenuListener());
+			add(hireMenu);
+			
+			hireButton = new JButton("GO");
+			hireButton.addActionListener(new ButtonListener());
 			add(hireButton);
 		}
 		
 		private class MenuListener implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Building a building through the InfoPane is not yet implemented.");
+				if(e.getSource() == buildMenu) {
+					selectedBuilding = (String)buildMenu.getSelectedItem();
+				}
+				else if(e.getSource() == hireMenu) {
+					selectedAgent = (String)hireMenu.getSelectedItem();
+				}
+				else System.out.println("MenuListener registered a click from a menu that doesn't exist!");
 			}
 		}
 		
-		private class PlayerButtonListener implements ActionListener {
-
+		private class ButtonListener implements ActionListener {
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
-//				if(arg0.getSource() == buildButton) {
-//					JOptionPane.showOptionDialog(null, "Choose a building. Make it awesome.", "Build a building", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new String[]{"Farm", "Storeroom", "Lab"}, "Farm");
-//				}
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource() == buildButton) {
+					for(EBuilding b : EBuilding.values()) {
+						if(selectedBuilding.equals(b.name())) {
+							System.out.println("NYI! Now building: " + selectedBuilding);
+						}
+					}
+				}
+				else if(e.getSource() == hireButton) {
+					for(EAgent a : EAgent.values()) {
+						if(selectedAgent.equals(a.name())) {
+							System.out.println("NYI! Now hiring: " + selectedAgent);
+						}
+					}
+				}
+				else System.out.println("ButtonListener registered a click from a button that doesn't exist!");
 			}
 		}
 	}
