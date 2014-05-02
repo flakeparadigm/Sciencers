@@ -124,12 +124,10 @@ public class World implements Serializable {
 
 	// Saving info.
 	private Terrain saveTerrain;
-	private ArrayList<Entity> saveAgents;
-	private ArrayList<Entity> saveBuildings;
+	private ArrayList<Entity> saveAgents, saveBuildings;
 	private ArrayList<Projectile> saveProjectiles;
 //	private TaskList saveTasks;
-	private int savePlayerScience;
-	private int savePlayerMoney;
+	private int savePlayerScience, savePlayerMoney, saveResearch;
 	private long saveSeed;
 	private int saveWidth,saveHeight;
 	
@@ -141,6 +139,7 @@ public class World implements Serializable {
 //		saveTasks = tasks;
 		savePlayerScience = playerScience;
 		savePlayerMoney = playerMoney;
+		saveResearch = Research.get();
 		saveSeed = seed;
 		saveWidth = width;
 		saveHeight = height;
@@ -160,7 +159,9 @@ public class World implements Serializable {
 		playerScience = savePlayerScience;
 		savePlayerScience = 0;
 		playerMoney = savePlayerMoney;
-		savePlayerScience = 0;
+		savePlayerMoney = 0;
+		Research.set(saveResearch);
+		saveResearch = 0;
 		seed = saveSeed;
 		saveSeed = 0;
 		width = saveWidth;

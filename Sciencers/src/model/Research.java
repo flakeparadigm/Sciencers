@@ -7,9 +7,13 @@ public class Research {
 	public static void change(int amt) {
 		research += amt;
 	}
+	
+	public static void set(int amt) {
+		research = amt;
+	}
 
-	public static String get() {
-		return "" + research;
+	public static int get() {
+		return research;
 	}
 	
 }

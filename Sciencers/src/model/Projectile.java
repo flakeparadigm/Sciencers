@@ -1,5 +1,7 @@
 package model;
 
-public class Projectile {
+import java.io.Serializable;
+
+public class Projectile implements Serializable {
 
 }
