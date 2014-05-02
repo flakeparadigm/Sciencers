@@ -133,12 +133,13 @@ public class InfoPanes extends JPanel {
 		private JButton buildButton;
 		private JComboBox<String> hireMenu;
 		private JButton hireButton;
+		private JButton mineButton;
 		
 		private String selectedBuilding;
 		private String selectedAgent;
 		
 		public PlayerButtonsPane() {
-			this.setLayout(new GridLayout(4, 1));
+			this.setLayout(new GridLayout(6, 1));
 			this.setBackground(new Color(0, 0, 0, 0));
 			setUpButtons();
 		}
@@ -168,6 +169,11 @@ public class InfoPanes extends JPanel {
 			hireButton = new JButton("GO");
 			hireButton.addActionListener(new ButtonListener());
 			add(hireButton);
+			
+			mineButton = new JButton("Go mining!");
+			mineButton.addActionListener(new ButtonListener());
+			add(mineButton);
+			
 		}
 		
 		private class MenuListener implements ActionListener {
@@ -189,16 +195,19 @@ public class InfoPanes extends JPanel {
 				if(e.getSource() == buildButton) {
 					for(EBuilding b : EBuilding.values()) {
 						if(selectedBuilding.equals(b.name())) {
-							System.out.println("NYI! Now building: " + selectedBuilding);
+							System.out.println("NYI! Begin process of building: " + selectedBuilding);
 						}
 					}
 				}
 				else if(e.getSource() == hireButton) {
 					for(EAgent a : EAgent.values()) {
 						if(selectedAgent.equals(a.name())) {
-							System.out.println("NYI! Now hiring: " + selectedAgent);
+							System.out.println("NYI! Begin process of hiring: " + selectedAgent);
 						}
 					}
+				}
+				else if(e.getSource() == mineButton) {
+					System.out.println("NYI! Begin process of selecting a square to mine.");
 				}
 				else System.out.println("ButtonListener registered a click from a button that doesn't exist!");
 			}

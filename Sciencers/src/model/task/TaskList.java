@@ -19,9 +19,9 @@ public class TaskList {
 
 	
 	public static void addTask(Task t, EAgent agentType) {
-		if (agentType.equals(EAgent.FARMER)){
+		if (agentType == EAgent.FARMER){
 			farmerTasks.add(t);
-		} else if (agentType.equals(EAgent.MINER)){
+		} else if (agentType == EAgent.MINER){
 			minerTasks.add(t);
 		} else {
 			genericTasks.add(t);
