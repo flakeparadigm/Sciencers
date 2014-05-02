@@ -61,15 +61,35 @@ public class MinerAgent extends AgentReplacement {
 
 		} else if (currentTask instanceof ChangeTileTask) {
 			// build ladder if digging down (not correctly written right now)
-			if (currentTask.getPos().getY() < ((ChangeTileTask)currentTask).getTileLocation().getY()) {
+			if (currentTask.getPos().getY() < ((ChangeTileTask) currentTask)
+					.getTileLocation().getY()) {
 				((ChangeTileTask) currentTask).changeTileType(Tile.Ladder);
 			}
+			
+			
 			if (getInventory().getAmount(Resource.WOOD) < 3) {
 				tasks.add(currentTask);
+				System.out.println("X");
 				currentTask = new HarvestTreeTask(this,
 						findNearestTree(currentPosition), World.terrain);
 				taskTimer = 10;
+			} else
+			// dig down to tile location if necessary
+			if (!passableTiles.contains(World.terrain.getTile((int) ((ChangeTileTask) currentTask)
+					.getTileLocation().getX(), (int) ((ChangeTileTask) currentTask).getTileLocation().getY()))) {
+				for (int i = 1; i < 100; i++) {
+					if (!passableTiles.contains(World.terrain.getTile(
+							(int) ((ChangeTileTask) currentTask).getTileLocation().getX(),
+							(int) ((ChangeTileTask) currentTask).getTileLocation().getY() - i))) {
+						tasks.add(currentTask);
+						currentTask = new ChangeTileTask(this, new Point((int) ((ChangeTileTask) currentTask)
+								.getTileLocation().getX(), (int) ((ChangeTileTask) currentTask).getTileLocation().getY() - i), Tile.Sky);
+						System.out.println("!");
+					}
+				}
 			}
+			
+
 		}
 
 		/*

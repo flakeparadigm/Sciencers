@@ -58,7 +58,7 @@ public class ChangeTileTask implements Task {
 		}
 
 		//default return in case of bad location
-		return new Point((int)sourceAgent.getPos().getX(), (int) sourceAgent.getPos().getY());
+		return new Point(position.x, position.y - 1);
 	}
 	
 	public Point getTileLocation(){

@@ -44,7 +44,7 @@ public abstract class AgentReplacement implements Entity {
 	protected int taskTimer;
 
 	private Inventory inventory;
-	private ArrayList<Tile> passableTiles;
+	protected ArrayList<Tile> passableTiles;
 	public Tool workingTool = null;
 	private Tool mainTool = null, secondaryTool = null;
 
@@ -147,6 +147,7 @@ public abstract class AgentReplacement implements Entity {
 		double dx = 0;
 		double dy = 0;
 		boolean error = false;
+		System.out.println(tasks.size());
 
 		if (!movements.isEmpty()) {
 
@@ -182,8 +183,10 @@ public abstract class AgentReplacement implements Entity {
 			}
 
 			// for ladders:
-			if (World.terrain.getTile((int) currentPosition.getX() + 1,
-					(int) currentPosition.getY()).equals(Tile.Ladder)) {
+			System.out.println(World.terrain.getTile((int) Math.round(currentPosition.getX()),
+					(int) Math.round(currentPosition.getY() - 1)));
+			if (World.terrain.getTile((int) Math.round(currentPosition.getX()),
+					(int) Math.round(currentPosition.getY() - 1)).equals(Tile.Ladder)) {
 				jumpTick = 0;
 				if ((double) movements.peek().getY() - currentPosition.getY() < -.5) {
 					dy = -SPEED;
