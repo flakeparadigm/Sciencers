@@ -56,8 +56,9 @@ public class ChangeTileTask implements Task {
 		} else if (passableTiles.contains(World.terrain.getTile(position.x, position.y - 1))){
 			return new Point(position.x, position.y - 1);
 		}
-		System.out.println("Error! Agent cannot reach tile!");
-		return null;
+
+		//default return in case of bad location
+		return new Point((int)sourceAgent.getPos().getX(), (int) sourceAgent.getPos().getY());
 	}
 	
 	public void changeTileType(Tile tileType){

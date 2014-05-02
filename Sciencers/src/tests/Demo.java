@@ -44,6 +44,7 @@ public class Demo extends JFrame {
 	private JButton testHungerDeathButton = new JButton("Test Hunger Death");
 	private JButton testGatherAndStoreButton = new JButton("Gather and Store Food");
 	private JButton testMineTile = new JButton("Mine Tiles");
+	private JButton testMineArea = new JButton("Mine Area");
 
 	// magic numbers
 	private final int X_SCREEN_SIZE = ((int) tk.getScreenSize().getWidth());
@@ -92,6 +93,7 @@ public class Demo extends JFrame {
 		this.add(testHungerDeathButton);
 		this.add(testGatherAndStoreButton);
 		this.add(testMineTile);
+		this.add(testMineArea);
 	}
 
 	private void registerListeners() {
@@ -105,6 +107,7 @@ public class Demo extends JFrame {
 		testHungerDeathButton.addActionListener(new demoButtonListener());
 		testGatherAndStoreButton.addActionListener(new demoButtonListener());
 		testMineTile.addActionListener(new demoButtonListener());
+		testMineArea.addActionListener(new demoButtonListener());
 	}
 
 	// PUT ALL TEST CASES BELOW.
@@ -131,11 +134,18 @@ public class Demo extends JFrame {
 				testGatherAndStore();
 			if (event.getSource() == testMineTile)
 				testMineTile();
+			if (event.getSource() == testMineArea)
+				testMineArea();
 		}
 
 		private void resetWorld() {
 			World.reset();
 			worldView.updateAll();
+		}
+		
+		private void testMineArea(){
+			World.addAgent(EAgent.MINER, 9);
+			TaskList.addTask(new GoMineArea())
 		}
 		
 		private void testHungerDeath(){
@@ -160,11 +170,11 @@ public class Demo extends JFrame {
 			World.addAgent(EAgent.MINER, 15);
 			AgentReplacement miningAgent = (AgentReplacement) World.agents.get(0);
 			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 21), Tile.Sky), EAgent.MINER);
-//			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 22), Tile.Sky), EAgent.MINER);
-//			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 23), Tile.Sky), EAgent.MINER);
-//			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 24), Tile.Sky), EAgent.MINER);
-//			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 25), Tile.Sky), EAgent.MINER);
-//			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 26), Tile.Sky), EAgent.MINER);
+			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 22), Tile.Sky), EAgent.MINER);
+			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 23), Tile.Sky), EAgent.MINER);
+			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 24), Tile.Sky), EAgent.MINER);
+			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 25), Tile.Sky), EAgent.MINER);
+			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 26), Tile.Sky), EAgent.MINER);
 //			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 27), Tile.Sky), EAgent.MINER);
 		}
 		
