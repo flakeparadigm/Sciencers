@@ -34,4 +34,9 @@ public class CraftToolTask implements Task {
 		return taskString;
 	}
 
+	@Override
+	public boolean shouldBeSeen() {
+		return true; //TODO should this be false?
+	}
+
 }

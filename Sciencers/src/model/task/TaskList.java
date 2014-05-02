@@ -4,6 +4,7 @@ import java.util.ArrayDeque;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+import controller.InfoObserver;
 import model.agent.EAgent;
 
 /**
@@ -26,6 +27,7 @@ public class TaskList {
 		} else {
 			genericTasks.add(t);
 		}
+		InfoObserver.updateObserver();
 	}
 	
 	public static void addTask(Task t) {

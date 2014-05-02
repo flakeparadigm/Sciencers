@@ -68,4 +68,9 @@ public class ChangeTileTask implements Task {
 	public void changeTileType(Tile tileType){
 		this.tileType = tileType;
 	}
+
+	@Override
+	public boolean shouldBeSeen() {
+		return false;
+	}
 }

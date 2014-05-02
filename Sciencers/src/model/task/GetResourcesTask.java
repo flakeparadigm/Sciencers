@@ -40,5 +40,10 @@ public class GetResourcesTask implements Task {
 				
 		return taskString;
 	}
+
+	@Override
+	public boolean shouldBeSeen() {
+		return true;
+	}
 	
 }

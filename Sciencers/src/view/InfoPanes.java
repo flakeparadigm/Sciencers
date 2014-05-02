@@ -31,14 +31,19 @@ import model.agent.EAgent;
 import model.building.EBuilding;
 import model.task.BuildBuildingTask;
 import model.task.Task;
+import model.task.TaskList;
 
 public class InfoPanes extends JPanel {
 
 	private DefaultListModel<String> taskListModel = new DefaultListModel<String>();
 	private JList<String> taskList = new JList<String>(taskListModel);
-	private JScrollPane tasksScroller, alertsScroller;
-	private StatsPane statsPane;
+	
 	private PlayerButtonsPane playerButtonsPane;
+	private TaskPane taskPane;
+	private StatsPane statsPane;
+	private AlertsPane alertsPane;
+	
+	private JScrollPane tasksScroller, alertsScroller;
 
 	private final int INFO_PANE_SIZE = 200;
 	// Panes
@@ -56,6 +61,8 @@ public class InfoPanes extends JPanel {
 
 		int xTemp = 0; // keeps track of assignment position for each new panel
 		
+		
+		
 		playerButtonsPane = new PlayerButtonsPane();
 		playerButtonsPane.setBorder(null);
 		playerButtonsPane.setOpaque(false);
@@ -67,7 +74,8 @@ public class InfoPanes extends JPanel {
 
 		// Task Pane
 		tasksScroller = new JScrollPane();
-		tasksScroller.setViewportView(new TaskPane());
+		taskPane = new TaskPane();
+		tasksScroller.setViewportView(taskPane);
 		tasksScroller.setOpaque(false);
 		tasksScroller.setBorder(null);
 		this.add(tasksScroller);
@@ -96,7 +104,8 @@ public class InfoPanes extends JPanel {
 
 		// Alerts Pane
 		alertsScroller = new JScrollPane();
-		alertsScroller.setViewportView(new AlertsPane());
+		alertsPane = new AlertsPane();
+		alertsScroller.setViewportView(alertsPane);
 		alertsScroller.setOpaque(false);
 		alertsScroller.setBorder(null);
 		this.add(alertsScroller);
@@ -112,17 +121,12 @@ public class InfoPanes extends JPanel {
 
 		// make sure to increment xTemp before each new panel
 
-		// this.add(new JLabel("Hi"));
-		//
-		// this.add(new JLabel("Hi"));
-
 	}
 
 	public void performUpdate() {
 //		repaint();
 //		statsPane.repaint();
-//		tasksScroller.getViewport().update(this.getGraphics());
-		
+		taskPane.performUpdate();
 		statsPane.performUpdate();
 //		alertsScroller.getViewport().update(this.getGraphics());
 	}
@@ -220,14 +224,28 @@ public class InfoPanes extends JPanel {
 			this.setLayout(new FlowLayout());
 			this.setBackground(new Color(0, 0, 0, 0));
 
-			//bogus tasks just for testing
-			for (int i = 0; i < 10; i++) {
-				TaskBox newTask = new TaskBox(new BuildBuildingTask(
-						EBuilding.FARM, new Point(5, 2 * i)));
-				this.add(newTask);
-			}
+			setupBoxes();
 			this.setPreferredSize(new Dimension(TASK_BOX_WIDTH,
 					(TASK_BOX_HEIGHT + 5) * this.getComponentCount() + 5));
+		}
+
+		public void performUpdate() {
+			setupBoxes();
+		}
+		
+		public void setupBoxes() {
+			for(Task t : TaskList.getList(EAgent.GENERIC)) {
+				if(t.shouldBeSeen())
+					this.add(new TaskBox(t));
+			}
+			for(Task t : TaskList.getList(EAgent.FARMER)) {
+				if(t.shouldBeSeen())
+					this.add(new TaskBox(t));			
+			}
+			for(Task t : TaskList.getList(EAgent.MINER)) {
+				if(t.shouldBeSeen())
+					this.add(new TaskBox(t));			
+			}
 		}
 
 		@Override

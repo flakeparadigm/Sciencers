@@ -36,5 +36,10 @@ public class BuildBuildingTask implements Task {
 				
 		return taskString;
 	}
+
+	@Override
+	public boolean shouldBeSeen() {
+		return true;
+	}
 	
 }

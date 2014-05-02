@@ -34,4 +34,9 @@ public class AccessBuildingInventory implements Task{
 		return sinkBuilding.getPos();
 	}
 
+	@Override
+	public boolean shouldBeSeen() {
+		return false;
+	}
+
 }

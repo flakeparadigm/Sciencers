@@ -28,4 +28,9 @@ public class AgentDeath implements Task{
 		return position;
 	}
 
+	@Override
+	public boolean shouldBeSeen() {
+		return false;
+	}
+
 }
