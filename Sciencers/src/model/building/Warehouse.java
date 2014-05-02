@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import model.AlertCollection;
 import model.agent.AgentReplacement;
 import model.inventory.Inventory;
 import model.inventory.Resource;
@@ -11,10 +12,10 @@ import model.inventory.Resource;
 public class Warehouse extends Building {
 
 	// Magic Numbers
-//	private final Point POSITION;
 	private final int BUILDING_WIDTH = 10;
 	private final int BUILDING_HEIGHT = 1; //?
 	private final int MAX_WORKERS = 2;
+	private final int CAPACITY = 1000;
 	
 	// Variables
 	private Inventory inv;
@@ -22,12 +23,13 @@ public class Warehouse extends Building {
 	
 	public Warehouse(Point pos) {
 		super(pos);
-//		POSITION = pos;
 	}
 
 	@Override
 	public void update() {
-		
+		if(CAPACITY - inv.getTotal() < CAPACITY * 0.05) {
+			AlertCollection.addAlert("A warehouse is almost full!");
+		}
 	}
 
 //	@Override

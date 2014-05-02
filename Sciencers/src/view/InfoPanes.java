@@ -25,6 +25,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import model.Alert;
+import model.AlertCollection;
 import model.Research;
 import model.World;
 import model.agent.EAgent;
@@ -124,11 +126,9 @@ public class InfoPanes extends JPanel {
 	}
 
 	public void performUpdate() {
-//		repaint();
-//		statsPane.repaint();
 		taskPane.performUpdate();
 		statsPane.performUpdate();
-//		alertsScroller.getViewport().update(this.getGraphics());
+		alertsPane.performUpdate();
 	}
 	
 	private class PlayerButtonsPane extends JPanel {
@@ -317,18 +317,17 @@ public class InfoPanes extends JPanel {
 			this.setLayout(new FlowLayout());
 			this.setBackground(new Color(0, 0, 0, 0));
 			
-			// Bogus alerts for testing
-			AlertsBox a = new AlertsBox("We require more pylons!");
-			this.add(a);
-			AlertsBox b = new AlertsBox("All ur base r belong to us");
-			this.add(b);
-			AlertsBox c = new AlertsBox("I'm making a note here\nHuge success!");
-			this.add(c);
-			AlertsBox d = new AlertsBox("Now STOP!\n\nHammertime.");
-			this.add(d);
+			performUpdate();
 
 			this.setPreferredSize(new Dimension(ALERTS_BOX_WIDTH,
 					(ALERTS_BOX_HEIGHT + 5) * this.getComponentCount() + 5));
+		}
+
+		public void performUpdate() {
+			
+//			for(Alert a : AlertCollection.getAlerts()) {
+//				this.add(new AlertsBox(a.toString()));
+//			}
 		}
 
 		@Override

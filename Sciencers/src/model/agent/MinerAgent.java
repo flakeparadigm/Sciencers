@@ -3,6 +3,7 @@ package model.agent;
 import java.awt.Point;
 
 import view.Tile;
+import model.AlertCollection;
 import model.World;
 import model.inventory.Resource;
 import model.inventory.Tool;
@@ -30,6 +31,10 @@ public class MinerAgent extends AgentReplacement {
 			currentTask = (new AgentDeath(this, new Point(
 					(int) currentPosition.x, (int) currentPosition.y)));
 			taskTimer = 0;
+		}
+		
+		if(hunger < 0.5 * SEEK_FOOD_HUNGER) {
+			AlertCollection.addAlert("An agent is starving! D:");
 		}
 
 		// seek food if hungry
