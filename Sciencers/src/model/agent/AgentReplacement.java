@@ -72,29 +72,6 @@ public abstract class AgentReplacement implements Entity {
 
 	public abstract void update();
 
-//	protected void executeLocalTask() {
-//		if (tasks.peek().getPos() == null) {
-//			System.out.println("Null Local Task Position!");
-//		}
-//		// if current task exists
-//		if (movements.isEmpty()
-//				&& tasks.peek().getPos() != null
-//				&& !sameLocation(currentPosition, new Point2D.Double(
-//						tasks.peek().getPos().getX(), tasks.peek().getPos()
-//								.getY()), .1, .1)) {
-//			// if movements needs updated:
-//			movements = goHere(currentPosition, tasks.peek().getPos());
-//		}
-//
-//		if (sameLocation(currentPosition, new Point2D.Double(tasks.peek()
-//				.getPos().getX(), tasks.peek().getPos().getY()), .1, .1)
-//				&& taskTimer < 0) {
-//			// if in location of current task:
-//			tasks.pop().execute();
-//		}
-//
-//	}
-
 	protected void executeCurrentTask() {
 		if (currentTask != null) {
 			if (currentTask.getPos() == null) {
@@ -130,10 +107,10 @@ public abstract class AgentReplacement implements Entity {
 	}
 
 	protected void getNextTaskIfNotBusy(EAgent type) {
-		if (currentTask == null && tasks.size() != 0){
+		if (currentTask == null && tasks.size() != 0) {
 			currentTask = tasks.pop();
 		}
-		
+
 		if (currentTask == null && !TaskList.getList(type).isEmpty()) {
 			currentTask = TaskList.getList(type).poll();
 		}
@@ -184,10 +161,15 @@ public abstract class AgentReplacement implements Entity {
 				dy = GRAVITY_CONSTANT * jumpTick + jumpVelocity;
 				jumpTick++;
 			}
+
 			// for jumping:
 			if (jumpTick == 0
 					&& (double) movements.peek().getY()
-							- currentPosition.getY() < -.5) {
+							- currentPosition.getY() < -.5
+					&& passableTiles
+							.contains(World.terrain.getTile(
+									(int)Math.round(currentPosition.getX()),
+									(int)Math.round(currentPosition.getY() - 1)))) {
 				jumpTick = 1;
 				jumpVelocity = -.6;
 			}
@@ -205,7 +187,7 @@ public abstract class AgentReplacement implements Entity {
 				jumpTick = 0;
 				if ((double) movements.peek().getY() - currentPosition.getY() < -.5) {
 					dy = -SPEED;
-				} else {
+				} else if ((double) movements.peek().getY() - currentPosition.getY() > .5) {
 					dy = SPEED;
 				}
 				currentPosition.setLocation((double) (currentPosition.getX()),

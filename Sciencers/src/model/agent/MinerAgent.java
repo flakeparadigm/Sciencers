@@ -61,8 +61,7 @@ public class MinerAgent extends AgentReplacement {
 
 		} else if (currentTask instanceof ChangeTileTask) {
 			// build ladder if digging down (not correctly written right now)
-			if (!World.terrain.getTile(currentTask.getPos().x,
-					currentTask.getPos().y + 1).equals(Tile.Ladder)) {
+			if (currentTask.getPos().getY() < ((ChangeTileTask)currentTask).getTileLocation().getY()) {
 				((ChangeTileTask) currentTask).changeTileType(Tile.Ladder);
 			}
 			if (getInventory().getAmount(Resource.WOOD) < 3) {

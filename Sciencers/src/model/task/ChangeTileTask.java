@@ -61,6 +61,10 @@ public class ChangeTileTask implements Task {
 		return new Point((int)sourceAgent.getPos().getX(), (int) sourceAgent.getPos().getY());
 	}
 	
+	public Point getTileLocation(){
+		return position;
+	}
+	
 	public void changeTileType(Tile tileType){
 		this.tileType = tileType;
 	}
