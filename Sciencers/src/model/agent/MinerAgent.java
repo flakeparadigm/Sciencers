@@ -1,6 +1,5 @@
 package model.agent;
 
-
 import java.awt.Point;
 
 import view.Tile;
@@ -12,7 +11,6 @@ import model.task.BuildBuildingTask;
 import model.task.ChangeTileTask;
 import model.task.CraftToolTask;
 import model.task.HarvestTreeTask;
-
 
 public class MinerAgent extends AgentReplacement {
 
@@ -49,25 +47,36 @@ public class MinerAgent extends AgentReplacement {
 		// build hammer before building Building
 		if (currentTask instanceof BuildBuildingTask && !hasTool(Tool.HAMMER)) {
 			if (getInventory().getAmount(Resource.WOOD) > 3) {
+				tasks.add(currentTask);
 				currentTask = new HarvestTreeTask(this,
 						findNearestTree(currentPosition), World.terrain);
 				taskTimer = 10;
 			} else {
+				tasks.add(currentTask);
 				currentTask = new CraftToolTask(Tool.HAMMER, this, new Point(
 						(int) currentPosition.getX(),
 						(int) currentPosition.getY()));
 				taskTimer = 100;
 			}
-		} else if (currentTask instanceof ChangeTileTask){
-			//build ladder if digging down
-			if (getInventory().getAmount(Resource.WOOD) < 3){
+
+		} else if (currentTask instanceof ChangeTileTask) {
+			// build ladder if digging down (not correctly written right now)
+			if (!World.terrain.getTile(currentTask.getPos().x,
+					currentTask.getPos().y + 1).equals(Tile.Ladder)) {
+				((ChangeTileTask) currentTask).changeTileType(Tile.Ladder);
+			}
+			if (getInventory().getAmount(Resource.WOOD) < 3) {
+				tasks.add(currentTask);
 				currentTask = new HarvestTreeTask(this,
 						findNearestTree(currentPosition), World.terrain);
 				taskTimer = 10;
-			} else if (!World.terrain.getTile(currentTask.getPos().x, currentTask.getPos().y + 1).equals(Tile.Ladder)){
-				((ChangeTileTask) currentTask).changeTileType(Tile.Ladder);
 			}
 		}
+
+		/*
+		 * tasks is a stack of tasks that must be completed after the current
+		 * task
+		 */
 
 		executeCurrentTask();
 

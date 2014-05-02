@@ -105,27 +105,27 @@ public class WorldView extends JFrame {
 	}
 
 	private void addComponents() {
-		// Removed temporarily for performance reasons
-		infoPanes = new InfoPanes(world);
+		
+		infoPanes = new InfoPanes();
 		add(infoPanes);
 		infoPanes.setSize(X_WINDOW_SIZE, INFO_PANE_SIZE);
 		infoPanes.setLocation(0, Y_WINDOW_SIZE - INFO_PANE_SIZE - 39);
 
-		agentPanel = new AgentsView(world);
+		agentPanel = new AgentsView();
 		add(agentPanel);
 		agentPanel.setLocation(0, 0);
 		agentPanel.setSize(X_MAP_SIZE * TILE_SIZE, Y_MAP_SIZE * TILE_SIZE);
 		agentPanel.setOpaque(false);
 		agentPanel.setBackground(new Color(0, 0, 0, 0));
 
-		buildingPanel = new BuildingsView(world);
+		buildingPanel = new BuildingsView();
 		add(buildingPanel);
 		buildingPanel.setLocation(0, 0);
 		buildingPanel.setSize(X_MAP_SIZE * TILE_SIZE, Y_MAP_SIZE * TILE_SIZE);
 		buildingPanel.setOpaque(false);
 		buildingPanel.setBackground(new Color(0, 0, 0, 0));
 
-		terrainPanel = new TerrainView(world);
+		terrainPanel = new TerrainView();
 		add(terrainPanel);
 		terrainPanel.setLocation(0, 0);
 		// TODO: figure out correct panel size
@@ -357,7 +357,7 @@ public class WorldView extends JFrame {
 	}
 
 	public void updateInfo() {
-		infoPanes.update();
+		infoPanes.performUpdate();
 	}
 
 	//

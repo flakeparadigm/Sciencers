@@ -16,12 +16,10 @@ import model.agent.AgentReplacement;
 import model.inventory.Tool;
 
 public class AgentsView extends JPanel{
-	private World world;
 	private Image placeholder;
 	private HashMap<Tool,Image> tools;
 	
-	public AgentsView(World world){
-		this.world = world;
+	public AgentsView(){
 		tools = new HashMap<Tool,Image>();
 		
 		try {

@@ -157,14 +157,15 @@ public class Demo extends JFrame {
 		
 		private void testMineTile(){
 			World.addAgent(EAgent.MINER, 9);
+			World.addAgent(EAgent.MINER, 15);
 			AgentReplacement miningAgent = (AgentReplacement) World.agents.get(0);
 			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 21), Tile.Sky), EAgent.MINER);
-			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 22), Tile.Sky), EAgent.MINER);
-			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 23), Tile.Sky), EAgent.MINER);
-			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 24), Tile.Sky), EAgent.MINER);
-			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 25), Tile.Sky), EAgent.MINER);
-			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 26), Tile.Sky), EAgent.MINER);
-			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 27), Tile.Sky), EAgent.MINER);
+//			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 22), Tile.Sky), EAgent.MINER);
+//			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 23), Tile.Sky), EAgent.MINER);
+//			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 24), Tile.Sky), EAgent.MINER);
+//			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 25), Tile.Sky), EAgent.MINER);
+//			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 26), Tile.Sky), EAgent.MINER);
+//			TaskList.addTask(new ChangeTileTask(miningAgent, new Point(10, 27), Tile.Sky), EAgent.MINER);
 		}
 		
 		private void testGatherAndStore(){

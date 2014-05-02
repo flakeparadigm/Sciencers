@@ -15,12 +15,9 @@ import model.building.Building;
 import model.building.EBuilding;
 
 public class BuildingsView extends JPanel {
-	private World world;
 	private Image farm;
 
-	public BuildingsView(World world) {
-		this.world = world;
-
+	public BuildingsView() {
 		try {
 			farm = ImageIO.read(new File("imgs/Farm.png"));
 		} catch (IOException e) {
@@ -32,7 +29,7 @@ public class BuildingsView extends JPanel {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 
-		for (Entity e : world.getBuildings()) {
+		for (Entity e : World.buildings) {
 			if (((Building) e).getType().equals(EBuilding.FARM)) {
 				g2.drawImage(farm, (int) (WorldView.TILE_SIZE * (e.getPos()
 						.getX() + 1)), (int) (WorldView.TILE_SIZE

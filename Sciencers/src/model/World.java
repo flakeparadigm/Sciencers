@@ -65,26 +65,32 @@ public class World implements Serializable {
 			agent = new MinerAgent(new Point(xPos, terrain.getAltitude(xPos) - 1)) ;
 		//add other agent types here
 		
-		if(agent == null)
-			System.out.println("Building is null! World.addAgent()");
+		if(agent == null) {
+			System.out.println("Agent is null! World.addAgent()");
+		}
 		agents.add(agent);
+		updateInfo();
 	}
 	
 	public static void addBuilding(EBuilding type, Point pos){
 		Building building = null;
 		if(type == EBuilding.FARM) {
 			building = new Farm(pos);
-			updateInfo("Building");
 		}
 		else if(type == EBuilding.WAREHOUSE) {
 			building = new Warehouse(pos);
 		}
-		if(building == null)
+		//add other building types here
+		
+		if(building == null) {
 			System.out.println("Building is null! World.addBuilding()");
+			return;
+		}
 		buildings.add(building);
+		updateInfo();
 	}
 	
-	public static void updateInfo(String string) {
+	public static void updateInfo() {
 		InfoObserver.updateObserver();
 	}
 

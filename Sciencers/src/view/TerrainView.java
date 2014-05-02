@@ -14,12 +14,9 @@ import model.World;
 
 public class TerrainView extends JPanel{
 
-//	private World world;
 	private HashMap<Tile, Image> textures;
 	
-	public TerrainView(World world) {
-//		this.world = world;
-		
+	public TerrainView() {		
 		textures = new HashMap<Tile, Image>();
 		try {
 			for(Tile t : Tile.values()) {
