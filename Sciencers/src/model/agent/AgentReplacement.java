@@ -167,10 +167,9 @@ public abstract class AgentReplacement implements Entity {
 			if (jumpTick == 0
 					&& (double) movements.peek().getY()
 							- currentPosition.getY() < -.5
-					&& passableTiles
-							.contains(World.terrain.getTile(
-									(int)Math.round(currentPosition.getX()),
-									(int)Math.round(currentPosition.getY() - 1)))) {
+					&& passableTiles.contains(World.terrain.getTile(
+							(int) Math.round(currentPosition.getX()),
+							(int) Math.round(currentPosition.getY() - 1)))) {
 				jumpTick = 1;
 				jumpVelocity = -.6;
 			}
@@ -182,37 +181,44 @@ public abstract class AgentReplacement implements Entity {
 				jumpVelocity = 0;
 			}
 
-			// for ladders:
-//			System.out.println(World.terrain.getTile(getCurrentX(currentPosition),
-//					getCurrentY(currentPosition)));
 			if (World.terrain.getTile(getCurrentX(currentPosition),
-					getCurrentY(currentPosition)).equals(Tile.Ladder) || World.terrain.getTile(getCurrentX(currentPosition),
-							getCurrentY(currentPosition) + 1).equals(Tile.Ladder)) {
+					getCurrentY(currentPosition)).equals(Tile.Ladder)
+					|| (World.terrain.getTile(getCurrentX(currentPosition),
+							getCurrentY(currentPosition) + 1).equals(
+							Tile.Ladder) && !sameLocation(currentPosition,
+							new Point2D.Double(movements.peek().getX(),
+									movements.peek().getY()), .1, .1))) {
 				jumpTick = 0;
 				if ((double) movements.peek().getY() - currentPosition.getY() < -.1) {
-					dy = -SPEED/2;
+					dy = -SPEED / 2;
 					System.out.println("Going up");
-				} else if ((double) movements.peek().getY() - currentPosition.getY() > .1) {
-					dy = SPEED/2;
+				} else if ((double) movements.peek().getY()
+						- currentPosition.getY() > .1) {
+					dy = SPEED / 2;
 					System.out.println("Going down");
 				}
 				currentPosition.setLocation((double) (currentPosition.getX()),
 						(double) (currentPosition.getY() + dy));
-				if (Math.abs(movements.peek().getY() - currentPosition.getY()) < .1 && !World.terrain.getTile(getCurrentX(currentPosition),
-					getCurrentY(currentPosition)).equals(Tile.Ladder)){
-					currentPosition.setLocation((double) (currentPosition.getX() + dx),
+				if (Math.abs(movements.peek().getY() - currentPosition.getY()) < .1
+						&& !World.terrain.getTile(getCurrentX(currentPosition),
+								getCurrentY(currentPosition)).equals(
+								Tile.Ladder)) {
+					currentPosition.setLocation(
+							(double) (currentPosition.getX() + dx),
 							(double) (currentPosition.getY()));
 				}
-			} else if (currentPosition.getY() + dy
-					- World.terrain.getAltitude((int) Math.round(currentPosition.getX())) > .1) {
+			} else if (currentPosition.getY()
+					+ dy
+					- World.terrain.getAltitude((int) Math
+							.round(currentPosition.getX())) > .1) {
 				System.out.println("Safety Block");
 				// safety block for jumping
 				System.out.println("Variable dy used for jumping:" + dy);
-//				currentPosition
-//						.setLocation((double) (currentPosition.getX() + dx),
-//								(double) (World.terrain
-//										.getAltitude((int) currentPosition
-//												.getX()) + 1));
+				// currentPosition
+				// .setLocation((double) (currentPosition.getX() + dx),
+				// (double) (World.terrain
+				// .getAltitude((int) currentPosition
+				// .getX()) + 1));
 			} else {
 				currentPosition.setLocation(
 						(double) (currentPosition.getX() + dx),
@@ -243,11 +249,11 @@ public abstract class AgentReplacement implements Entity {
 				movements.pop();
 			}
 		} else {
-//			 currentPosition.setLocation(
-//			 (double) (currentPosition.getX()),
-//			 (double) (currentPosition.getY()+SPEED));
-//			 movements = goHere(currentPosition, new
-//			 Point((int)currentPosition.x, (int)currentPosition.y));
+			// currentPosition.setLocation(
+			// (double) (currentPosition.getX()),
+			// (double) (currentPosition.getY()+SPEED));
+			// movements = goHere(currentPosition, new
+			// Point((int)currentPosition.x, (int)currentPosition.y));
 		}
 	}
 
@@ -255,7 +261,7 @@ public abstract class AgentReplacement implements Entity {
 			Point destination) {
 		Stack<Point> movements = new Stack<Point>();
 		PathFinder thePath = new PathFinder(new Point(
-				(int) currentPosition.getX(), (int) currentPosition.getY()),
+				getCurrentX(currentPosition), getCurrentY(currentPosition)),
 				destination, World.terrain, passableTiles);
 		movements = thePath.getPath();
 
@@ -272,8 +278,8 @@ public abstract class AgentReplacement implements Entity {
 			// find shortest path to building with food
 			if (((Building) World.buildings.get(i)).getInventory().getAmount(r) > 0) {
 				PathFinder thePath = new PathFinder(new Point(
-						(int) currentPosition.getX(),
-						(int) currentPosition.getY()), (Point) World.buildings
+						getCurrentX(currentPosition),
+						getCurrentY(currentPosition)), (Point) World.buildings
 						.get(i).getPos(), World.terrain, passableTiles);
 				if (nullPath || thePath.getPath().size() > shortestPath.size()) {
 					nullPath = false;
@@ -293,7 +299,8 @@ public abstract class AgentReplacement implements Entity {
 	protected Point findNearestTree(Point2D.Double currentPosition) {
 		if (currentPosition.equals(Tile.Wood)
 				|| currentPosition.equals(Tile.Leaves)) {
-			return new Point(getCurrentX(currentPosition), getCurrentY(currentPosition));
+			return new Point(getCurrentX(currentPosition),
+					getCurrentY(currentPosition));
 		}
 		for (int i = 0; i < 20; i++) {
 			if (i + getCurrentX(currentPosition) > 0
@@ -302,12 +309,12 @@ public abstract class AgentReplacement implements Entity {
 					&& (World.terrain.getTile(
 							i + getCurrentX(currentPosition),
 							World.terrain.getAltitude(i
-									+ getCurrentX(currentPosition)) - 1).equals(
-							Tile.Wood) || World.terrain.getTile(
+									+ getCurrentX(currentPosition)) - 1)
+							.equals(Tile.Wood) || World.terrain.getTile(
 							i + getCurrentX(currentPosition),
 							World.terrain.getAltitude(i
-									+ getCurrentX(currentPosition)) - 1).equals(
-							Tile.Leaves))
+									+ getCurrentX(currentPosition)) - 1)
+							.equals(Tile.Leaves))
 					&& !World.terrain.getTile(
 							i + getCurrentX(currentPosition),
 							World.terrain.getAltitude(i
@@ -320,8 +327,9 @@ public abstract class AgentReplacement implements Entity {
 							Tile.Leaves)) {
 				if (goHere(
 						currentPosition,
-						new Point(i + getCurrentX(currentPosition), World.terrain
-								.getAltitude(i + getCurrentX(currentPosition)) - 1))
+						new Point(i + getCurrentX(currentPosition),
+								World.terrain.getAltitude(i
+										+ getCurrentX(currentPosition)) - 1))
 						.size() > 0) {
 					return new Point(i + getCurrentX(currentPosition),
 							World.terrain.getAltitude(i
@@ -335,12 +343,12 @@ public abstract class AgentReplacement implements Entity {
 					&& (World.terrain.getTile(
 							-i + getCurrentX(currentPosition),
 							World.terrain.getAltitude(-i
-									+ getCurrentX(currentPosition)) - 1).equals(
-							Tile.Wood) || World.terrain.getTile(
+									+ getCurrentX(currentPosition)) - 1)
+							.equals(Tile.Wood) || World.terrain.getTile(
 							-i + getCurrentX(currentPosition),
 							World.terrain.getAltitude(-i
-									+ getCurrentX(currentPosition)) - 1).equals(
-							Tile.Leaves))
+									+ getCurrentX(currentPosition)) - 1)
+							.equals(Tile.Leaves))
 					&& !World.terrain.getTile(
 							-i + getCurrentX(currentPosition),
 							World.terrain.getAltitude(-i
@@ -353,8 +361,9 @@ public abstract class AgentReplacement implements Entity {
 							Tile.Leaves)) {
 				if (goHere(
 						currentPosition,
-						new Point(-i + getCurrentX(currentPosition), World.terrain
-								.getAltitude(-i + getCurrentX(currentPosition)) - 1))
+						new Point(-i + getCurrentX(currentPosition),
+								World.terrain.getAltitude(-i
+										+ getCurrentX(currentPosition)) - 1))
 						.size() > 0) {
 					return new Point(-i + getCurrentX(currentPosition),
 							World.terrain.getAltitude(-i
