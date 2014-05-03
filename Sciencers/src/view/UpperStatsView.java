@@ -50,7 +50,7 @@ public class UpperStatsView extends JPanel {
 				g2.drawImage(textures.get(agentInv.get(j)), j * 16, i * 16 + 40,
 						null);
 			}
-//			g2.drawString("", x, y);
+//			g2.drawString("", 80 , y);
 		}
 	}
 
