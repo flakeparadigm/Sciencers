@@ -15,7 +15,7 @@ public class HarvestTreeTask implements Task {
 	private AgentReplacement sourceAgent;
 	
 	private final int WOOD_VALUE = 1;
-	private final int FOOD_VALUE = 3;
+	private final int FOOD_VALUE = 1;
 
 	public HarvestTreeTask(AgentReplacement sourceAgent, Point location, Terrain terrain) {
 		this.location = location;

@@ -1,6 +1,8 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,6 +41,7 @@ public class WorldView extends JFrame {
 	public static BuildingsView buildingPanel;
 	public static InfoPanes infoPanes;
 	public static SelectionView selectionPanel;
+	public static UpperStatsView upperStatsPanel;
 
 	// observers
 	public static SciencersObserver terrainWatch;
@@ -48,14 +51,15 @@ public class WorldView extends JFrame {
 	static Toolkit tk = Toolkit.getDefaultToolkit();
 	private final int X_SCREEN_SIZE = ((int) tk.getScreenSize().getWidth());
 	private final int Y_SCREEN_SIZE = ((int) tk.getScreenSize().getHeight());
-	private final static int X_WINDOW_SIZE = 700;
-	private final static int Y_WINDOW_SIZE = 700;
+	private static int X_WINDOW_SIZE = 700;
+	private static int Y_WINDOW_SIZE = 700;
 
 	private final static int X_MAP_SIZE = 500;
 	private final static int Y_MAP_SIZE = 100;
 	public final static int TILE_SIZE = 16;
 	public final static int INFO_PANE_SIZE = 200;
-	
+	public final static int UPPER_STATS_SIZE = 150;
+
 	private final String SAVE_LOCATION = "world.save";
 
 	private static int moveSpeed = 15;
@@ -67,7 +71,7 @@ public class WorldView extends JFrame {
 		gameWindow = new WorldView();
 		gameWindow.setVisible(true);
 	}
-
+	
 	public WorldView() {
 		gameWindow = this;
 		setupObservers();
@@ -75,7 +79,7 @@ public class WorldView extends JFrame {
 		setupModel();
 		addComponents();
 		registerListeners();
-		
+
 		World.startTicks();
 	}
 
@@ -121,17 +125,24 @@ public class WorldView extends JFrame {
 
 	private void addComponents() {
 
+		upperStatsPanel = new UpperStatsView();
+		add(upperStatsPanel);
+		upperStatsPanel.setLocation(X_WINDOW_SIZE - UPPER_STATS_SIZE, 100);
+		upperStatsPanel.setSize(100, 100);
+//		upperStatsPanel.setOpaque(false);
+//		upperStatsPanel.setBackground(new Color(0, 0, 0, 0));
+		
 		infoPanes = new InfoPanes();
 		add(infoPanes);
 		infoPanes.setSize(X_WINDOW_SIZE, INFO_PANE_SIZE);
 		infoPanes.setLocation(0, Y_WINDOW_SIZE - INFO_PANE_SIZE - 39);
-		
+
 		selectionPanel = new SelectionView();
 		add(selectionPanel);
 		selectionPanel.setSize(X_MAP_SIZE * TILE_SIZE, Y_MAP_SIZE * TILE_SIZE);
 		selectionPanel.setOpaque(false);
 		selectionPanel.setBackground(new Color(0, 0, 0, 0));
-		
+
 		agentPanel = new AgentsView();
 		add(agentPanel);
 		agentPanel.setLocation(0, 0);
@@ -153,6 +164,7 @@ public class WorldView extends JFrame {
 		terrainPanel.setSize(X_MAP_SIZE * TILE_SIZE, Y_MAP_SIZE * TILE_SIZE);
 		terrainPanel.setOpaque(false);
 		terrainPanel.setBackground(new Color(0, 0, 0, 0));
+
 	}
 
 	private void registerListeners() {
@@ -379,34 +391,36 @@ public class WorldView extends JFrame {
 
 	public void updateInfo() {
 		infoPanes.performUpdate();
+		upperStatsPanel.performUpdate();
 	}
-	
 
 	// CREATE, LOAD, AND SAVE WORLDS
-	
+
 	private void makeNewWorld() {
 		world = new World(12345, X_MAP_SIZE, Y_MAP_SIZE);
 	}
 
 	private void loadSavedWorld() {
 		File file = new File(SAVE_LOCATION);
-		if(!file.exists()) {
-			JOptionPane.showMessageDialog(gameWindow, "No save file was found.\nSorry.");
+		if (!file.exists()) {
+			JOptionPane.showMessageDialog(gameWindow,
+					"No save file was found.\nSorry.");
 			return;
 		}
-		
+
 		try {
 			FileInputStream loadFile = new FileInputStream(SAVE_LOCATION);
 			ObjectInputStream loadWorld = new ObjectInputStream(loadFile);
-			
+
 			world = (World) loadWorld.readObject();
 			world.loadSaveables();
 
 			loadWorld.close();
 			loadFile.close();
-			
-		} catch(Exception ex) {
-			JOptionPane.showMessageDialog(gameWindow, "Save file failed to load.\nSorry.");
+
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(gameWindow,
+					"Save file failed to load.\nSorry.");
 			makeNewWorld();
 		}
 	}
@@ -442,7 +456,8 @@ public class WorldView extends JFrame {
 				}
 
 				try {
-					FileOutputStream saveFile = new FileOutputStream(SAVE_LOCATION);
+					FileOutputStream saveFile = new FileOutputStream(
+							SAVE_LOCATION);
 					ObjectOutputStream saveWorld = new ObjectOutputStream(
 							saveFile);
 
@@ -452,7 +467,7 @@ public class WorldView extends JFrame {
 
 					saveWorld.close();
 					saveFile.close();
-					
+
 				} catch (Exception ex) {
 					ex.printStackTrace();
 					JOptionPane

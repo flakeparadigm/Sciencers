@@ -25,7 +25,7 @@ public abstract class AgentReplacement implements Entity {
 	private static int currentId = 0;
 	public final int MY_ID;
 	public final double SPEED = .1;
-	public final int CAPACITY = 100;
+	public final int CAPACITY = 5;
 	// every 100 ticks, hunger goes down
 	public final int HUNGER_SPEED = 100;
 	private final double GRAVITY_CONSTANT = .0981;
@@ -43,23 +43,25 @@ public abstract class AgentReplacement implements Entity {
 	protected Stack<Task> tasks;
 	protected int taskTimer;
 
-	private Inventory inventory;
+	protected Inventory inventory;
 	protected ArrayList<Tile> passableTiles;
 	public Tool workingTool = null;
 	private Tool mainTool = null, secondaryTool = null;
+	protected Resource priorityResource;
 
 	private int jumpTick = 0;
 
 	public AgentReplacement(Point currentPosition) {
 		MY_ID = currentId++;
-
+		priorityResource = Resource.FOOD;
+		
 		passableTiles = new ArrayList<Tile>();
 		passableTiles.add(Tile.Sky);
 		passableTiles.add(Tile.Wood);
 		passableTiles.add(Tile.Leaves);
 		passableTiles.add(Tile.Ladder);
 
-		inventory = new Inventory(CAPACITY);
+		inventory = new Inventory(CAPACITY, priorityResource);
 
 		this.currentPosition = new Point2D.Double((double) currentPosition.x,
 				(double) currentPosition.y);
@@ -285,7 +287,7 @@ public abstract class AgentReplacement implements Entity {
 			return new Point(getCurrentX(currentPosition),
 					getCurrentY(currentPosition));
 		}
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 40; i++) {
 			if (i + getCurrentX(currentPosition) > 0
 					&& i + getCurrentX(currentPosition) < World.terrain
 							.getMapWidth()

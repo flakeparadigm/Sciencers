@@ -17,11 +17,14 @@ public class MinerAgent extends AgentReplacement {
 
 	public MinerAgent(Point currentPosition) {
 		super(currentPosition);
+		priorityResource = Resource.WOOD;
+		inventory.changePriority(priorityResource);
 	}
 
 	@Override
 	public void update() {
 		updateStats();
+		
 		/*
 		 * The following code should be focused upon specific tasks for this
 		 * type of Agent
@@ -70,8 +73,6 @@ public class MinerAgent extends AgentReplacement {
 					.getTileLocation().getY()) {
 				((ChangeTileTask) currentTask).changeTileType(Tile.Ladder);
 			}
-			
-			
 			if (getInventory().getAmount(Resource.WOOD) < 3) {
 				tasks.add(currentTask);
 				currentTask = new HarvestTreeTask(this,

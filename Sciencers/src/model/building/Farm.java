@@ -28,7 +28,7 @@ public class Farm extends Building {
 	public Farm(Point pos) {
 		super(pos);
 		workers = new ArrayList<AgentReplacement>();
-		inv = new Inventory(CAPACITY);
+		inv = new Inventory(CAPACITY, Resource.FOOD);
 		inv.changeAmount(Resource.FOOD, 10000000);
 	}
 	
