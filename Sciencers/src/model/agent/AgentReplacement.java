@@ -375,7 +375,7 @@ public abstract class AgentReplacement implements Entity {
 	}
 
 	private int getCurrentY(Point2D.Double currentPosition) {
-		return (int) Math.round(currentPosition.y);
+		return (int) Math.floor(currentPosition.y);
 	}
 
 	private int getCurrentX(Point2D.Double currentPosition) {
