@@ -81,6 +81,10 @@ public class UpperStatsView extends JPanel {
 		for (Entity e : agents) {
 			inventories.add(((AgentReplacement) e).getInventory());
 		}
+		
+		for (int i = 0; i < agents.size(); i++) {
+			inventories.add(i, ((AgentReplacement) agents.get(i)).getInventory());
+		}
 
 		repaint();
 	}

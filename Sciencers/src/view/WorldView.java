@@ -127,10 +127,10 @@ public class WorldView extends JFrame {
 
 		upperStatsPanel = new UpperStatsView();
 		add(upperStatsPanel);
-		upperStatsPanel.setLocation(X_WINDOW_SIZE - UPPER_STATS_SIZE, 100);
-		upperStatsPanel.setSize(100, 100);
-//		upperStatsPanel.setOpaque(false);
-//		upperStatsPanel.setBackground(new Color(0, 0, 0, 0));
+		upperStatsPanel.setLocation(X_WINDOW_SIZE - UPPER_STATS_SIZE, 10);
+		upperStatsPanel.setSize(150, 200);
+		upperStatsPanel.setOpaque(false);
+		upperStatsPanel.setBackground(new Color(0, 0, 0, 0));
 		
 		infoPanes = new InfoPanes();
 		add(infoPanes);
