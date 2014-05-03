@@ -199,7 +199,7 @@ public abstract class AgentReplacement implements Entity {
 				currentPosition.setLocation((double) (currentPosition.getX()),
 						(double) (currentPosition.getY() + dy));
 			} else if (currentPosition.getY() + dy
-					- World.terrain.getAltitude((int) currentPosition.getX()) > .1) {
+					- World.terrain.getAltitude((int) Math.round(currentPosition.getX())) > .1) {
 				System.out.println("Safety Block");
 				// safety block for jumping
 				System.out.println("Variable dy used for jumping:" + dy);
@@ -238,11 +238,11 @@ public abstract class AgentReplacement implements Entity {
 				movements.pop();
 			}
 		} else {
-			// currentPosition.setLocation(
-			// (double) (currentPosition.getX()),
-			// (double) (currentPosition.getY()+SPEED));
-			// movements = goHere(currentPosition, new
-			// Point((int)currentPosition.x, (int)currentPosition.y));
+//			 currentPosition.setLocation(
+//			 (double) (currentPosition.getX()),
+//			 (double) (currentPosition.getY()+SPEED));
+//			 movements = goHere(currentPosition, new
+//			 Point((int)currentPosition.x, (int)currentPosition.y));
 		}
 	}
 
