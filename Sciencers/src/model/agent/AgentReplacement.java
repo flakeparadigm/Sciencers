@@ -288,76 +288,80 @@ public abstract class AgentReplacement implements Entity {
 	protected Point findNearestTree(Point2D.Double currentPosition) {
 		if (currentPosition.equals(Tile.Wood)
 				|| currentPosition.equals(Tile.Leaves)) {
-			return new Point((int) currentPosition.x, (int) currentPosition.y);
+			return new Point(getCurrentX(currentPosition), (int) Math.round(currentPosition.y));
 		}
 		for (int i = 0; i < 20; i++) {
-			if (i + (int) currentPosition.x > 0
-					&& i + (int) currentPosition.x < World.terrain
+			if (i + getCurrentX(currentPosition) > 0
+					&& i + getCurrentX(currentPosition) < World.terrain
 							.getMapWidth()
 					&& (World.terrain.getTile(
-							i + (int) currentPosition.x,
+							i + getCurrentX(currentPosition),
 							World.terrain.getAltitude(i
-									+ (int) currentPosition.x) - 1).equals(
+									+ getCurrentX(currentPosition)) - 1).equals(
 							Tile.Wood) || World.terrain.getTile(
-							i + (int) currentPosition.x,
+							i + getCurrentX(currentPosition),
 							World.terrain.getAltitude(i
-									+ (int) currentPosition.x) - 1).equals(
+									+ getCurrentX(currentPosition)) - 1).equals(
 							Tile.Leaves))
 					&& !World.terrain.getTile(
-							i + (int) currentPosition.x,
+							i + getCurrentX(currentPosition),
 							World.terrain.getAltitude(i
-									+ (int) currentPosition.x)).equals(
+									+ getCurrentX(currentPosition))).equals(
 							Tile.Wood)
 					&& !World.terrain.getTile(
-							i + (int) currentPosition.x,
+							i + getCurrentX(currentPosition),
 							World.terrain.getAltitude(i
-									+ (int) currentPosition.x)).equals(
+									+ getCurrentX(currentPosition))).equals(
 							Tile.Leaves)) {
 				if (goHere(
 						currentPosition,
-						new Point(i + (int) currentPosition.x, World.terrain
-								.getAltitude(i + (int) currentPosition.x) - 1))
+						new Point(i + getCurrentX(currentPosition), World.terrain
+								.getAltitude(i + getCurrentX(currentPosition)) - 1))
 						.size() > 0) {
-					return new Point(i + (int) currentPosition.x,
+					return new Point(i + getCurrentX(currentPosition),
 							World.terrain.getAltitude(i
-									+ (int) currentPosition.x) - 1);
+									+ getCurrentX(currentPosition)) - 1);
 				}
 
 			}
-			if (-i + (int) currentPosition.x > 0
-					&& -i + (int) currentPosition.x < World.terrain
+			if (-i + getCurrentX(currentPosition) > 0
+					&& -i + getCurrentX(currentPosition) < World.terrain
 							.getMapWidth()
 					&& (World.terrain.getTile(
-							-i + (int) currentPosition.x,
+							-i + getCurrentX(currentPosition),
 							World.terrain.getAltitude(-i
-									+ (int) currentPosition.x) - 1).equals(
+									+ getCurrentX(currentPosition)) - 1).equals(
 							Tile.Wood) || World.terrain.getTile(
-							-i + (int) currentPosition.x,
+							-i + getCurrentX(currentPosition),
 							World.terrain.getAltitude(-i
-									+ (int) currentPosition.x) - 1).equals(
+									+ getCurrentX(currentPosition)) - 1).equals(
 							Tile.Leaves))
 					&& !World.terrain.getTile(
-							-i + (int) currentPosition.x,
+							-i + getCurrentX(currentPosition),
 							World.terrain.getAltitude(-i
-									+ (int) currentPosition.x)).equals(
+									+ getCurrentX(currentPosition))).equals(
 							Tile.Wood)
 					&& !World.terrain.getTile(
-							-i + (int) currentPosition.x,
+							-i + getCurrentX(currentPosition),
 							World.terrain.getAltitude(-i
-									+ (int) currentPosition.x)).equals(
+									+ getCurrentX(currentPosition))).equals(
 							Tile.Leaves)) {
 				if (goHere(
 						currentPosition,
-						new Point(-i + (int) currentPosition.x, World.terrain
-								.getAltitude(-i + (int) currentPosition.x) - 1))
+						new Point(-i + getCurrentX(currentPosition), World.terrain
+								.getAltitude(-i + getCurrentX(currentPosition)) - 1))
 						.size() > 0) {
-					return new Point(-i + (int) currentPosition.x,
+					return new Point(-i + getCurrentX(currentPosition),
 							World.terrain.getAltitude(-i
-									+ (int) currentPosition.x) - 1);
+									+ getCurrentX(currentPosition)) - 1);
 				}
 			}
 		}
 		return null;
+	}
+
+	private int getCurrentX(Point2D.Double currentPosition) {
+		return (int) Math.round(currentPosition.x);
 	}
 
 	@Override
