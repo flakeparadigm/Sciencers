@@ -183,11 +183,11 @@ public abstract class AgentReplacement implements Entity {
 			}
 
 			// for ladders:
-			System.out.println(World.terrain.getTile((int) Math.round(currentPosition.getX()),
-					(int) Math.round(currentPosition.getY())));
-			if (World.terrain.getTile((int) Math.round(currentPosition.getX()),
-					(int) Math.ceil(currentPosition.getY())).equals(Tile.Ladder) || World.terrain.getTile((int) Math.round(currentPosition.getX()),
-							(int) Math.floor(currentPosition.getY())).equals(Tile.Ladder)) {
+//			System.out.println(World.terrain.getTile(getCurrentX(currentPosition),
+//					getCurrentY(currentPosition)));
+			if (World.terrain.getTile(getCurrentX(currentPosition),
+					getCurrentY(currentPosition)).equals(Tile.Ladder) || World.terrain.getTile(getCurrentX(currentPosition),
+							getCurrentY(currentPosition) + 1).equals(Tile.Ladder)) {
 				jumpTick = 0;
 				if ((double) movements.peek().getY() - currentPosition.getY() < -.1) {
 					dy = -SPEED/2;
@@ -198,6 +198,11 @@ public abstract class AgentReplacement implements Entity {
 				}
 				currentPosition.setLocation((double) (currentPosition.getX()),
 						(double) (currentPosition.getY() + dy));
+				if (Math.abs(movements.peek().getY() - currentPosition.getY()) < .1 && !World.terrain.getTile(getCurrentX(currentPosition),
+					getCurrentY(currentPosition)).equals(Tile.Ladder)){
+					currentPosition.setLocation((double) (currentPosition.getX() + dx),
+							(double) (currentPosition.getY()));
+				}
 			} else if (currentPosition.getY() + dy
 					- World.terrain.getAltitude((int) Math.round(currentPosition.getX())) > .1) {
 				System.out.println("Safety Block");
@@ -288,7 +293,7 @@ public abstract class AgentReplacement implements Entity {
 	protected Point findNearestTree(Point2D.Double currentPosition) {
 		if (currentPosition.equals(Tile.Wood)
 				|| currentPosition.equals(Tile.Leaves)) {
-			return new Point(getCurrentX(currentPosition), (int) Math.round(currentPosition.y));
+			return new Point(getCurrentX(currentPosition), getCurrentY(currentPosition));
 		}
 		for (int i = 0; i < 20; i++) {
 			if (i + getCurrentX(currentPosition) > 0
@@ -358,6 +363,10 @@ public abstract class AgentReplacement implements Entity {
 			}
 		}
 		return null;
+	}
+
+	private int getCurrentY(Point2D.Double currentPosition) {
+		return (int) Math.round(currentPosition.y);
 	}
 
 	private int getCurrentX(Point2D.Double currentPosition) {
