@@ -84,6 +84,7 @@ public abstract class AgentReplacement implements Entity {
 							currentTask.getPos().getX(), currentTask.getPos()
 									.getY()), .1, .1)) {
 				// if movements needs updated:
+				System.out.println("updating movements");
 				movements = goHere(currentPosition, currentTask.getPos());
 			}
 
@@ -147,7 +148,6 @@ public abstract class AgentReplacement implements Entity {
 		double dx = 0;
 		double dy = 0;
 		boolean error = false;
-		System.out.println(tasks.size());
 
 		if (!movements.isEmpty()) {
 
@@ -191,11 +191,11 @@ public abstract class AgentReplacement implements Entity {
 				jumpTick = 0;
 				if ((double) movements.peek().getY() - currentPosition.getY() < -.1) {
 					dy = -SPEED / 2;
-					System.out.println("Going up");
+//					System.out.println("Going up");
 				} else if ((double) movements.peek().getY()
 						- currentPosition.getY() > .1) {
 					dy = SPEED / 2;
-					System.out.println("Going down");
+//					System.out.println("Going down");
 				}
 				currentPosition.setLocation((double) (currentPosition.getX()),
 						(double) (currentPosition.getY() + dy));
@@ -214,11 +214,7 @@ public abstract class AgentReplacement implements Entity {
 				System.out.println("Safety Block");
 				// safety block for jumping
 				System.out.println("Variable dy used for jumping:" + dy);
-				// currentPosition
-				// .setLocation((double) (currentPosition.getX() + dx),
-				// (double) (World.terrain
-				// .getAltitude((int) currentPosition
-				// .getX()) + 1));
+
 			} else {
 				currentPosition.setLocation(
 						(double) (currentPosition.getX() + dx),
@@ -235,25 +231,12 @@ public abstract class AgentReplacement implements Entity {
 			}
 			// adjust to allow correct switching of target tiles (for jumping
 			// and falling and standard)
-			if ((double) movements.peek().getY() - currentPosition.getY() < -.1
-					&& sameLocation(currentPosition, new Point2D.Double(
-							movements.peek().x, movements.peek().y), .1, 1.5)) {
-				movements.pop();
-			} else if ((double) movements.peek().getY()
-					- currentPosition.getY() > .1
-					&& sameLocation(currentPosition, new Point2D.Double(
-							movements.peek().x, movements.peek().y), 1.5, .1)) {
-				movements.pop();
-			} else if (sameLocation(currentPosition, new Point2D.Double(
-					movements.peek().x, movements.peek().y), .1, .1)) {
+			if (sameLocation(currentPosition,
+					new Point2D.Double(movements.peek().x, movements.peek().y),
+					.1, .1)) {
+//				System.out.println("pop Standard");
 				movements.pop();
 			}
-		} else {
-			// currentPosition.setLocation(
-			// (double) (currentPosition.getX()),
-			// (double) (currentPosition.getY()+SPEED));
-			// movements = goHere(currentPosition, new
-			// Point((int)currentPosition.x, (int)currentPosition.y));
 		}
 	}
 

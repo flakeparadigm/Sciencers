@@ -74,7 +74,6 @@ public class MinerAgent extends AgentReplacement {
 			
 			if (getInventory().getAmount(Resource.WOOD) < 3) {
 				tasks.add(currentTask);
-				System.out.println("X");
 				currentTask = new HarvestTreeTask(this,
 						findNearestTree(currentPosition), World.terrain);
 				taskTimer = 10;
@@ -89,7 +88,6 @@ public class MinerAgent extends AgentReplacement {
 						tasks.add(currentTask);
 						currentTask = new ChangeTileTask(this, new Point((int) ((ChangeTileTask) currentTask)
 								.getTileLocation().getX(), (int) ((ChangeTileTask) currentTask).getTileLocation().getY() - i), Tile.Sky);
-						System.out.println("!");
 					}
 				}
 			}
