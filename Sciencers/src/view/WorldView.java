@@ -38,6 +38,7 @@ public class WorldView extends JFrame {
 	public static AgentsView agentPanel;
 	public static BuildingsView buildingPanel;
 	public static InfoPanes infoPanes;
+	public static SelectionView selectionPanel;
 
 	// observers
 	public static SciencersObserver terrainWatch;
@@ -124,7 +125,13 @@ public class WorldView extends JFrame {
 		add(infoPanes);
 		infoPanes.setSize(X_WINDOW_SIZE, INFO_PANE_SIZE);
 		infoPanes.setLocation(0, Y_WINDOW_SIZE - INFO_PANE_SIZE - 39);
-
+		
+		selectionPanel = new SelectionView();
+		add(selectionPanel);
+		selectionPanel.setSize(X_MAP_SIZE * TILE_SIZE, Y_MAP_SIZE * TILE_SIZE);
+		selectionPanel.setOpaque(false);
+		selectionPanel.setBackground(new Color(0, 0, 0, 0));
+		
 		agentPanel = new AgentsView();
 		add(agentPanel);
 		agentPanel.setLocation(0, 0);

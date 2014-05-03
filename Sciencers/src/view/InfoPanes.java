@@ -199,7 +199,9 @@ public class InfoPanes extends JPanel {
 				if(e.getSource() == buildButton) {
 					for(EBuilding b : EBuilding.values()) {
 						if(selectedBuilding.equals(b.name())) {
-							System.out.println("NYI! Begin process of building: " + selectedBuilding);
+							System.out.println("WIP! Begin process of building: " + selectedBuilding + 
+									"\nClick a point for bottom left corner");
+							World.addBuilding(b, WorldView.selectionPanel.getPoint());
 						}
 					}
 				}
