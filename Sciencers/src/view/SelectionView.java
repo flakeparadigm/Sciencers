@@ -4,16 +4,19 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
 
 public class SelectionView extends JPanel {
 	
+	private boolean waitingForRectangle = false;
+	private boolean waitingForPoint = false;
+	private Point firstPoint;
+	private Point secondPoint;
 	private Point currPoint;
-	private Point prevPoint;
 	
 	public SelectionView() {
 		SelectListener sl= new SelectListener();
@@ -27,16 +30,38 @@ public class SelectionView extends JPanel {
 	}
 	
 	public Point getPoint() {
-		return currPoint;
+		// reset point variables
+		firstPoint = null;
+		waitingForPoint = true;
+		
+		// wait for two points
+		while(waitingForPoint) {
+			if(firstPoint != null)
+				waitingForPoint = false;
+		}
+		return new Point(currPoint.x/WorldView.TILE_SIZE, currPoint.y/WorldView.TILE_SIZE);
 	}
 	
 	public Rectangle getRectangle() {
-		//set top left point and dimensions using two points
-		int x1 = currPoint.x;
-		int x2 = prevPoint.x;
-		int y1 = currPoint.y;
-		int y2 = prevPoint.y;
 		
+		// reset point variables
+		firstPoint = null;
+		secondPoint = null;
+		waitingForRectangle = true;
+		
+		// wait for two points
+		while(waitingForRectangle) {
+			if(firstPoint != null && secondPoint != null)
+				waitingForRectangle = false;
+		}
+		
+
+		//set top left point and dimensions using two points
+		int x1 = firstPoint.x/WorldView.TILE_SIZE;
+		int x2 = secondPoint.x/WorldView.TILE_SIZE;
+		int y1 = firstPoint.y/WorldView.TILE_SIZE;
+		int y2 = secondPoint.y/WorldView.TILE_SIZE;
+
 		int x = Math.min(x1, x2);
 		int y = Math.max(y1, y2);
 		
@@ -51,31 +76,27 @@ public class SelectionView extends JPanel {
 		repaint();
 	}
 	
-	private class SelectListener implements MouseListener, MouseMotionListener {
+	private class SelectListener extends MouseAdapter implements MouseMotionListener {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			prevPoint = currPoint;
-			currPoint = e.getPoint();
+			if(waitingForRectangle && firstPoint == null) {
+				firstPoint = e.getPoint();
+			} else if(waitingForRectangle) {
+				secondPoint = e.getPoint();
+			}
+			
+			if(waitingForPoint)
+				firstPoint = e.getPoint();
 		}
 
 		@Override
-		public void mouseEntered(MouseEvent e) {}
-
-		@Override
-		public void mouseExited(MouseEvent e) {}
-
-		@Override
-		public void mousePressed(MouseEvent e) {}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {}
-
-		@Override
-		public void mouseDragged(MouseEvent arg0) {}
-
-		@Override
-		public void mouseMoved(MouseEvent arg0) {}
+		public void mouseMoved(MouseEvent e) {
+			if(waitingForRectangle || waitingForPoint) {
+				currPoint = e.getPoint();
+				
+			}
+		}
 		
 	}
 
