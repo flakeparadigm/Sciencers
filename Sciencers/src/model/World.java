@@ -183,8 +183,8 @@ public class World implements Serializable {
 	}
 
 	public static void giveStarter() {
-		World.addAgent(EAgent.FARMER, 0);
-		World.addAgent(EAgent.MINER, 0);
-		World.addAgent(EAgent.FARMER, 0);
+//		World.addAgent(EAgent.FARMER, 0);
+//		World.addAgent(EAgent.MINER, 0);
+//		World.addAgent(EAgent.FARMER, 0);
 	}
 }

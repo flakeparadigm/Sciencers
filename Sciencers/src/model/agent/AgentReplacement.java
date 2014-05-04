@@ -54,7 +54,7 @@ public abstract class AgentReplacement implements Entity {
 	public AgentReplacement(Point currentPosition) {
 		MY_ID = currentId++;
 		priorityResource = Resource.FOOD;
-		
+
 		passableTiles = new ArrayList<Tile>();
 		passableTiles.add(Tile.Sky);
 		passableTiles.add(Tile.Wood);
@@ -88,11 +88,12 @@ public abstract class AgentReplacement implements Entity {
 				// if movements needs updated:
 				System.out.println("updating movements");
 				movements = goHere(currentPosition, currentTask.getPos());
+
 			}
 
-//			System.out.println("cur" + currentPosition);
-//			System.out.println("task" + new Point2D.Double(currentTask
-//					.getPos().getX(), currentTask.getPos().getY()));
+			// System.out.println("cur" + currentPosition);
+			// System.out.println("task" + new Point2D.Double(currentTask
+			// .getPos().getX(), currentTask.getPos().getY()));
 			if (sameLocation(currentPosition, new Point2D.Double(currentTask
 					.getPos().getX(), currentTask.getPos().getY()), .1, .1)
 					&& taskTimer < 0) {
@@ -194,27 +195,27 @@ public abstract class AgentReplacement implements Entity {
 				jumpTick = 0;
 				if ((double) movements.peek().getY() - currentPosition.getY() < -.1) {
 					dy = -SPEED / 2;
-//					System.out.println("Going up");
+					// System.out.println("Going up");
 				} else if ((double) movements.peek().getY()
-						- currentPosition.getY() > .1) {
+						- currentPosition.getY() > .05) {
 					dy = SPEED / 2;
-//					System.out.println("Going down");
+					// System.out.println("Going down");
 				}
 				currentPosition.setLocation((double) (currentPosition.getX()),
 						(double) (currentPosition.getY() + dy));
 				if (Math.abs(movements.peek().getY() - currentPosition.getY()) < .1
-						&& (!World.terrain.getTile(getCurrentX(currentPosition),
+						&& (!World.terrain.getTile(
+								getCurrentX(currentPosition),
 								getCurrentY(currentPosition)).equals(
 								Tile.Ladder))) {
 					currentPosition.setLocation(
 							(double) (currentPosition.getX() + dx),
 							(double) (currentPosition.getY()));
 				}
-				System.out.println(World.terrain.getTile(getCurrentX(currentPosition) + 1,
-								getCurrentY(currentPosition) + 1));
 				if (Math.abs(movements.peek().getY() - currentPosition.getY()) < .1
-						&& passableTiles.contains(World.terrain.getTile(getCurrentX(currentPosition) + 1,
-								getCurrentY(currentPosition)))) {
+						&& passableTiles.contains(World.terrain.getTile(
+								getCurrentX(currentPosition) + 1,
+								getCurrentY(currentPosition) + 1))) {
 					currentPosition.setLocation(
 							(double) (currentPosition.getX() + dx),
 							(double) (currentPosition.getY()));
@@ -226,7 +227,9 @@ public abstract class AgentReplacement implements Entity {
 				System.out.println("Safety Block");
 				// safety block for jumping
 				System.out.println("Variable dy used for jumping:" + dy);
-
+				currentPosition.setLocation(
+						(double) (currentPosition.getX() + dx),
+						(double) (currentPosition.getY() + dy));
 			} else {
 				currentPosition.setLocation(
 						(double) (currentPosition.getX() + dx),
@@ -246,7 +249,7 @@ public abstract class AgentReplacement implements Entity {
 			if (sameLocation(currentPosition,
 					new Point2D.Double(movements.peek().x, movements.peek().y),
 					.1, .1)) {
-//				System.out.println("pop Standard");
+				// System.out.println("pop Standard");
 				movements.pop();
 			}
 		}

@@ -58,6 +58,7 @@ public class Demo extends JFrame {
 	public static void main(String[] args) {
 		worldView = new WorldView();
 		worldView.setVisible(true);
+		
 
 		demoTools = new Demo();
 		demoTools.setVisible(true);
@@ -152,7 +153,7 @@ public class Demo extends JFrame {
 		
 		private void testMineArea(){
 			World.addAgent(EAgent.MINER, 9);
-			TaskList.addTask(new GoMineAreaTask(new Point(16, 28), new Point(16, 32)));
+			TaskList.addTask(new GoMineAreaTask(new Point(16, 28), new Point(25, 30)));
 		}
 		
 		private void testHungerDeath(){
@@ -260,7 +261,7 @@ public class Demo extends JFrame {
 		}
 		
 		private void testSimMineArea() {
-			TaskList.addTask(new GoMineAreaTask(new Point(10, -10), new Point(20, -20)));
+			TaskList.addTask(new GoMineAreaTask(new Point(10, 50), new Point(20, 60)), EAgent.MINER);
 		}
 
 	}
