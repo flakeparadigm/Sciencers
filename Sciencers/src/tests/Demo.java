@@ -16,7 +16,7 @@ import model.agent.EAgent;
 import model.building.EBuilding;
 import model.task.BuildBuildingTask;
 import model.task.ChangeTileTask;
-import model.task.GoMineArea;
+import model.task.GoMineAreaTask;
 import model.task.HarvestTreeTask;
 import model.task.Task;
 import model.task.TaskList;
@@ -146,7 +146,7 @@ public class Demo extends JFrame {
 		
 		private void testMineArea(){
 			World.addAgent(EAgent.MINER, 9);
-//			TaskList.addTask(new GoMineArea())
+			TaskList.addTask(new GoMineAreaTask(new Point(16, 28), new Point(16, 32)));
 		}
 		
 		private void testHungerDeath(){

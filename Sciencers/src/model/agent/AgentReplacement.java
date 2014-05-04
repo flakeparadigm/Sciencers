@@ -39,8 +39,8 @@ public abstract class AgentReplacement implements Entity {
 	protected int tickCount;
 	protected Point2D.Double currentPosition;
 	protected Stack<Point> movements;
-	protected Task currentTask;
-	protected Stack<Task> tasks;
+	public Task currentTask;
+	public Stack<Task> tasks;
 	protected int taskTimer;
 
 	protected Inventory inventory;
@@ -90,6 +90,9 @@ public abstract class AgentReplacement implements Entity {
 				movements = goHere(currentPosition, currentTask.getPos());
 			}
 
+//			System.out.println("cur" + currentPosition);
+//			System.out.println("task" + new Point2D.Double(currentTask
+//					.getPos().getX(), currentTask.getPos().getY()));
 			if (sameLocation(currentPosition, new Point2D.Double(currentTask
 					.getPos().getX(), currentTask.getPos().getY()), .1, .1)
 					&& taskTimer < 0) {

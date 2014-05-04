@@ -11,6 +11,7 @@ import model.task.AgentDeath;
 import model.task.BuildBuildingTask;
 import model.task.ChangeTileTask;
 import model.task.CraftToolTask;
+import model.task.GoMineAreaTask;
 import model.task.HarvestTreeTask;
 
 public class MinerAgent extends AgentReplacement {
@@ -24,7 +25,7 @@ public class MinerAgent extends AgentReplacement {
 	@Override
 	public void update() {
 		updateStats();
-		
+
 		/*
 		 * The following code should be focused upon specific tasks for this
 		 * type of Agent
@@ -35,8 +36,8 @@ public class MinerAgent extends AgentReplacement {
 					(int) currentPosition.x, (int) currentPosition.y)));
 			taskTimer = 0;
 		}
-		
-		if(hunger < 0.5 * SEEK_FOOD_HUNGER) {
+
+		if (hunger < 0.5 * SEEK_FOOD_HUNGER) {
 			AlertCollection.addAlert("An agent is starving! D:");
 		}
 
@@ -53,7 +54,10 @@ public class MinerAgent extends AgentReplacement {
 		getNextTaskIfNotBusy(EAgent.MINER);
 
 		// build hammer before building Building
-		if (currentTask instanceof BuildBuildingTask && !hasTool(Tool.HAMMER)) {
+		if (currentTask instanceof GoMineAreaTask) {
+			((GoMineAreaTask) currentTask).setAgentSource(this);
+			
+		} else if (currentTask instanceof BuildBuildingTask && !hasTool(Tool.HAMMER)) {
 			if (getInventory().getAmount(Resource.WOOD) > 3) {
 				tasks.add(currentTask);
 				currentTask = new HarvestTreeTask(this,
@@ -78,23 +82,27 @@ public class MinerAgent extends AgentReplacement {
 				currentTask = new HarvestTreeTask(this,
 						findNearestTree(currentPosition), World.terrain);
 				taskTimer = 10;
-			} else
-			// dig down to tile location if necessary
-			if (!passableTiles.contains(World.terrain.getTile((int) ((ChangeTileTask) currentTask)
-					.getTileLocation().getX(), (int) ((ChangeTileTask) currentTask).getTileLocation().getY()))) {
+			} else if (!passableTiles.contains(World.terrain.getTile(
+					(int) ((ChangeTileTask) currentTask).getTileLocation()
+							.getX(), (int) ((ChangeTileTask) currentTask)
+							.getTileLocation().getY()))) {
 				for (int i = 1; i < 100; i++) {
 					if (!passableTiles.contains(World.terrain.getTile(
-							(int) ((ChangeTileTask) currentTask).getTileLocation().getX(),
-							(int) ((ChangeTileTask) currentTask).getTileLocation().getY() - i))) {
+							(int) ((ChangeTileTask) currentTask)
+									.getTileLocation().getX(),
+							(int) ((ChangeTileTask) currentTask)
+									.getTileLocation().getY() - i))) {
 						tasks.add(currentTask);
-						currentTask = new ChangeTileTask(this, new Point((int) ((ChangeTileTask) currentTask)
-								.getTileLocation().getX(), (int) ((ChangeTileTask) currentTask).getTileLocation().getY() - i), Tile.Sky);
+						currentTask = new ChangeTileTask(this, new Point(
+								(int) ((ChangeTileTask) currentTask)
+										.getTileLocation().getX(),
+								(int) ((ChangeTileTask) currentTask)
+										.getTileLocation().getY() - i),
+								Tile.Sky);
 					}
 				}
 			}
-			
-
-		}
+		} 
 
 		/*
 		 * tasks is a stack of tasks that must be completed after the current
