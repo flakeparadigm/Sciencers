@@ -46,6 +46,9 @@ public class WorldView extends JFrame {
 	// observers
 	public static SciencersObserver terrainWatch;
 	public static InfoObserver infoWatch;
+	
+	//boolean
+	private boolean doCreateWorld;
 
 	// Magic Numbers
 	static Toolkit tk = Toolkit.getDefaultToolkit();
@@ -81,6 +84,8 @@ public class WorldView extends JFrame {
 		registerListeners();
 
 		World.startTicks();
+		if(doCreateWorld)
+			World.giveStarter();
 	}
 
 	private void setupObservers() {
@@ -117,8 +122,10 @@ public class WorldView extends JFrame {
 				JOptionPane.YES_NO_OPTION);
 
 		if (loadWorld == JOptionPane.YES_OPTION) {
+			doCreateWorld = false;
 			loadSavedWorld();
 		} else {
+			doCreateWorld = true;
 			makeNewWorld();
 		}
 	}

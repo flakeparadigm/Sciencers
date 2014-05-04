@@ -46,6 +46,8 @@ public class Demo extends JFrame {
 	private JButton testGatherAndStoreButton = new JButton("Gather and Store Food");
 	private JButton testMineTile = new JButton("Mine Tiles");
 	private JButton testMineArea = new JButton("Mine Area");
+	
+	private JButton testSimMineAreaButton = new JButton("Mine Area w/ sim");
 
 	// magic numbers
 	private final int X_SCREEN_SIZE = ((int) tk.getScreenSize().getWidth());
@@ -63,7 +65,7 @@ public class Demo extends JFrame {
 
 	public Demo() {
 		setupProperties();
-		setupModel();
+//		setupModel();
 		addComponents();
 		registerListeners();
 	}
@@ -79,10 +81,10 @@ public class Demo extends JFrame {
 		setLocation(X_SCREEN_SIZE - (X_WINDOW_SIZE + 50), 50);
 	}
 
-	private void setupModel() {
-		// World = WorldView.getWorld();
-		// for example: add agent and farm
-	}
+//	private void setupModel() {
+//		// World = WorldView.getWorld();
+//		// for example: add agent and farm
+//	}
 
 	private void addComponents() {
 		this.add(resetWorldButton);
@@ -95,6 +97,7 @@ public class Demo extends JFrame {
 		this.add(testGatherAndStoreButton);
 		this.add(testMineTile);
 		this.add(testMineArea);
+		this.add(testSimMineAreaButton);
 	}
 
 	private void registerListeners() {
@@ -109,6 +112,7 @@ public class Demo extends JFrame {
 		testGatherAndStoreButton.addActionListener(new demoButtonListener());
 		testMineTile.addActionListener(new demoButtonListener());
 		testMineArea.addActionListener(new demoButtonListener());
+		testSimMineAreaButton.addActionListener(new demoButtonListener());
 	}
 
 	// PUT ALL TEST CASES BELOW.
@@ -137,6 +141,8 @@ public class Demo extends JFrame {
 				testMineTile();
 			if (event.getSource() == testMineArea)
 				testMineArea();
+			if (event.getSource() == testSimMineAreaButton)
+				testSimMineArea();
 		}
 
 		private void resetWorld() {
@@ -251,6 +257,10 @@ public class Demo extends JFrame {
 			};
 
 			new Thread(r).start();
+		}
+		
+		private void testSimMineArea() {
+			TaskList.addTask(new GoMineAreaTask(new Point(10, -10), new Point(20, -20)));
 		}
 
 	}

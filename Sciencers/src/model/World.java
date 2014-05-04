@@ -52,8 +52,9 @@ public class World implements Serializable {
 		buildings = new ArrayList<Entity>();
 		projectiles = new ArrayList<Projectile>();
 		tasks = new TaskList();
+		
 	}
-	
+
 	public static void addAgent(EAgent type, int xPos){
 		//this adds an Agent at the highest point on the terrain at a certain point
 		AgentReplacement agent = null;
@@ -179,5 +180,11 @@ public class World implements Serializable {
 		TaskList.emptyList();
 		
 		startTicks();
+	}
+
+	public static void giveStarter() {
+		World.addAgent(EAgent.FARMER, 0);
+		World.addAgent(EAgent.MINER, 0);
+		World.addAgent(EAgent.FARMER, 0);
 	}
 }
