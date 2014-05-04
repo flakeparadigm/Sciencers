@@ -91,7 +91,11 @@ public class MinerAgent extends AgentReplacement {
 							(int) ((ChangeTileTask) currentTask)
 									.getTileLocation().getX(),
 							(int) ((ChangeTileTask) currentTask)
-									.getTileLocation().getY() - i))) {
+									.getTileLocation().getY() - i)) && !passableTiles.contains(World.terrain.getTile(
+											(int) ((ChangeTileTask) currentTask)
+											.getTileLocation().getX() - 1,
+									(int) ((ChangeTileTask) currentTask)
+											.getTileLocation().getY()))) {
 						tasks.add(currentTask);
 						currentTask = new ChangeTileTask(this, new Point(
 								(int) ((ChangeTileTask) currentTask)

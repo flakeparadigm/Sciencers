@@ -153,9 +153,7 @@ public abstract class AgentReplacement implements Entity {
 		double dx = 0;
 		double dy = 0;
 		boolean error = false;
-
 		if (!movements.isEmpty()) {
-
 			if ((double) movements.peek().getX() - currentPosition.getX() > .1) {
 				dx = SPEED;
 			}
@@ -205,9 +203,18 @@ public abstract class AgentReplacement implements Entity {
 				currentPosition.setLocation((double) (currentPosition.getX()),
 						(double) (currentPosition.getY() + dy));
 				if (Math.abs(movements.peek().getY() - currentPosition.getY()) < .1
-						&& !World.terrain.getTile(getCurrentX(currentPosition),
+						&& (!World.terrain.getTile(getCurrentX(currentPosition),
 								getCurrentY(currentPosition)).equals(
-								Tile.Ladder)) {
+								Tile.Ladder))) {
+					currentPosition.setLocation(
+							(double) (currentPosition.getX() + dx),
+							(double) (currentPosition.getY()));
+				}
+				System.out.println(World.terrain.getTile(getCurrentX(currentPosition) + 1,
+								getCurrentY(currentPosition) + 1));
+				if (Math.abs(movements.peek().getY() - currentPosition.getY()) < .1
+						&& passableTiles.contains(World.terrain.getTile(getCurrentX(currentPosition) + 1,
+								getCurrentY(currentPosition)))) {
 					currentPosition.setLocation(
 							(double) (currentPosition.getX() + dx),
 							(double) (currentPosition.getY()));

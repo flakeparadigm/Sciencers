@@ -12,6 +12,8 @@ public class GoMineAreaTask implements Task {
 
 	private Point point1;
 	private Point point2;
+	private Point upperRight;
+	private Point lowerLeft;
 	private AgentReplacement agentSource;
 
 	public GoMineAreaTask(Point point1, Point point2) {
@@ -20,20 +22,25 @@ public class GoMineAreaTask implements Task {
 		this.point1 = point1;
 		this.point2 = point2;
 		agentSource = null;
+		upperRight = new Point(Math.min(point1.x, point2.x), Math.min(point1.y, point2.y));
+		lowerLeft = new Point(Math.max(point1.x, point2.x), Math.max(point1.y, point2.y));
 	}
 
 	@Override
 	public void execute() {
-		// if (agentSource!=null){
-		// agentSource.tasks.add(agentSource.currentTask);
-		// add tasks in reverse order of execution (because it is a stack)
-		agentSource.tasks.add(new ChangeTileTask(agentSource, new Point(
-				point1.x, point1.y), Tile.Sky));
-		agentSource.tasks.add(new ChangeTileTask(agentSource, new Point(
-				point1.x - 1, point1.y), Tile.Sky));
-
-		System.out.println("execute");
-		// }
+		int width = lowerLeft.x - upperRight.x;
+		int height = lowerLeft.y - upperRight.y;
+		for (int j = height; j>=0; j--){
+			for (int i = width; i>=0; i--){
+				agentSource.tasks.add(new ChangeTileTask(agentSource, new Point(
+						upperRight.x + i, upperRight.y + j), Tile.Sky));
+				System.out.println("TileRemve");
+			}
+		}
+		
+//		agentSource.tasks.add(new ChangeTileTask(agentSource, new Point(
+//				upperRight.x, upperRight.y), Tile.Sky));
+		
 	}
 
 	public void setAgentSource(AgentReplacement agentSource) {
@@ -43,8 +50,8 @@ public class GoMineAreaTask implements Task {
 	@Override
 	public Point getPos() {
 		// this is where the agent needs to go before this task can be executed
-		return new Point(point1.x - 1,
-				World.terrain.getAltitude(point1.x - 1) - 1);
+		return new Point(upperRight.x,
+				World.terrain.getAltitude(upperRight.x) - 1);
 	}
 
 	public String toString() {
