@@ -298,6 +298,7 @@ public class WorldView extends JFrame {
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
 			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
 			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
+			selectionPanel.setLocation(xPanelLocation, yPanelLocation);
 		}
 	};
 	static Timer leftButtonTimer = new Timer(panTimerMS, leftTimerAction);
@@ -321,6 +322,7 @@ public class WorldView extends JFrame {
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
 			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
 			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
+			selectionPanel.setLocation(xPanelLocation, yPanelLocation);
 		}
 	};
 	static Timer rightButtonTimer = new Timer(panTimerMS, rightTimerAction);
@@ -343,6 +345,7 @@ public class WorldView extends JFrame {
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
 			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
 			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
+			selectionPanel.setLocation(xPanelLocation, yPanelLocation);
 		}
 	};
 	static Timer upButtonTimer = new Timer(panTimerMS, upTimerAction);
@@ -366,6 +369,7 @@ public class WorldView extends JFrame {
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
 			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
 			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
+			selectionPanel.setLocation(xPanelLocation, yPanelLocation);
 		}
 	};
 	static Timer downButtonTimer = new Timer(panTimerMS, downTimerAction);

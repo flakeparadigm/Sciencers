@@ -201,7 +201,9 @@ public class InfoPanes extends JPanel {
 						if(selectedBuilding.equals(b.name())) {
 							System.out.println("WIP! Begin process of building: " + selectedBuilding + 
 									"\nClick a point for bottom left corner");
-							World.addBuilding(b, WorldView.selectionPanel.getPoint());
+							Point p = WorldView.selectionPanel.getPoint();
+							World.addBuilding(b, p);
+							return; //if this executed there's no need to continue looping
 						}
 					}
 				}
@@ -209,6 +211,7 @@ public class InfoPanes extends JPanel {
 					for(EAgent a : EAgent.values()) {
 						if(selectedAgent.equals(a.name())) {
 							System.out.println("NYI! Begin process of hiring: " + selectedAgent);
+							return; //if this executed there's no need to continue looping
 						}
 					}
 				}

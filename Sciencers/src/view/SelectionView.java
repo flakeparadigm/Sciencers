@@ -39,7 +39,7 @@ public class SelectionView extends JPanel {
 			if(firstPoint != null)
 				waitingForPoint = false;
 		}
-		return new Point(currPoint.x/WorldView.TILE_SIZE, currPoint.y/WorldView.TILE_SIZE);
+		return new Point(firstPoint.x/WorldView.TILE_SIZE, firstPoint.y/WorldView.TILE_SIZE);
 	}
 	
 	public Rectangle getRectangle() {
@@ -80,14 +80,17 @@ public class SelectionView extends JPanel {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
+			System.out.println("Point clicked at pixel: " + e.getPoint().x + ", " + e.getPoint().y + 
+					" | Tile: " + e.getPoint().x/WorldView.TILE_SIZE + ", " + e.getPoint().y/WorldView.TILE_SIZE);
 			if(waitingForRectangle && firstPoint == null) {
 				firstPoint = e.getPoint();
 			} else if(waitingForRectangle) {
 				secondPoint = e.getPoint();
 			}
 			
-			if(waitingForPoint)
+			if(waitingForPoint) {
 				firstPoint = e.getPoint();
+			}
 		}
 
 		@Override
