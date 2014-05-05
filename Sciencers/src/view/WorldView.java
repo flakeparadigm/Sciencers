@@ -61,7 +61,9 @@ public class WorldView extends JFrame {
 	private final static int Y_MAP_SIZE = 100;
 	public final static int TILE_SIZE = 16;
 	public final static int INFO_PANE_SIZE = 200;
-	public final static int UPPER_STATS_SIZE = 150;
+	public final static int X_UPPER_STATS_SIZE = 150;
+	public final static int Y_UPPER_STATS_SIZE = 200;
+
 
 	private final String SAVE_LOCATION = "world.save";
 
@@ -134,7 +136,7 @@ public class WorldView extends JFrame {
 
 		upperStatsPanel = new UpperStatsView();
 		add(upperStatsPanel);
-		upperStatsPanel.setLocation(X_WINDOW_SIZE - UPPER_STATS_SIZE, 10);
+		upperStatsPanel.setLocation(X_WINDOW_SIZE - X_UPPER_STATS_SIZE, Y_WINDOW_SIZE - Y_UPPER_STATS_SIZE);
 		upperStatsPanel.setSize(150, 200);
 		upperStatsPanel.setOpaque(false);
 		upperStatsPanel.setBackground(new Color(0, 0, 0, 0));
