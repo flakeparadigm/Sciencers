@@ -52,7 +52,9 @@ public class SelectionView extends JPanel {
 				paintBox(g2,firstPoint,secondPoint);
 			}
 		} else if(waitingForPoint) {
-			
+			g2.drawImage(selectionImg, currPoint.x * WorldView.TILE_SIZE,
+					currPoint.y * WorldView.TILE_SIZE, WorldView.TILE_SIZE,
+					WorldView.TILE_SIZE, null);
 		}
 	}
 	
