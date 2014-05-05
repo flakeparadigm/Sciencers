@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
@@ -27,6 +28,7 @@ import model.agent.EAgent;
 import model.building.BuildingFactory;
 import model.building.EBuilding;
 import model.task.BuildBuildingTask;
+import model.task.GoMineAreaTask;
 import model.task.Task;
 import model.task.TaskList;
 
@@ -209,16 +211,6 @@ public class InfoPanes extends JPanel {
 					t.start();
 					
 					return;
-					
-//					for(EBuilding b : EBuilding.values()) {
-//						if(selectedBuilding.equals(b.name())) {
-//							System.out.println("WIP! Begin process of building: " + selectedBuilding + 
-//									"\nClick a point for bottom left corner");
-//							Point p = WorldView.selectionPanel.getPoint();
-//							World.addBuilding(b, p);
-//							return; //if this executed there's no need to continue looping
-//						}
-//					}
 				}
 				else if(e.getSource() == hireButton) {
 					for(EAgent a : EAgent.values()) {
@@ -228,8 +220,19 @@ public class InfoPanes extends JPanel {
 						}
 					}
 				}
-				else if(e.getSource() == mineButton) {
-					System.out.println("NYI! Begin process of selecting a square to mine.");
+				else if(e.getSource() == mineButton) {					
+					Thread t = new Thread() {
+					    public void run() {
+							System.out.println("WIP! Begin process of selecting a square to mine.");
+
+							Rectangle r = WorldView.selectionPanel.getRectangle();
+							
+							TaskList.addTask(new GoMineAreaTask(r), EAgent.MINER);
+					    }
+					};
+					t.start();
+					
+					return;
 				}
 				else System.out.println("ButtonListener registered a click from a button that doesn't exist!");
 			}

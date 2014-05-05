@@ -16,14 +16,18 @@ public class GoMineAreaTask implements Task {
 	private Point lowerLeft;
 	private AgentReplacement agentSource;
 
+	public GoMineAreaTask(Rectangle r) {
+		this(r.getLocation(), new Point(r.x+r.width, r.y+r.height));
+	}
+	
 	public GoMineAreaTask(Point point1, Point point2) {
-		// i think the player should select a rectangle to be mined
-		// rect = new Rectangle(point1.x, point1.y, point2.x, point2.y);
 		this.point1 = point1;
 		this.point2 = point2;
 		agentSource = null;
-		upperRight = new Point(Math.min(point1.x, point2.x), Math.min(point1.y, point2.y));
-		lowerLeft = new Point(Math.max(point1.x, point2.x), Math.max(point1.y, point2.y));
+		upperRight = new Point(Math.max(point1.x, point2.x), Math.min(point1.y, point2.y));
+		lowerLeft = new Point(Math.min(point1.x, point2.x), Math.max(point1.y, point2.y));
+		
+		System.out.println("New Mining Task Created! " + lowerLeft + ":" + upperRight);
 	}
 
 	@Override
