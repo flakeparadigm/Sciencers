@@ -8,17 +8,16 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 import model.World;
 import model.agent.AgentReplacement;
 import model.agent.EAgent;
+import model.building.BuildingFactory;
 import model.building.EBuilding;
 import model.task.BuildBuildingTask;
 import model.task.ChangeTileTask;
 import model.task.GoMineAreaTask;
 import model.task.HarvestTreeTask;
-import model.task.Task;
 import model.task.TaskList;
 import view.Tile;
 import view.WorldView;
@@ -229,12 +228,14 @@ public class Demo extends JFrame {
 		private void testBuildingConstruction() {
 			World.addAgent(EAgent.FARMER, 9);
 			World.terrain.setTile(Tile.Dirt, 20, 24);
-			TaskList.addTask(new BuildBuildingTask(EBuilding.FARM, new Point(
-					25, 26)), EAgent.GENERIC);
+//			TaskList.addTask(new BuildBuildingTask(EBuilding.FARM, new Point(
+//					25, 26)), EAgent.GENERIC);
+			TaskList.addTask(new BuildBuildingTask(BuildingFactory.makeBuilding("Farm", new Point(25, 26))), EAgent.GENERIC);
 		}
 
 		private void testHungerMovement() {
-			World.addBuilding(EBuilding.FARM, new Point(29, 27));
+//			World.addBuilding(EBuilding.FARM, new Point(29, 27));
+			World.addBuilding(BuildingFactory.makeBuilding("Farm", new Point(29, 27)));
 			World.addAgent(EAgent.FARMER, 17);
 			World.terrain.setTile(Tile.Dirt, 20, 24);
 			AgentReplacement hungryAgent = (AgentReplacement) World.agents.get(0);

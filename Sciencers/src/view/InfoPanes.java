@@ -1,10 +1,8 @@
 package view;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
@@ -13,23 +11,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
-import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import model.Alert;
-import model.AlertCollection;
+import model.Entity;
 import model.Research;
 import model.World;
 import model.agent.EAgent;
+import model.building.BuildingFactory;
 import model.building.EBuilding;
 import model.task.BuildBuildingTask;
 import model.task.Task;
@@ -139,7 +134,7 @@ public class InfoPanes extends JPanel {
 		private JButton hireButton;
 		private JButton mineButton;
 		
-		private String selectedBuilding;
+		private String selectedBuilding = "Select Building";
 		private String selectedAgent;
 		
 		public PlayerButtonsPane() {
@@ -153,7 +148,7 @@ public class InfoPanes extends JPanel {
 			buildMenu = new JComboBox<String>();
 			buildMenu.addItem("Select Building");
 			for(EBuilding b : EBuilding.values()) {
-				buildMenu.addItem(b.name()); //TODO make this proper case instead of all caps
+				buildMenu.addItem(b.getName()); //TODO make this proper case instead of all caps
 			}
 			buildMenu.addActionListener(new MenuListener());
 			add(buildMenu);
@@ -197,15 +192,33 @@ public class InfoPanes extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == buildButton) {
-					for(EBuilding b : EBuilding.values()) {
-						if(selectedBuilding.equals(b.name())) {
+					if(selectedBuilding.equals("Select Building"))
+						return;
+					
+					Thread t = new Thread() {
+					    public void run() {
 							System.out.println("WIP! Begin process of building: " + selectedBuilding + 
-									"\nClick a point for bottom left corner");
-							Point p = WorldView.selectionPanel.getPoint();
-							World.addBuilding(b, p);
-							return; //if this executed there's no need to continue looping
-						}
-					}
+							"\nClick a point for bottom left corner");
+							
+							Point p = WorldView.selectionPanel.getPoint();							
+							Entity bldg = BuildingFactory.makeBuilding("model.building." + selectedBuilding, p);
+							
+							TaskList.addTask(new BuildBuildingTask(bldg), EAgent.MINER);
+					    }
+					};
+					t.start();
+					
+					return;
+					
+//					for(EBuilding b : EBuilding.values()) {
+//						if(selectedBuilding.equals(b.name())) {
+//							System.out.println("WIP! Begin process of building: " + selectedBuilding + 
+//									"\nClick a point for bottom left corner");
+//							Point p = WorldView.selectionPanel.getPoint();
+//							World.addBuilding(b, p);
+//							return; //if this executed there's no need to continue looping
+//						}
+//					}
 				}
 				else if(e.getSource() == hireButton) {
 					for(EAgent a : EAgent.values()) {
