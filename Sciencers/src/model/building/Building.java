@@ -38,4 +38,14 @@ public abstract class Building implements Entity {
 	public abstract int getNumWorkers();
 
 	public abstract EBuilding getType();
+	
+	@Override
+	public String toString() {
+		String[] bldgName = ("" + this.getClass()).split("\\.");
+		
+		String output = "Type: " + bldgName[2];
+		output += "\nLocation: (" + pos.x + "," + pos.y + ")";
+		
+		return output;
+	}
 }
