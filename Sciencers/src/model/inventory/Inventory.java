@@ -5,16 +5,19 @@ import java.util.HashMap;
 
 public class Inventory implements Serializable {
 
-	private HashMap<Resource, Integer> inv;
+	private HashMap<Storable, Integer> inv;
 	private final int CAPACITY;
 	private Resource priorityResource;
 
 	public Inventory(int capacity, Resource priorityResource) {
 		CAPACITY = capacity;
 		this.priorityResource = priorityResource;
-		inv = new HashMap<Resource, Integer>();
+		inv = new HashMap<Storable, Integer>();
 		for (Resource r : Resource.values()) {
 			inv.put(r, 0);
+		}
+		for (Tool t : Tool.values()) {
+			inv.put(t, 0);
 		}
 	}
 
