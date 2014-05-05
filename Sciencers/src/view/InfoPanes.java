@@ -213,12 +213,25 @@ public class InfoPanes extends JPanel {
 					return;
 				}
 				else if(e.getSource() == hireButton) {
-					for(EAgent a : EAgent.values()) {
-						if(selectedAgent.equals(a.name())) {
-							System.out.println("NYI! Begin process of hiring: " + selectedAgent);
-							return; //if this executed there's no need to continue looping
-						}
-					}
+					if(selectedAgent.equals("Select Dood"))
+						return;
+					
+					Thread t = new Thread() {
+					    public void run() {
+							System.out.println("WIP! Begin process of hiring: " + selectedAgent + 
+							"\nClick a point for horizontal placement");
+							
+							Point p = WorldView.selectionPanel.getPoint();
+							
+							for(EAgent a : EAgent.values()) {		//THIS SHOULD PERHAPS USE AN AGENT FACTORY?
+								if(a.name().equals(selectedAgent))
+									World.addAgent(a, p.x);
+							}
+					    }
+					};
+					t.start();
+					
+					return;
 				}
 				else if(e.getSource() == mineButton) {					
 					Thread t = new Thread() {

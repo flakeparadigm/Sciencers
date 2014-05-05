@@ -147,8 +147,7 @@ public class SelectionView extends JPanel {
 			Point scaledPoint = new Point(e.getPoint().x / WorldView.TILE_SIZE,
 					e.getPoint().y / WorldView.TILE_SIZE);
 
-			System.out.println("Point clicked at pixel: " + scaledPoint.x
-					+ ", " + scaledPoint.y + " | Tile: " + scaledPoint.x + ", "
+			System.out.println("Point clicked at tile: " + scaledPoint.x + ", "
 					+ scaledPoint.y);
 
 			if (waitingForRectangle && firstPoint == null) {
