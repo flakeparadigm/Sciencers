@@ -71,6 +71,7 @@ public class World implements Serializable {
 		updateInfo();
 	}
 	
+	@Deprecated
 	public static void addBuilding(EBuilding type, Point pos){
 		Building building = null;
 		if(type == EBuilding.FARM) {
@@ -86,6 +87,15 @@ public class World implements Serializable {
 			return;
 		}
 		buildings.add(building);
+		updateInfo();
+	}
+	
+	public static void addBuilding(Entity bldg) {
+		if(bldg == null) {
+			System.out.println("Building is null! World.addBuilding()");
+			return;
+		}
+		buildings.add(bldg);
 		updateInfo();
 	}
 	

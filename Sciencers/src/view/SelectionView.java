@@ -97,8 +97,10 @@ public class SelectionView extends JPanel {
 
 		// wait for two points
 		while (waitingForPoint) {
-			if (firstPoint != null)
+			if (firstPoint != null) {
 				waitingForPoint = false;
+			}
+			System.out.print("\0");
 		}
 		return firstPoint;
 	}
@@ -114,6 +116,7 @@ public class SelectionView extends JPanel {
 		while (waitingForRectangle) {
 			if (firstPoint != null && secondPoint != null)
 				waitingForRectangle = false;
+			System.out.print("\0");
 		}
 
 		// set top left point and dimensions using two points
@@ -152,11 +155,12 @@ public class SelectionView extends JPanel {
 				firstPoint = scaledPoint;
 			} else if (waitingForRectangle) {
 				secondPoint = scaledPoint;
-			}
-
-			if (waitingForPoint) {
+				waitingForRectangle = false;
+			} else if (waitingForPoint) {
 				firstPoint = scaledPoint;
+				waitingForPoint = false;
 			}
+			
 			myView.repaint();
 		}
 

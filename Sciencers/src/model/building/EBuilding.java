@@ -1,5 +1,14 @@
 package model.building;
 
 public enum EBuilding {
-	FARM, WAREHOUSE, FACTORY, LAB
+	FARM("Farm"), WAREHOUSE("Warehouse"), FACTORY("Factory"), LAB("Lab");
+	
+	private String name;
+	EBuilding(String name) {
+		this.name = name;
+	}
+	
+	public String getName() {
+		return name;
+	}
 }
