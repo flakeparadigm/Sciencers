@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -42,15 +43,16 @@ public class UpperStatsView extends JPanel {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 
-		g2.drawString("Inventories:", 0, 10);
+//		g2.drawString("Inventories:", 0, 10);
 		for (int i = 0; i < agents.size(); i++) {
 			ArrayList agentInv = changeToList(inventories.get(i));
-//			System.out.println(agentInv.get(0));
 			for (int j = 0; j < agentInv.size(); j++) {
-				g2.drawImage(textures.get(agentInv.get(j)), j * 16, i * 16 + 40,
+				g2.drawImage(textures.get(agentInv.get(j)), 40 + j * 16, i * 16 + 40,
 						null);
 			}
-//			g2.drawString("", 80 , y);
+			g2.setColor(Color.WHITE);
+			g2.setFont(new Font("Verdana", Font.BOLD, 20));
+			g2.drawString(((AgentReplacement) agents.get(i)).getType().value, 0 , i * 16 + 56);
 		}
 	}
 
