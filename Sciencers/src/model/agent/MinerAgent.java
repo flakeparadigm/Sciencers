@@ -20,6 +20,7 @@ public class MinerAgent extends AgentReplacement {
 		super(currentPosition);
 		priorityResource = Resource.WOOD;
 		inventory.changePriority(priorityResource);
+		agentType = EAgent.MINER;
 	}
 
 	@Override

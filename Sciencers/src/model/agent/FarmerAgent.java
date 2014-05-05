@@ -17,6 +17,9 @@ public class FarmerAgent extends AgentReplacement {
 
 	public FarmerAgent(Point currentPosition) {
 		super(currentPosition);
+		priorityResource = Resource.FOOD;
+		inventory.changePriority(priorityResource);
+		agentType = EAgent.FARMER;
 	}
 
 	@Override

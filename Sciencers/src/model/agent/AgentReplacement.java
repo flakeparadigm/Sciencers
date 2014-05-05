@@ -42,6 +42,7 @@ public abstract class AgentReplacement implements Entity {
 	public Task currentTask;
 	public Stack<Task> tasks;
 	protected int taskTimer;
+	protected EAgent agentType;
 
 	protected Inventory inventory;
 	protected ArrayList<Tile> passableTiles;
@@ -430,6 +431,10 @@ public abstract class AgentReplacement implements Entity {
 	public Inventory getInventory() {
 		// TODO Auto-generated method stub
 		return inventory;
+	}
+	
+	public EAgent getType(){
+		return agentType;
 	}
 
 }
