@@ -432,4 +432,9 @@ public abstract class AgentReplacement implements Entity {
 		return inventory;
 	}
 
+	public void giveItem(Tool tool) { //AUTHOR: JAKE
+		inventory.changeAmount(tool, 1);
+		//TODO handle overfilling inventory
+	}
+
 }
