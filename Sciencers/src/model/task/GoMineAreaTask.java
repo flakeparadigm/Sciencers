@@ -26,8 +26,6 @@ public class GoMineAreaTask implements Task {
 		agentSource = null;
 		upperRight = new Point(Math.max(point1.x, point2.x), Math.min(point1.y, point2.y));
 		lowerLeft = new Point(Math.min(point1.x, point2.x), Math.max(point1.y, point2.y));
-		
-		System.out.println("New Mining Task Created! " + lowerLeft + ":" + upperRight);
 	}
 
 	@Override
@@ -61,10 +59,8 @@ public class GoMineAreaTask implements Task {
 	public String toString() {
 
 		String taskString = "Gather resources\n";
-		// taskString += "Top: " + rect.getMaxY() + "\n";
-		// taskString += "Bottom: " + rect.getMinY() + "\n";
-		// taskString += "Left: " + rect.getMinX() + "\n";
-		// taskString += "Right: " + rect.getMaxX();
+		taskString += "From: " + lowerLeft + ".";
+		taskString += "To: " + upperRight + ".";
 
 		return taskString;
 	}
