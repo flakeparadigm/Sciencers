@@ -5,6 +5,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
 
+import model.AlertCollection;
+import model.World;
 import model.agent.AgentReplacement;
 import model.inventory.Inventory;
 import model.inventory.Resource;
@@ -14,7 +16,7 @@ public class Factory extends Building {
 	// Magic Numbers
 	private final int TICKS_PER_ITEM = 500; //~10 seconds
 	private final int BUILDING_WIDTH = 5;
-	private final int BUILDING_HEIGHT = 2; //?
+	private final int BUILDING_HEIGHT = 2;
 	private final int MAX_WORKERS = 5;
 	private final int ITEMS_PER_UPDATE = 1;
 	private final int CAPACITY = 1000;
@@ -25,12 +27,17 @@ public class Factory extends Building {
 
 	public Factory(Point pos) {
 		super(pos);
-		// TODO Auto-generated constructor stub
+		workers = new ArrayList<AgentReplacement>();
+		inv = new Inventory(CAPACITY, Resource.URANIUM);
 	}
 
 	@Override
 	public void update() {
+
 		
+		if(inv.getTotal() < CAPACITY * 0.95) {
+			AlertCollection.addAlert("A factory is almost full!");
+		}
 	}
 
 	@Override

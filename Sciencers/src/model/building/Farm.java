@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import model.AlertCollection;
+import model.World;
 import model.agent.AgentReplacement;
 import model.inventory.Inventory;
 import model.inventory.Resource;
@@ -16,7 +17,7 @@ public class Farm extends Building {
 	private final int TICKS_PER_ITEM = 50;
 //	private final Point POSITION;
 	private final int BUILDING_WIDTH = 5;
-	private final int BUILDING_HEIGHT = 1; //?
+	private final int BUILDING_HEIGHT = 1;
 	private final int MAX_WORKERS = 5;
 	private final int ITEMS_PER_UPDATE = 1;
 	private final int CAPACITY = 100;
@@ -29,17 +30,17 @@ public class Farm extends Building {
 		super(pos);
 		workers = new ArrayList<AgentReplacement>();
 		inv = new Inventory(CAPACITY, Resource.FOOD);
-		inv.changeAmount(Resource.FOOD, 10000000);
+//		inv.changeAmount(Resource.FOOD, 10000000);
 	}
 	
 	public void update() {
-		Random random = new Random();
+		Random random = new Random(World.seed);
 		if(random.nextInt(TICKS_PER_ITEM) == 1) {
 			int foodAdd = workers.size() * ITEMS_PER_UPDATE + 1;
 			inv.changeAmount(Resource.FOOD, foodAdd);
 		}
 		
-		if(CAPACITY - inv.getTotal() < CAPACITY * 0.05) {
+		if(inv.getTotal() < CAPACITY * 0.95) {
 			AlertCollection.addAlert("A farm is almost full!");
 		}
 	}
