@@ -3,6 +3,7 @@ package view;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -57,8 +58,8 @@ public class WorldView extends JFrame {
 	private static int X_WINDOW_SIZE = 700;
 	private static int Y_WINDOW_SIZE = 700;
 
-	private final static int X_MAP_SIZE = 500;
-	private final static int Y_MAP_SIZE = 100;
+	private final static int X_MAP_SIZE = 1500;
+	private final static int Y_MAP_SIZE = 600;
 	public final static int TILE_SIZE = 16;
 	public final static int INFO_PANE_SIZE = 200;
 	public final static int X_UPPER_STATS_SIZE = 150;
@@ -69,8 +70,8 @@ public class WorldView extends JFrame {
 
 	private static int moveSpeed = 15;
 	private static int panTimerMS = 1;
-	private static int xPanelLocation = 0;
-	private static int yPanelLocation = 0;
+	private static int xPanelLocation = -X_MAP_SIZE/2 * TILE_SIZE;
+	private static int yPanelLocation = -30 * TILE_SIZE;
 
 	public static void main(String[] args) {
 		gameWindow = new WorldView();
@@ -154,21 +155,21 @@ public class WorldView extends JFrame {
 
 		agentPanel = new AgentsView();
 		add(agentPanel);
-		agentPanel.setLocation(0, 0);
+		agentPanel.setLocation(xPanelLocation, yPanelLocation);
 		agentPanel.setSize(X_MAP_SIZE * TILE_SIZE, Y_MAP_SIZE * TILE_SIZE);
 		agentPanel.setOpaque(false);
 		agentPanel.setBackground(new Color(0, 0, 0, 0));
 
 		buildingPanel = new BuildingsView();
 		add(buildingPanel);
-		buildingPanel.setLocation(0, 0);
+		buildingPanel.setLocation(xPanelLocation, yPanelLocation);
 		buildingPanel.setSize(X_MAP_SIZE * TILE_SIZE, Y_MAP_SIZE * TILE_SIZE);
 		buildingPanel.setOpaque(false);
 		buildingPanel.setBackground(new Color(0, 0, 0, 0));
 
-		terrainPanel = new TerrainView();
+		terrainPanel = new TerrainView(new Point(-xPanelLocation/TILE_SIZE, -yPanelLocation/TILE_SIZE));
 		add(terrainPanel);
-		terrainPanel.setLocation(0, 0);
+		terrainPanel.setLocation(xPanelLocation, yPanelLocation);
 		// TODO: figure out correct panel size
 		terrainPanel.setSize(X_MAP_SIZE * TILE_SIZE, Y_MAP_SIZE * TILE_SIZE);
 		terrainPanel.setOpaque(false);
@@ -297,6 +298,7 @@ public class WorldView extends JFrame {
 			xPanelLocation += moveSpeed;
 			if (xPanelLocation > 0)
 				xPanelLocation = 0;
+			updateTerrain();
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
 			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
 			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
@@ -321,6 +323,7 @@ public class WorldView extends JFrame {
 			int maxX = -(X_MAP_SIZE * TILE_SIZE - gameWindow.getWidth() + 30);
 			if (xPanelLocation < maxX)
 				xPanelLocation = maxX;
+			updateTerrain();
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
 			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
 			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
@@ -344,6 +347,8 @@ public class WorldView extends JFrame {
 			yPanelLocation += moveSpeed;
 			if (yPanelLocation > 0)
 				yPanelLocation = 0;
+			
+			updateTerrain();
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
 			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
 			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
@@ -368,6 +373,7 @@ public class WorldView extends JFrame {
 			int maxY = -(Y_MAP_SIZE * TILE_SIZE - gameWindow.getHeight() + 55);
 			if (yPanelLocation < maxY)
 				yPanelLocation = maxY;
+			updateTerrain();
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
 			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
 			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
@@ -390,8 +396,9 @@ public class WorldView extends JFrame {
 		updateInfo();
 	}
 
-	public void updateTerrain() {
-		terrainPanel.update();
+	public static void updateTerrain() {
+		System.out.println(new Point(-xPanelLocation/TILE_SIZE, -yPanelLocation/TILE_SIZE));
+		terrainPanel.update(new Point(-xPanelLocation/TILE_SIZE, -yPanelLocation/TILE_SIZE));
 	}
 
 	public void updateAgents() {
