@@ -1,11 +1,15 @@
 package model.agent;
 
 public enum EAgent {
-	FARMER("F"), SCIENCER("S"), MINER("M"), GENERIC("G");
+	FARMER("Farmer"), SCIENCER("Sciencer"), MINER("Miner"), GENERIC("Generic");
 	
-	public String value;
+	private String name;
 
 	EAgent(String c) {
-		this.value = c;
+		name = c;
+	}
+	
+	public String getName() {
+		return name;
 	}
 }

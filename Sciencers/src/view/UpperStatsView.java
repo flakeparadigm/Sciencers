@@ -52,7 +52,7 @@ public class UpperStatsView extends JPanel {
 			}
 			g2.setColor(Color.WHITE);
 			g2.setFont(new Font("Verdana", Font.BOLD, 20));
-			g2.drawString(((AgentReplacement) agents.get(i)).getType().value, 0 , i * 16 + 56);
+			g2.drawString(((AgentReplacement) agents.get(i)).getType().getName().substring(0, 1), 0 , i * 16 + 56);
 		}
 	}
 

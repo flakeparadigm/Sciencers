@@ -11,7 +11,7 @@ public class BuildingFactory {
 		
 		Class<?> clazz;
 		try {
-			clazz = Class.forName(buildType);
+			clazz = Class.forName("model.building." + buildType);
 			Constructor<?> ctor = clazz.getConstructor(Point.class);
 			Entity ent = (Entity) ctor.newInstance(new Object[] { p });
 			return ent;
