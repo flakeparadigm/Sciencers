@@ -152,7 +152,7 @@ public class Demo extends JFrame {
 		
 		private void testMineArea(){
 			World.addAgent(EAgent.MINER, 9);
-			TaskList.addTask(new GoMineAreaTask(new Point(16, 28), new Point(25, 30)));
+			TaskList.addTask(new GoMineAreaTask(new Point(16, 28), new Point(25, 30)), EAgent.MINER);
 		}
 		
 		private void testHungerDeath(){

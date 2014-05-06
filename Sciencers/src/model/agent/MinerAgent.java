@@ -73,7 +73,6 @@ public class MinerAgent extends AgentReplacement {
 			}
 
 		} else if (currentTask instanceof ChangeTileTask) {
-			// build ladder if digging down (not correctly written right now)
 			if (currentTask.getPos().getY() < ((ChangeTileTask) currentTask)
 					.getTileLocation().getY()) {
 				((ChangeTileTask) currentTask).changeTileType(Tile.Ladder);

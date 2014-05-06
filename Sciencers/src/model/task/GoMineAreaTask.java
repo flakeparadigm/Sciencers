@@ -12,30 +12,33 @@ public class GoMineAreaTask implements Task {
 
 	private Point point1;
 	private Point point2;
-	private Point upperRight;
-	private Point lowerLeft;
+	private Point upperLeft;
+	private Point lowerRight;
 	private AgentReplacement agentSource;
 
 	public GoMineAreaTask(Rectangle r) {
 		this(r.getLocation(), new Point(r.x+r.width, r.y+r.height));
+		System.out.println(r.getLocation());
+		System.out.println(new Point(r.x+r.width, r.y+r.height));
 	}
 	
 	public GoMineAreaTask(Point point1, Point point2) {
+		
 		this.point1 = point1;
 		this.point2 = point2;
 		agentSource = null;
-		upperRight = new Point(Math.max(point1.x, point2.x), Math.min(point1.y, point2.y));
-		lowerLeft = new Point(Math.min(point1.x, point2.x), Math.max(point1.y, point2.y));
+		upperLeft = new Point(Math.min(point1.x, point2.x), Math.min(point1.y, point2.y));
+		lowerRight = new Point(Math.max(point1.x, point2.x), Math.max(point1.y, point2.y));
 	}
 
 	@Override
 	public void execute() {
-		int width = lowerLeft.x - upperRight.x;
-		int height = lowerLeft.y - upperRight.y;
+		int width = lowerRight.x - upperLeft.x;
+		int height = lowerRight.y - upperLeft.y;
 		for (int j = height; j>=0; j--){
 			for (int i = width; i>=0; i--){
 				agentSource.tasks.add(new ChangeTileTask(agentSource, new Point(
-						upperRight.x + i, upperRight.y + j), Tile.Sky));
+						upperLeft.x + i, upperLeft.y + j), Tile.Sky));
 				System.out.println("TileRemve");
 			}
 		}
@@ -52,15 +55,15 @@ public class GoMineAreaTask implements Task {
 	@Override
 	public Point getPos() {
 		// this is where the agent needs to go before this task can be executed
-		return new Point(upperRight.x,
-				World.terrain.getAltitude(upperRight.x) - 1);
+		return new Point(upperLeft.x,
+				World.terrain.getAltitude(upperLeft.x) - 1);
 	}
 
 	public String toString() {
 
 		String taskString = "Gather resources\n";
-		taskString += "From: " + lowerLeft + ".";
-		taskString += "To: " + upperRight + ".";
+		taskString += "From: " + lowerRight + ".";
+		taskString += "To: " + upperLeft + ".";
 
 		return taskString;
 	}
