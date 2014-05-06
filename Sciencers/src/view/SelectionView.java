@@ -46,47 +46,47 @@ public class SelectionView extends JPanel {
 				g2.drawImage(selectionImg, currPoint.x * WorldView.TILE_SIZE,
 						currPoint.y * WorldView.TILE_SIZE, WorldView.TILE_SIZE,
 						WorldView.TILE_SIZE, null);
-			} else if(secondPoint == null) {
+			} else if (secondPoint == null) {
 				paintBox(g2, firstPoint, currPoint);
 			} else {
-				paintBox(g2,firstPoint,secondPoint);
+				paintBox(g2, firstPoint, secondPoint);
 			}
-		} else if(waitingForPoint) {
+		} else if (waitingForPoint) {
 			g2.drawImage(selectionImg, currPoint.x * WorldView.TILE_SIZE,
 					currPoint.y * WorldView.TILE_SIZE, WorldView.TILE_SIZE,
 					WorldView.TILE_SIZE, null);
 		}
 	}
-	
+
 	private void paintBox(Graphics2D g2, Point startPoiont, Point endPoint) {
 		int currX = startPoiont.x;
 		int currY = startPoiont.y;
-		
-		 while(currX != (endPoint.x+1)) {
-			 while(currY != (endPoint.y+1)) {
-				 
+
+		while (currX != (endPoint.x + 1)) {
+			while (currY != (endPoint.y + 1)) {
+
 				// draw the image!
-				g2.drawImage(selectionImg, currX * WorldView.TILE_SIZE,
-						currY * WorldView.TILE_SIZE, WorldView.TILE_SIZE,
+				g2.drawImage(selectionImg, currX * WorldView.TILE_SIZE, currY
+						* WorldView.TILE_SIZE, WorldView.TILE_SIZE,
 						WorldView.TILE_SIZE, null);
-				
+
 				// increment the y point and do it again!
-				if(currY < (currPoint.y+1))
+				if (currY < (currPoint.y + 1))
 					currY++;
 				else
 					currY--;
-				
+
 			}
-			
+
 			// reset currY
 			currY = startPoiont.y;
-			
+
 			// increment the x point and do it again!
-			if(currX < (endPoint.x+1))
+			if (currX < (endPoint.x + 1))
 				currX++;
 			else
 				currX--;
-			
+
 		}
 	}
 
@@ -102,7 +102,7 @@ public class SelectionView extends JPanel {
 			}
 			System.out.print("\0");
 		}
-		return new Point(firstPoint.x-1, firstPoint.y-1);
+		return new Point(firstPoint.x - 1, firstPoint.y - 1);
 	}
 
 	public Rectangle getRectangle() {
@@ -120,10 +120,12 @@ public class SelectionView extends JPanel {
 		}
 
 		// set top left point and dimensions using two points
-		int x1 = firstPoint.x;
-		int x2 = secondPoint.x;
-		int y1 = firstPoint.y;
-		int y2 = secondPoint.y;
+		// Trevor: not entirely sure why these point modifiers needed to be
+		// added, but for now they are correcting the area selection for mining
+		int x1 = firstPoint.x - 1;
+		int x2 = secondPoint.x - 1;
+		int y1 = firstPoint.y - 2;
+		int y2 = secondPoint.y - 2;
 
 		int x = Math.min(x1, x2);
 		int y = Math.max(y1, y2);
@@ -144,8 +146,9 @@ public class SelectionView extends JPanel {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			Point scaledPoint = new Point((e.getPoint().x / WorldView.TILE_SIZE),
-					e.getPoint().y / WorldView.TILE_SIZE);
+			Point scaledPoint = new Point(
+					(e.getPoint().x / WorldView.TILE_SIZE), e.getPoint().y
+							/ WorldView.TILE_SIZE);
 
 			System.out.println("Point clicked at tile: " + scaledPoint.x + ", "
 					+ scaledPoint.y);
@@ -159,7 +162,7 @@ public class SelectionView extends JPanel {
 				firstPoint = scaledPoint;
 				waitingForPoint = false;
 			}
-			
+
 			myView.repaint();
 		}
 
