@@ -56,8 +56,6 @@ public class TerrainView extends JPanel {
 		for (int i = -BUFFER; i < X_TILES + BUFFER; i++) {
 			for (int j = -BUFFER; j < Y_TILES + BUFFER; j++) {
 				try {
-					System.out.println("x: " + viewLocation.x);
-					System.out.println("y: " + viewLocation.y);
 					g2.drawImage(textures.get(grid[viewLocation.x + i][viewLocation.y + j]), WorldView.TILE_SIZE
 					* (viewLocation.x + i + 1), WorldView.TILE_SIZE * (viewLocation.y + j + 1), null);
 				} catch (ArrayIndexOutOfBoundsException e) {

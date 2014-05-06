@@ -397,7 +397,6 @@ public class WorldView extends JFrame {
 	}
 
 	public static void updateTerrain() {
-		System.out.println(new Point(-xPanelLocation/TILE_SIZE, -yPanelLocation/TILE_SIZE));
 		terrainPanel.update(new Point(-xPanelLocation/TILE_SIZE, -yPanelLocation/TILE_SIZE));
 	}
 
