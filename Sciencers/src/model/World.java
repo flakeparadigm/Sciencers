@@ -70,6 +70,15 @@ public class World implements Serializable {
 		agents.add(agent);
 		updateInfo();
 	}
+	public static void addAgent(Entity agent) {
+		if(agent == null) {
+			System.out.println("Agent is null! World.addAgent()");
+			return;
+		}
+		agents.add(agent);
+		updateInfo();
+	}
+	
 	
 	@Deprecated
 	public static void addBuilding(EBuilding type, Point pos){
@@ -193,8 +202,8 @@ public class World implements Serializable {
 	}
 
 	public static void giveStarter() {
-		World.addAgent(EAgent.FARMER, 0);
-		World.addAgent(EAgent.MINER, 0);
-		World.addAgent(EAgent.FARMER, 0);
+//		World.addAgent(EAgent.FARMER, 0);
+//		World.addAgent(EAgent.MINER, 0);
+//		World.addAgent(EAgent.FARMER, 0);
 	}
 }

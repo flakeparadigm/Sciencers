@@ -102,7 +102,7 @@ public class SelectionView extends JPanel {
 			}
 			System.out.print("\0");
 		}
-		return firstPoint;
+		return new Point(firstPoint.x-1, firstPoint.y-1);
 	}
 
 	public Rectangle getRectangle() {
@@ -144,7 +144,7 @@ public class SelectionView extends JPanel {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			Point scaledPoint = new Point(e.getPoint().x / WorldView.TILE_SIZE,
+			Point scaledPoint = new Point((e.getPoint().x / WorldView.TILE_SIZE),
 					e.getPoint().y / WorldView.TILE_SIZE);
 
 			System.out.println("Point clicked at tile: " + scaledPoint.x + ", "

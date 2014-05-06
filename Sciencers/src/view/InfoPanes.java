@@ -24,6 +24,7 @@ import javax.swing.JScrollPane;
 import model.Entity;
 import model.Research;
 import model.World;
+import model.agent.AgentFactory;
 import model.agent.EAgent;
 import model.building.BuildingFactory;
 import model.building.EBuilding;
@@ -162,7 +163,7 @@ public class InfoPanes extends JPanel {
 			hireMenu = new JComboBox<String>();
 			hireMenu.addItem("Select Dood");
 			for(EAgent a : EAgent.values()) {
-				hireMenu.addItem(a.name()); //TODO make pretty
+				hireMenu.addItem(a.getName()); //TODO make pretty
 			}
 			hireMenu.addActionListener(new MenuListener());
 			add(hireMenu);
@@ -203,7 +204,7 @@ public class InfoPanes extends JPanel {
 							"\nClick a point for bottom left corner");
 							
 							Point p = WorldView.selectionPanel.getPoint();							
-							Entity bldg = BuildingFactory.makeBuilding("model.building." + selectedBuilding, p);
+							Entity bldg = BuildingFactory.makeBuilding(selectedBuilding, p);
 							
 							TaskList.addTask(new BuildBuildingTask(bldg), EAgent.MINER);
 					    }
@@ -216,24 +217,22 @@ public class InfoPanes extends JPanel {
 					if(selectedAgent.equals("Select Dood"))
 						return;
 					
-					World.agentsTick.terminate();
-					
 					Thread t = new Thread() {
 					    public void run() {
+							
 							System.out.println("WIP! Begin process of hiring: " + selectedAgent + 
 							"\nClick a point for horizontal placement");
 							
 							Point p = WorldView.selectionPanel.getPoint();
+							Entity agent = AgentFactory.makeAgent(selectedAgent, p);
+
+							World.agentsTick.pauseTick();
+							World.addAgent(agent);
+							World.agentsTick.resumeTick();
 							
-							for(EAgent a : EAgent.values()) {
-								if(a.name().equals(selectedAgent))
-									World.addAgent(a, p.x);
-							}
 					    }
 					};
 					t.start();
-					
-					World.agentsTick.run();
 					
 					return;
 				}
