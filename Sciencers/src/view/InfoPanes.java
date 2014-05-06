@@ -223,7 +223,7 @@ public class InfoPanes extends JPanel {
 							
 							Point p = WorldView.selectionPanel.getPoint();
 							
-							for(EAgent a : EAgent.values()) {		//THIS SHOULD PERHAPS USE AN AGENT FACTORY?
+							for(EAgent a : EAgent.values()) {
 								if(a.name().equals(selectedAgent))
 									World.addAgent(a, p.x);
 							}
