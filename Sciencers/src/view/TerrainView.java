@@ -37,8 +37,6 @@ public class TerrainView extends JPanel {
 			e.printStackTrace();
 		}
 		this.viewLocation = viewLocation;
-		System.out.println(X_TILES);
-		System.out.println(Y_TILES);
 	}
 
 	public void paintComponent(Graphics g) {

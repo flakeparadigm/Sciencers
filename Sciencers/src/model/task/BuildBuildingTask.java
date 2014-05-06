@@ -4,13 +4,16 @@ import java.awt.Point;
 
 import model.Entity;
 import model.World;
+import model.agent.AgentReplacement;
 import model.building.EBuilding;
+import model.inventory.Resource;
 
 public class BuildBuildingTask implements Task {
 
 	private EBuilding building;
 	private Entity bldg;
 	private Point location;
+	private AgentReplacement sourceAgent;
 
 	@Deprecated
 	public BuildBuildingTask(EBuilding b, Point p) {
@@ -27,6 +30,11 @@ public class BuildBuildingTask implements Task {
 	public void execute() {
 		//World.addBuilding(EBuilding.FARM, location);
 		World.addBuilding(bldg);
+		sourceAgent.getInventory().changeAmount(Resource.WOOD, -5);
+	}
+	
+	public void setSourceAgent(AgentReplacement sourceAgent){
+		this.sourceAgent = sourceAgent;
 	}
 
 	@Override

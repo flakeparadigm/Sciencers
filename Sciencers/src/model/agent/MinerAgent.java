@@ -58,13 +58,14 @@ public class MinerAgent extends AgentReplacement {
 		if (currentTask instanceof GoMineAreaTask) {
 			((GoMineAreaTask) currentTask).setAgentSource(this);
 			
-		} else if (currentTask instanceof BuildBuildingTask && !hasTool(Tool.HAMMER)) {
-			if (getInventory().getAmount(Resource.WOOD) > 3) {
+		} else if (currentTask instanceof BuildBuildingTask) {
+			((BuildBuildingTask) currentTask).setSourceAgent(this);
+			if (getInventory().getAmount(Resource.WOOD) < 5) {
 				tasks.add(currentTask);
 				currentTask = new HarvestTreeTask(this,
 						findNearestTree(currentPosition), World.terrain);
 				taskTimer = 10;
-			} else {
+			} else if (!hasTool(Tool.HAMMER)){
 				tasks.add(currentTask);
 				currentTask = new CraftToolTask(Tool.HAMMER, this, new Point(
 						(int) currentPosition.getX(),
