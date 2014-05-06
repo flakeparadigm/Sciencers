@@ -256,7 +256,7 @@ public abstract class AgentReplacement implements Entity {
 		}
 	}
 
-	protected Stack<Point> goHere(Point2D.Double currentPosition,
+	public Stack<Point> goHere(Point2D.Double currentPosition,
 			Point destination) {
 		Stack<Point> movements = new Stack<Point>();
 		PathFinder thePath = new PathFinder(new Point(
@@ -373,11 +373,11 @@ public abstract class AgentReplacement implements Entity {
 		return null;
 	}
 
-	private int getCurrentY(Point2D.Double currentPosition) {
+	protected int getCurrentY(Point2D.Double currentPosition) {
 		return (int) Math.floor(currentPosition.y);
 	}
 
-	private int getCurrentX(Point2D.Double currentPosition) {
+	protected int getCurrentX(Point2D.Double currentPosition) {
 		return (int) Math.round(currentPosition.x);
 	}
 

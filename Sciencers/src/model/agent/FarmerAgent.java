@@ -5,12 +5,14 @@ import java.awt.Point;
 
 import model.AlertCollection;
 import model.World;
+import model.building.EBuilding;
 import model.inventory.Resource;
 import model.inventory.Tool;
 import model.task.AgentDeath;
 import model.task.BuildBuildingTask;
 import model.task.CraftToolTask;
 import model.task.HarvestTreeTask;
+import model.task.WorkNearbyBuildingTask;
 
 
 public class FarmerAgent extends AgentReplacement {
@@ -50,23 +52,16 @@ public class FarmerAgent extends AgentReplacement {
 			}
 		}
 
+		
+		
 		// get task from list if agent doesn't have one
 		getNextTaskIfNotBusy(EAgent.FARMER);
 
-		// build hammer before building Building
-		if (currentTask instanceof BuildBuildingTask && !hasTool(Tool.HAMMER)) {
-			if (getInventory().getAmount(Resource.WOOD) > 3) {
-				currentTask = new HarvestTreeTask(this,
-						findNearestTree(currentPosition), World.terrain);
-				taskTimer = 10;
-			} else {
-				currentTask = new CraftToolTask(Tool.HAMMER, this, new Point(
-						(int) currentPosition.getX(),
-						(int) currentPosition.getY()));
-				taskTimer = 100;
-			}
+		if (currentTask == null && !isWorking){
+			currentTask = new WorkNearbyBuildingTask(this, EBuilding.FARM, new Point(getCurrentX(currentPosition), getCurrentY(currentPosition)));
+			isWorking = true;
 		}
-
+		
 		executeCurrentTask();
 
 		updateMovement(currentPosition, movements);
