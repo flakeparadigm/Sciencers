@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -13,6 +14,7 @@ import model.Entity;
 import model.World;
 import model.building.Building;
 import model.building.EBuilding;
+import model.inventory.Resource;
 
 public class BuildingsView extends JPanel {
 	private Image farm;
@@ -35,6 +37,10 @@ public class BuildingsView extends JPanel {
 						.getX() + 1)), (int) (WorldView.TILE_SIZE
 						* (e.getPos().getY() + 1) - farm.getHeight(null)) + 16,
 						null);
+				g2.setFont(new Font("Verdana", Font.BOLD, 10));
+				g2.drawString("FOOD: " + ((Building)e).getInventory().getAmount(Resource.FOOD), (int) (WorldView.TILE_SIZE * (e.getPos()
+						.getX() + 1)), (int) (WorldView.TILE_SIZE
+						* (e.getPos().getY() - 1) - farm.getHeight(null)) + 16);
 			}
 			// g2.drawString("B", WorldView.TILE_SIZE*(e.getPos().x + 1),
 			// WorldView.TILE_SIZE*(e.getPos().y + 1));
