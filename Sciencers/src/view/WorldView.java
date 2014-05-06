@@ -50,7 +50,7 @@ public class WorldView extends JFrame {
 	
 	//boolean
 	public static boolean doCreateWorld;
-	public static boolean loadWorldBool;
+//	public static boolean loadWorldBool;
 
 	// Magic Numbers
 	static Toolkit tk = Toolkit.getDefaultToolkit();
@@ -133,20 +133,20 @@ public class WorldView extends JFrame {
 //			makeNewWorld();
 //		}
 		
-		if (loadWorldBool) {
-			doCreateWorld = false;
-			loadSavedWorld();
-		} else {
-			doCreateWorld = true;
-			makeNewWorld();
-		}
-		
-//		if(doCreateWorld) {
+//		if (loadWorldBool) {
+//			doCreateWorld = false;
+//			loadSavedWorld();
+//		} else {
+//			doCreateWorld = true;
 //			makeNewWorld();
 //		}
-//		else {
-//			loadSavedWorld();
-//		}
+		
+		if(doCreateWorld) {
+			makeNewWorld();
+		}
+		else {
+			loadSavedWorld();
+		}
 	}
 
 	private void addComponents() {

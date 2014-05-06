@@ -104,7 +104,6 @@ public class MainMenuScreen extends JFrame {
 			newGameButton.addActionListener(obl);
 			this.add(newGameButton);
 			
-	
 		}
 		
 		private class OButtonListener implements ActionListener {
@@ -112,24 +111,20 @@ public class MainMenuScreen extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if(arg0.getSource() == loadGameButton) {
-					WorldView.doCreateWorld = true;
+					WorldView.doCreateWorld = false;
 				}
 				else if(arg0.getSource() == newGameButton) {
-					WorldView.loadWorldBool = false;
+					WorldView.doCreateWorld = true;
 				}
 				else {
 					System.out.println("Main menu screen buttons are derped");
 					return;
 				}
-				WorldView gameWindow = new WorldView();
-				gameWindow.setVisible(true);
+				WorldView.gameWindow = new WorldView();
+				WorldView.gameWindow.setVisible(true);
 				closeThis();
 			}
 			
 		}
 	}
 }
-
-
-
-
