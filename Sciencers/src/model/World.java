@@ -29,8 +29,8 @@ public class World implements Serializable {
 	public static TaskList tasks;
 	
 	// tick Info
-	private static GameTick agentsTick;
-	private static GameTick buildingsTick;
+	public static GameTick agentsTick;
+	public static GameTick buildingsTick;
 	private static final int AGENT_TICK_TIME = 10;
 	private static final int BUILDING_TICK_TIME = 100;
 	

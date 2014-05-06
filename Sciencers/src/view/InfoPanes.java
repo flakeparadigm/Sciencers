@@ -216,6 +216,8 @@ public class InfoPanes extends JPanel {
 					if(selectedAgent.equals("Select Dood"))
 						return;
 					
+					World.agentsTick.terminate();
+					
 					Thread t = new Thread() {
 					    public void run() {
 							System.out.println("WIP! Begin process of hiring: " + selectedAgent + 
@@ -230,6 +232,8 @@ public class InfoPanes extends JPanel {
 					    }
 					};
 					t.start();
+					
+					World.agentsTick.run();
 					
 					return;
 				}
