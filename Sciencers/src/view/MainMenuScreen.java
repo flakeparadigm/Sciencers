@@ -63,6 +63,10 @@ public class MainMenuScreen extends JFrame {
         Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
 	}
 	
+	private void hideThis() {
+		this.setVisible(false);
+	}
+	
 	class CheezitPanel extends JPanel {
 		
 		private Image image;
@@ -122,7 +126,9 @@ public class MainMenuScreen extends JFrame {
 				}
 				WorldView.gameWindow = new WorldView();
 				WorldView.gameWindow.setVisible(true);
-				closeThis();
+				
+				hideThis();
+//				closeThis();
 			}
 			
 		}
