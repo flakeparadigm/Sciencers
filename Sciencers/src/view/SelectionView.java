@@ -14,13 +14,27 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import model.Entity;
+import model.World;
+import model.agent.AgentFactory;
+import model.agent.EAgent;
+import model.building.BuildingFactory;
+import model.task.BuildBuildingTask;
+import model.task.GoMineAreaTask;
+import model.task.TaskList;
+
 public class SelectionView extends JPanel {
 	private SelectionView myView;
-	private boolean waitingForRectangle = false;
-	private boolean waitingForPoint = false;
-	private Point firstPoint;
-	private Point secondPoint;
-	private Point currPoint;
+
+	// waiting booleans
+	private boolean waitingForAgentPoint = false;
+	private boolean waitingForBuildingPoint = false;
+	private boolean waitingForMiningArea = false;
+	
+	// temporary info storage
+	private String newClass;
+	private Point firstPoint = null;
+	private Point currPoint = null;
 
 	private Image selectionImg;
 
@@ -41,70 +55,29 @@ public class SelectionView extends JPanel {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 
-		if (waitingForRectangle) {
+		if (currPoint != null)
 			if (firstPoint == null) {
 				g2.drawImage(selectionImg, currPoint.x * WorldView.TILE_SIZE,
 						currPoint.y * WorldView.TILE_SIZE, WorldView.TILE_SIZE,
 						WorldView.TILE_SIZE, null);
-			} else if (secondPoint == null) {
-				paintBox(g2, firstPoint, currPoint);
 			} else {
-				paintBox(g2, firstPoint, secondPoint);
+				paintBox(g2, firstPoint, currPoint);
 			}
-		} else if (waitingForPoint) {
-			g2.drawImage(selectionImg, currPoint.x * WorldView.TILE_SIZE,
-					currPoint.y * WorldView.TILE_SIZE, WorldView.TILE_SIZE,
-					WorldView.TILE_SIZE, null);
-		}
 	}
 
 	private void paintBox(Graphics2D g2, Point startPoint, Point endPoint) {
-		
+
 		Rectangle r = makeRectangle(startPoint, endPoint);
-		for(int x = 0; x <= r.width; x++) {
-			for(int y = 0; y <= r.height; y++) {
-				g2.drawImage(selectionImg, (r.x+x) * WorldView.TILE_SIZE, (r.y+y)
-						* WorldView.TILE_SIZE, WorldView.TILE_SIZE,
+		for (int x = 0; x <= r.width; x++) {
+			for (int y = 0; y <= r.height; y++) {
+				g2.drawImage(selectionImg, (r.x + x) * WorldView.TILE_SIZE,
+						(r.y + y) * WorldView.TILE_SIZE, WorldView.TILE_SIZE,
 						WorldView.TILE_SIZE, null);
 			}
 		}
-		
+
 	}
 
-	public Point getPoint() {
-		// reset point variables
-		firstPoint = null;
-		waitingForPoint = true;
-
-		// wait for two points
-		while (waitingForPoint) {
-			if (firstPoint != null) {
-				waitingForPoint = false;
-			}
-			System.out.print("\0");
-		}
-		
-		return new Point(firstPoint.x, firstPoint.y);
-	}
-
-	public Rectangle getRectangle() {
-
-		// reset point variables
-		firstPoint = null;
-		secondPoint = null;
-		waitingForRectangle = true;
-
-		// wait for two points
-		while (waitingForRectangle) {
-			if (firstPoint != null && secondPoint != null)
-				waitingForRectangle = false;
-			System.out.print("\0");
-		}
-		
-		// make a rectangle using those
-		return makeRectangle(firstPoint, secondPoint);
-	}
-	
 	// creates a rectangle, where the location is the top-left point.
 	private Rectangle makeRectangle(Point p1, Point p2) {
 		int x1 = p1.x;
@@ -138,28 +111,66 @@ public class SelectionView extends JPanel {
 			System.out.println("Point clicked at tile: " + scaledPoint.x + ", "
 					+ scaledPoint.y);
 
-			if (waitingForRectangle && firstPoint == null) {
-				firstPoint = scaledPoint;
-			} else if (waitingForRectangle) {
-				secondPoint = scaledPoint;
-				waitingForRectangle = false;
-			} else if (waitingForPoint) {
-				firstPoint = scaledPoint;
-				waitingForPoint = false;
+			if (waitingForAgentPoint) {
+				waitingForAgentPoint = false;
+
+				Entity agent = AgentFactory.makeAgent(newClass, scaledPoint);
+
+				World.agentsTick.pauseTick();
+				World.addAgent(agent);
+				World.agentsTick.resumeTick();
+			} else if (waitingForBuildingPoint) {
+				waitingForBuildingPoint = false;
+
+				Entity bldg = BuildingFactory.makeBuilding(newClass,
+						scaledPoint);
+				TaskList.addTask(new BuildBuildingTask(bldg), EAgent.MINER);
+			} else if (waitingForMiningArea) {
+				if (firstPoint == null) {
+					firstPoint = scaledPoint;
+
+					myView.repaint();
+					return;
+				} else {
+					waitingForMiningArea = false;
+					Rectangle r = makeRectangle(firstPoint, scaledPoint);
+					TaskList.addTask(new GoMineAreaTask(r), EAgent.MINER);
+
+					firstPoint = null;
+				}
 			}
 
+			currPoint = null;
 			myView.repaint();
 		}
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
-			if (waitingForRectangle || waitingForPoint) {
+			if (waitingForAgentPoint || waitingForBuildingPoint
+					|| waitingForMiningArea) {
 				currPoint = new Point(e.getPoint().x / WorldView.TILE_SIZE,
 						e.getPoint().y / WorldView.TILE_SIZE);
 				myView.repaint();
 			}
 		}
 
+	}
+
+	
+	// Different types of selections.
+	public void addAgent(String selectedAgent) {
+		newClass = selectedAgent;
+		waitingForAgentPoint = true;
+	}
+
+	public void addBuilding(String selectedBuilding) {
+		newClass = selectedBuilding;
+		waitingForBuildingPoint = true;
+	}
+
+	public void mineArea() {
+		firstPoint = null;
+		waitingForMiningArea = true;
 	}
 
 }
