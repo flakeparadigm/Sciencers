@@ -24,6 +24,7 @@ public class Warehouse extends Building {
 	public Warehouse(Point pos) {
 		super(pos);
 		inv = new Inventory(CAPACITY, Resource.FOOD);
+		workers = new ArrayList<AgentReplacement>();
 	}
 
 	@Override

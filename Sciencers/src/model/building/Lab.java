@@ -12,8 +12,8 @@ public class Lab extends Building {
 	
 	//Magic numbers
 //	private final int TICKS_PER_ITEM = 500; //~10 seconds
-	private final int BUILDING_WIDTH = 5;
-	private final int BUILDING_HEIGHT = 1; //?
+	private final int BUILDING_WIDTH = 4;
+	private final int BUILDING_HEIGHT = 2; //?
 	private final int MAX_WORKERS = 5;
 //	private final int ITEMS_PER_UPDATE = 1;
 //	private final int CAPACITY = 0;
@@ -27,6 +27,7 @@ public class Lab extends Building {
 
 	public Lab(Point pos) {
 		super(pos);
+		workers = new ArrayList<AgentReplacement>();
 	}
 
 	@Override

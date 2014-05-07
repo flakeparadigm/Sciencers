@@ -18,13 +18,13 @@ import model.building.EBuilding;
 import model.inventory.Resource;
 
 public class BuildingsView extends JPanel {
-	private Image farm;
-	private Image warehouse;
+	private Image farm, warehouse, lab, factory;
 
 	public BuildingsView() {
 		try {
 			farm = ImageIO.read(new File("imgs/Farm.png"));
 			warehouse = ImageIO.read(new File("imgs/Warehouse.png"));
+			lab = ImageIO.read(new File("imgs/Lab.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -57,7 +57,12 @@ public class BuildingsView extends JPanel {
 						.getX() + 1)), (int) (WorldView.TILE_SIZE
 						* (e.getPos().getY() - 1) - warehouse.getHeight(null)) + 16);
 			}
-			
+			else if(((Building)e).getType() == EBuilding.LAB) {
+				g2.drawImage(lab, (int) (WorldView.TILE_SIZE * (e.getPos()
+						.getX() + 1)), (int) (WorldView.TILE_SIZE
+						* (e.getPos().getY() + 1) - lab.getHeight(null)) + 16,
+						null);
+			}
 			
 			// g2.drawString("B", WorldView.TILE_SIZE*(e.getPos().x + 1),
 			// WorldView.TILE_SIZE*(e.getPos().y + 1));
