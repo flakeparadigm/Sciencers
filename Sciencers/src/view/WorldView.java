@@ -56,7 +56,7 @@ public class WorldView extends JFrame {
 	static Toolkit tk = Toolkit.getDefaultToolkit();
 	private final int X_SCREEN_SIZE = ((int) tk.getScreenSize().getWidth());
 	private final int Y_SCREEN_SIZE = ((int) tk.getScreenSize().getHeight());
-	private static int X_WINDOW_SIZE = 700;
+	private static int X_WINDOW_SIZE = 1200;
 	private static int Y_WINDOW_SIZE = 700;
 
 	private final static int X_MAP_SIZE = 1500;
@@ -69,12 +69,13 @@ public class WorldView extends JFrame {
 
 	private static final String SAVE_LOCATION = "world.save";
 
-	private static int moveSpeed = 15;
+	private static int moveSpeed = 8;//not 15
 	private static int panTimerMS = 1;
 	private static int xPanelLocation = -X_MAP_SIZE/2 * TILE_SIZE;
 	private static int yPanelLocation = -30 * TILE_SIZE;
 
 	public static void main(String[] args) {
+		System.out.println("Wouldn't it be nice to launch from the pretty new menu screen?");
 		gameWindow = new WorldView();
 		gameWindow.setVisible(true);
 	}

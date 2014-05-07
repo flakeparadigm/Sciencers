@@ -25,7 +25,11 @@ import model.Entity;
 import model.Research;
 import model.World;
 import model.agent.AgentFactory;
+import model.agent.AgentReplacement;
 import model.agent.EAgent;
+import model.agent.FarmerAgent;
+import model.agent.MinerAgent;
+import model.agent.SciencerAgent;
 import model.building.BuildingFactory;
 import model.building.EBuilding;
 import model.task.BuildBuildingTask;
@@ -39,11 +43,11 @@ public class InfoPanes extends JPanel {
 	private JList<String> taskList = new JList<String>(taskListModel);
 	
 	private PlayerButtonsPane playerButtonsPane;
-	private TaskPane taskPane;
+	private TaskPane genericTaskPane, farmerTaskPane, minerTaskPane, sciencerTaskPane;
 	private StatsPane statsPane;
 	private AlertsPane alertsPane;
 	
-	private JScrollPane tasksScroller, alertsScroller;
+	private JScrollPane genericTaskScroller, farmerTaskScroller, sciencerTaskScroller, minerTaskScroller, alertsScroller;
 
 	private final int INFO_PANE_SIZE = 200;
 	// Panes
@@ -69,27 +73,7 @@ public class InfoPanes extends JPanel {
 		playerButtonsPane.setLocation(xTemp, 0);
 
 		xTemp += playerButtonsPane.getWidth() + 10;
-
-		// Task Pane
-		tasksScroller = new JScrollPane();
-		taskPane = new TaskPane();
-		tasksScroller.setViewportView(taskPane);
-		tasksScroller.setOpaque(false);
-		tasksScroller.setBorder(null);
-		this.add(tasksScroller);
-		tasksScroller.setSize(TASK_BOX_WIDTH + 30, INFO_PANE_SIZE);
-		tasksScroller.setLocation(xTemp, 0);
-
-		tasksScroller.getVerticalScrollBar().addAdjustmentListener(
-				new AdjustmentListener() {
-					@Override
-					public void adjustmentValueChanged(final AdjustmentEvent e) {
-						tasksScroller.repaint();
-					}
-				});
-
-		xTemp += tasksScroller.getWidth() + 10;
-
+		
 		// Stats Pane
 		statsPane = new StatsPane();
 		statsPane.setBorder(null);
@@ -116,13 +100,92 @@ public class InfoPanes extends JPanel {
 						alertsScroller.repaint();
 					}
 				});
+		
+		xTemp += alertsScroller.getWidth() + 10;
 
+		// Generic Task Pane
+		genericTaskScroller = new JScrollPane();
+		genericTaskPane = new TaskPane(null);
+		genericTaskScroller.setViewportView(genericTaskPane);
+		genericTaskScroller.setOpaque(false);
+		genericTaskScroller.setBorder(null);
+		this.add(genericTaskScroller);
+		genericTaskScroller.setSize(TASK_BOX_WIDTH + 30, INFO_PANE_SIZE);
+		genericTaskScroller.setLocation(xTemp, 0);
+
+		genericTaskScroller.getVerticalScrollBar().addAdjustmentListener(
+				new AdjustmentListener() {
+					@Override
+					public void adjustmentValueChanged(final AdjustmentEvent e) {
+						genericTaskScroller.repaint();
+					}
+				});
+
+		xTemp += genericTaskScroller.getWidth() + 10;
+		
+		farmerTaskScroller = new JScrollPane();
+		farmerTaskPane = new TaskPane(FarmerAgent.class);
+		farmerTaskScroller.setViewportView(farmerTaskPane);
+		farmerTaskScroller.setOpaque(false);
+		farmerTaskScroller.setBorder(null);
+		this.add(farmerTaskScroller);
+		farmerTaskScroller.setSize(TASK_BOX_WIDTH + 30, INFO_PANE_SIZE);
+		farmerTaskScroller.setLocation(xTemp, 0);
+
+		farmerTaskScroller.getVerticalScrollBar().addAdjustmentListener(
+				new AdjustmentListener() {
+					@Override
+					public void adjustmentValueChanged(final AdjustmentEvent e) {
+						farmerTaskScroller.repaint();
+					}
+				});
+		
+		xTemp += farmerTaskScroller.getWidth() + 10;
+		
+		minerTaskScroller = new JScrollPane();
+		minerTaskPane = new TaskPane(MinerAgent.class);
+		minerTaskScroller.setViewportView(minerTaskPane);
+		minerTaskScroller.setOpaque(false);
+		minerTaskScroller.setBorder(null);
+		this.add(minerTaskScroller);
+		minerTaskScroller.setSize(TASK_BOX_WIDTH + 30, INFO_PANE_SIZE);
+		minerTaskScroller.setLocation(xTemp, 0);
+
+		minerTaskScroller.getVerticalScrollBar().addAdjustmentListener(
+				new AdjustmentListener() {
+					@Override
+					public void adjustmentValueChanged(final AdjustmentEvent e) {
+						minerTaskScroller.repaint();
+					}
+				});
+
+		xTemp += minerTaskScroller.getWidth() + 10;
+		
+		sciencerTaskScroller = new JScrollPane();
+		sciencerTaskPane = new TaskPane(SciencerAgent.class);
+		sciencerTaskScroller.setViewportView(sciencerTaskPane);
+		sciencerTaskScroller.setOpaque(false);
+		sciencerTaskScroller.setBorder(null);
+		this.add(sciencerTaskScroller);
+		sciencerTaskScroller.setSize(TASK_BOX_WIDTH + 30, INFO_PANE_SIZE);
+		sciencerTaskScroller.setLocation(xTemp, 0);
+
+		sciencerTaskScroller.getVerticalScrollBar().addAdjustmentListener(
+				new AdjustmentListener() {
+					@Override
+					public void adjustmentValueChanged(final AdjustmentEvent e) {
+						sciencerTaskScroller.repaint();
+					}
+				});
+		
 		// make sure to increment xTemp before each new panel
-
 	}
 
 	public void performUpdate() {
-		taskPane.performUpdate();
+		genericTaskPane.performUpdate();
+		farmerTaskPane.performUpdate();
+		minerTaskPane.performUpdate();
+		sciencerTaskPane.performUpdate();
 		statsPane.performUpdate();
 		alertsPane.performUpdate();
 	}
@@ -255,10 +318,14 @@ public class InfoPanes extends JPanel {
 	}
 
 	private class TaskPane extends JPanel {
+		
+		private Class<?> clazz;
 
-		public TaskPane() {
+		public TaskPane(Class<?> c) {
 			this.setLayout(new FlowLayout());
 			this.setBackground(new Color(0, 0, 0, 0));
+			
+			this.clazz = c;
 
 			setupBoxes();
 			this.setPreferredSize(new Dimension(TASK_BOX_WIDTH,
@@ -270,17 +337,9 @@ public class InfoPanes extends JPanel {
 		}
 		
 		public void setupBoxes() {
-			for(Task t : TaskList.getList(EAgent.GENERIC)) {
+			for(Task t : TaskList.getList(clazz)) {
 				if(t.shouldBeSeen())
 					this.add(new TaskBox(t));
-			}
-			for(Task t : TaskList.getList(EAgent.FARMER)) {
-				if(t.shouldBeSeen())
-					this.add(new TaskBox(t));			
-			}
-			for(Task t : TaskList.getList(EAgent.MINER)) {
-				if(t.shouldBeSeen())
-					this.add(new TaskBox(t));			
 			}
 		}
 
