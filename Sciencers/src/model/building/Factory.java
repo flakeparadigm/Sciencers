@@ -40,14 +40,26 @@ public class Factory extends Building {
 	@Override
 	public void update() {
 		Random random = new Random(World.seed);
-		if(random.nextInt(TICKS_PER_ITEM) == 1) {
-			ProductionItem freshItem = productionQueue.poll();
-			freshItem.getAgent().giveItem(freshItem.getTool());
-			System.out.println("Factory needs to give the agent the tool he requested");
-		}
 		
 		if(inv.getTotal() < CAPACITY * 0.95) {
 			AlertCollection.addAlert("A factory is almost full!");
+		}
+		
+		if(random.nextInt(TICKS_PER_ITEM) == 1) {
+			if(inv.getAmount(Resource.URANIUM) < 4) {
+				AlertCollection.addAlert("Factory needs Uranium!");
+				return;
+			}
+			if(inv.getAmount(Resource.IRON) < 2) {
+				AlertCollection.addAlert("Factory needs Iron!");
+				return;
+			}
+			
+			inv.changeAmount(Resource.URANIUM, 4);
+			inv.changeAmount(Resource.IRON, 2);
+			ProductionItem freshItem = productionQueue.poll();
+			freshItem.getAgent().giveItem(freshItem.getTool());
+			System.out.println("Factory needs to give the agent the tool he requested");
 		}
 	}
 	
