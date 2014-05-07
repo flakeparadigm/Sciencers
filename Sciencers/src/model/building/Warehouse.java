@@ -12,8 +12,8 @@ import model.inventory.Resource;
 public class Warehouse extends Building {
 
 	// Magic Numbers
-	private final int BUILDING_WIDTH = 10;
-	private final int BUILDING_HEIGHT = 1; //?
+	private final int BUILDING_WIDTH = 8;
+	private final int BUILDING_HEIGHT = 2; //?
 	private final int MAX_WORKERS = 2;
 	private final int CAPACITY = 1000;
 	
@@ -23,6 +23,7 @@ public class Warehouse extends Building {
 	
 	public Warehouse(Point pos) {
 		super(pos);
+		inv = new Inventory(CAPACITY, Resource.FOOD);
 	}
 
 	@Override
