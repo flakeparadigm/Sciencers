@@ -50,8 +50,7 @@ public class TaskList {
 //		}
 //	}
 	
-	@Deprecated
-	public static Queue<Task> getList(EAgent agentType) {
+	public static Queue<Task> getList(EAgent agentType) { //be nice to phase this out
 		if (agentType.equals(EAgent.FARMER)){
 			return farmerTasks;
 		} else if (agentType.equals(EAgent.MINER)){

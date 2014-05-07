@@ -119,4 +119,9 @@ public class MinerAgent extends AgentReplacement {
 		updateMovement(currentPosition, movements);
 
 	}
+
+	@Override
+	public String getUserFriendlyName() {
+		return "Miner";
+	}
 }
