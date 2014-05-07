@@ -260,18 +260,10 @@ public class InfoPanes extends JPanel {
 					if(selectedBuilding.equals("Select Building"))
 						return;
 					
-					Thread t = new Thread() {
-					    public void run() {
-							System.out.println("WIP! Begin process of building: " + selectedBuilding + 
-							"\nClick a point for bottom left corner");
-							
-							Point p = WorldView.selectionPanel.getPoint();							
-							Entity bldg = BuildingFactory.makeBuilding(selectedBuilding, p);
-							
-							TaskList.addTask(new BuildBuildingTask(bldg), EAgent.MINER);
-					    }
-					};
-					t.start();
+					System.out.println("WIP! Begin process of building: " + selectedBuilding + 
+					"\nClick a point for bottom left corner");
+					
+					WorldView.selectionPanel.addBuilding(selectedBuilding);
 					
 					return;
 				}
@@ -279,36 +271,14 @@ public class InfoPanes extends JPanel {
 					if(selectedAgent.equals("Select Dood") || selectedAgent.equals("Generic"))//TODO
 						return;
 					
-					Thread t = new Thread() {
-					    public void run() {
-							
-							System.out.println("WIP! Begin process of hiring: " + selectedAgent + 
-							"\nClick a point for horizontal placement");
-							
-							Point p = WorldView.selectionPanel.getPoint();
-							Entity agent = AgentFactory.makeAgent(selectedAgent, p);
-
-							World.agentsTick.pauseTick();
-							World.addAgent(agent);
-							World.agentsTick.resumeTick();
-							
-					    }
-					};
-					t.start();
+					WorldView.selectionPanel.addAgent(selectedAgent);
 					
 					return;
 				}
-				else if(e.getSource() == mineButton) {					
-					Thread t = new Thread() {
-					    public void run() {
-							System.out.println("WIP! Begin process of selecting a square to mine.");
-
-							Rectangle r = WorldView.selectionPanel.getRectangle();
-							
-							TaskList.addTask(new GoMineAreaTask(r), EAgent.MINER);
-					    }
-					};
-					t.start();
+				else if(e.getSource() == mineButton) {			
+					
+					System.out.println("WIP! Begin process of selecting a square to mine.");
+					WorldView.selectionPanel.mineArea();
 					
 					return;
 				}
