@@ -47,12 +47,12 @@ public class UpperStatsView extends JPanel {
 		for (int i = 0; i < agents.size(); i++) {
 			ArrayList agentInv = changeToList(inventories.get(i));
 			for (int j = 0; j < agentInv.size(); j++) {
-				g2.drawImage(textures.get(agentInv.get(j)), 40 + j * 16, i * 16 + 40,
+				g2.drawImage(textures.get(agentInv.get(j)), 40 + j * WorldView.TILE_SIZE, i * WorldView.TILE_SIZE + 40,
 						null);
 			}
 			g2.setColor(Color.WHITE);
 			g2.setFont(new Font("Verdana", Font.BOLD, 20));
-			g2.drawString(((AgentReplacement) agents.get(i)).getType().getName().substring(0, 1), 0 , i * 16 + 56);
+			g2.drawString(((AgentReplacement) agents.get(i)).getType().getName().substring(0, 1), 0 , i * WorldView.TILE_SIZE + 56);
 		}
 	}
 
