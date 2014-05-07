@@ -6,10 +6,13 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import model.AlertCollection;
+import model.Entity;
 import model.World;
 import model.agent.AgentReplacement;
 import model.inventory.Inventory;
 import model.inventory.Resource;
+import model.task.MoveResourcesTask;
+import model.task.TaskList;
 
 public class Farm extends Building {
 	
@@ -35,13 +38,25 @@ public class Farm extends Building {
 	
 	public void update() {
 		Random random = new Random(World.seed);
+		
+		
 		if(random.nextInt(TICKS_PER_ITEM) == 1) {
 			int foodAdd = workers.size() * ITEMS_PER_UPDATE + 1;
 			inv.changeAmount(Resource.FOOD, foodAdd);
 		}
 		
 		if(inv.getTotal() < CAPACITY * 0.95) {
-			AlertCollection.addAlert("A farm is almost full!");
+			Building warehouse;
+//			AlertCollection.addAlert("A farm is almost full!");
+			for(Entity b : World.buildings) {
+				if(b instanceof Warehouse) {
+					warehouse = (Building) b;
+					TaskList.addTask(new MoveResourcesTask(this, warehouse));
+					return;
+				}
+			}
+			//if there is no warehouse
+			AlertCollection.addAlert("We need a warehouse!");
 		}
 	}
 

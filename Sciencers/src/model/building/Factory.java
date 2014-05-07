@@ -19,8 +19,8 @@ public class Factory extends Building {
 	
 	// Magic Numbers
 	private final int TICKS_PER_ITEM = 1500; //~30 seconds
-	private final int BUILDING_WIDTH = 5;
-	private final int BUILDING_HEIGHT = 2;
+	private final int BUILDING_WIDTH = 10;
+	private final int BUILDING_HEIGHT = 4;
 	private final int MAX_WORKERS = 5;
 	private final int ITEMS_PER_UPDATE = 1;
 	private final int CAPACITY = 1000;

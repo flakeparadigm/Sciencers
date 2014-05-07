@@ -5,27 +5,28 @@ import java.awt.Point;
 import model.agent.AgentReplacement;
 import model.building.Building;
 import model.inventory.Resource;
+import model.inventory.Storable;
 
-public class AccessBuildingInventory implements Task{
+public class GiveToBuilding implements Task{
 
 	private AgentReplacement sourceAgent;
 	private Building sinkBuilding;
-	private Resource resource;
+	private Storable item;
 	private int quantity;
 	
-	public AccessBuildingInventory(AgentReplacement sourceAgent, Building sinkBuilding, Resource resource, int quantity){
+	public GiveToBuilding(AgentReplacement sourceAgent, Building sinkBuilding, Storable resource, int quantity){
 		this.sourceAgent = sourceAgent;
 		this.sinkBuilding = sinkBuilding;
-		this.resource = resource;
+		this.item = resource;
 		this.quantity = quantity;
 	}
 	
 	@Override
 	public void execute() {
-		sinkBuilding.getInventory().changeAmount(resource, quantity);
-		sourceAgent.getInventory().changeAmount(resource, -quantity);
-		System.out.println("BuildingInventory:" + sinkBuilding.getInventory().getAmount(resource));	
-		System.out.println("AgentInventory:" + sourceAgent.getInventory().getAmount(resource));
+		sourceAgent.getInventory().changeAmount(item, -quantity);
+		sinkBuilding.getInventory().changeAmount(item, quantity);
+		System.out.println("BuildingInventory:" + sinkBuilding.getInventory().getAmount(item));	
+		System.out.println("AgentInventory:" + sourceAgent.getInventory().getAmount(item));
 
 	}
 
