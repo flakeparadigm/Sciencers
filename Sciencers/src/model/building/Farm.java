@@ -19,7 +19,7 @@ public class Farm extends Building {
 	private final int BUILDING_WIDTH = 5;
 	private final int BUILDING_HEIGHT = 1;
 	private final int MAX_WORKERS = 5;
-	private final int ITEMS_PER_UPDATE = 1;
+	private final int ITEMS_PER_UPDATE = 100;
 	private final int CAPACITY = 100;
 	
 	//Variables

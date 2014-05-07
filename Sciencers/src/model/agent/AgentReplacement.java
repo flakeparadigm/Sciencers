@@ -167,7 +167,8 @@ public abstract class AgentReplacement implements Entity {
 				dy = GRAVITY_CONSTANT * jumpTick + jumpVelocity;
 				jumpTick++;
 			}
-
+			System.out.println("c" + currentPosition);
+			System.out.println("m" + new Point2D.Double(movements.peek().x, movements.peek().y));
 			// for jumping:
 			if (jumpTick == 0
 					&& (double) movements.peek().getY()
@@ -247,6 +248,7 @@ public abstract class AgentReplacement implements Entity {
 			}
 			// adjust to allow correct switching of target tiles (for jumping
 			// and falling and standard)
+			
 			if (sameLocation(currentPosition,
 					new Point2D.Double(movements.peek().x, movements.peek().y),
 					.1, .1)) {
@@ -313,17 +315,10 @@ public abstract class AgentReplacement implements Entity {
 							i + getCurrentX(currentPosition),
 							World.terrain.getAltitude(i
 									+ getCurrentX(currentPosition)) - 1)
-							.equals(Tile.Leaves))
-					&& !World.terrain.getTile(
-							i + getCurrentX(currentPosition),
-							World.terrain.getAltitude(i
-									+ getCurrentX(currentPosition))).equals(
-							Tile.Wood)
-					&& !World.terrain.getTile(
-							i + getCurrentX(currentPosition),
-							World.terrain.getAltitude(i
-									+ getCurrentX(currentPosition))).equals(
-							Tile.Leaves)) {
+							.equals(Tile.Leaves)) && !passableTiles.contains(World.terrain.getTile(
+									i + getCurrentX(currentPosition),
+									World.terrain.getAltitude(i
+											+ getCurrentX(currentPosition))))) {
 				if (goHere(
 						currentPosition,
 						new Point(i + getCurrentX(currentPosition),
@@ -347,17 +342,10 @@ public abstract class AgentReplacement implements Entity {
 							-i + getCurrentX(currentPosition),
 							World.terrain.getAltitude(-i
 									+ getCurrentX(currentPosition)) - 1)
-							.equals(Tile.Leaves))
-					&& !World.terrain.getTile(
-							-i + getCurrentX(currentPosition),
-							World.terrain.getAltitude(-i
-									+ getCurrentX(currentPosition))).equals(
-							Tile.Wood)
-					&& !World.terrain.getTile(
-							-i + getCurrentX(currentPosition),
-							World.terrain.getAltitude(-i
-									+ getCurrentX(currentPosition))).equals(
-							Tile.Leaves)) {
+							.equals(Tile.Leaves) && !passableTiles.contains(World.terrain.getTile(
+									-i + getCurrentX(currentPosition),
+									World.terrain.getAltitude(-i
+											+ getCurrentX(currentPosition)))))) {
 				if (goHere(
 						currentPosition,
 						new Point(-i + getCurrentX(currentPosition),
