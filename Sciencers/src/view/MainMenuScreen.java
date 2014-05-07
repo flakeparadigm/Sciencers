@@ -16,6 +16,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class MainMenuScreen extends JFrame {
@@ -115,6 +116,12 @@ public class MainMenuScreen extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if(arg0.getSource() == loadGameButton) {
+					
+					File file = new File(WorldView.getSaveLocation());
+					if (!file.exists()) {
+						JOptionPane.showMessageDialog(WorldView.gameWindow, "No save file was found.\nSorry.");
+						return;
+					}
 					WorldView.doCreateWorld = false;
 				}
 				else if(arg0.getSource() == newGameButton) {

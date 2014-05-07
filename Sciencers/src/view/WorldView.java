@@ -67,7 +67,7 @@ public class WorldView extends JFrame {
 	public final static int Y_UPPER_STATS_SIZE = 200;
 
 
-	private final String SAVE_LOCATION = "world.save";
+	private static final String SAVE_LOCATION = "world.save";
 
 	private static int moveSpeed = 15;
 	private static int panTimerMS = 1;
@@ -511,5 +511,9 @@ public class WorldView extends JFrame {
 				}
 			}
 		}
+	}
+
+	public static String getSaveLocation() {
+		return SAVE_LOCATION;
 	}
 }
