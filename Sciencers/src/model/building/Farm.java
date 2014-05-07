@@ -37,12 +37,13 @@ public class Farm extends Building {
 	}
 	
 	public void update() {
-		Random random = new Random(World.seed);
+		Random random = new Random();
 		
 		
 		if(random.nextInt(TICKS_PER_ITEM) == 1) {
-			int foodAdd = workers.size() * ITEMS_PER_UPDATE + 1;
+			int foodAdd = workers.size() * ITEMS_PER_UPDATE;
 			inv.changeAmount(Resource.FOOD, foodAdd);
+			inv.changeAmount(Resource.FOOD, 1);
 		}
 		
 		if(inv.getTotal() < CAPACITY * 0.95) {

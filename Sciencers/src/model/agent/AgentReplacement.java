@@ -96,7 +96,9 @@ public abstract class AgentReplacement implements Entity {
 			// System.out.println("task" + new Point2D.Double(currentTask
 			// .getPos().getX(), currentTask.getPos().getY()));
 			if (sameLocation(currentPosition, new Point2D.Double(currentTask
-					.getPos().getX(), currentTask.getPos().getY()), .1, .1)
+					.getPos().getX(), 
+					currentTask
+					.getPos().getY()), .1, .1)
 					&& taskTimer < 0) {
 				// if in location of current task:
 				currentTask.execute();
