@@ -61,8 +61,6 @@ public class InfoPanes extends JPanel {
 
 		int xTemp = 0; // keeps track of assignment position for each new panel
 		
-		
-		
 		playerButtonsPane = new PlayerButtonsPane();
 		playerButtonsPane.setBorder(null);
 		playerButtonsPane.setOpaque(false);
@@ -163,7 +161,8 @@ public class InfoPanes extends JPanel {
 			hireMenu = new JComboBox<String>();
 			hireMenu.addItem("Select Dood");
 			for(EAgent a : EAgent.values()) {
-				hireMenu.addItem(a.getName()); //TODO make pretty
+				if(a != EAgent.GENERIC)
+					hireMenu.addItem(a.getName()); //TODO make pretty
 			}
 			hireMenu.addActionListener(new MenuListener());
 			add(hireMenu);
@@ -214,7 +213,7 @@ public class InfoPanes extends JPanel {
 					return;
 				}
 				else if(e.getSource() == hireButton) {
-					if(selectedAgent.equals("Select Dood"))
+					if(selectedAgent.equals("Select Dood") || selectedAgent.equals("Generic"))//TODO
 						return;
 					
 					Thread t = new Thread() {
