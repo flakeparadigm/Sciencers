@@ -49,7 +49,8 @@ public class WorldView extends JFrame {
 	public static InfoObserver infoWatch;
 	
 	//boolean
-	private boolean doCreateWorld;
+	public static boolean doCreateWorld;
+//	public static boolean loadWorldBool;
 
 	// Magic Numbers
 	static Toolkit tk = Toolkit.getDefaultToolkit();
@@ -120,16 +121,31 @@ public class WorldView extends JFrame {
 	}
 
 	private void setupModel() {
-		int loadWorld = JOptionPane.showConfirmDialog(gameWindow,
-				"Would you like to load the previous game?", "Load Game?",
-				JOptionPane.YES_NO_OPTION);
-
-		if (loadWorld == JOptionPane.YES_OPTION) {
-			doCreateWorld = false;
-			loadSavedWorld();
-		} else {
-			doCreateWorld = true;
+//		int loadWorld = JOptionPane.showConfirmDialog(gameWindow,
+//				"Would you like to load the previous game?", "Load Game?",
+//				JOptionPane.YES_NO_OPTION);
+//
+//		if (loadWorld == JOptionPane.YES_OPTION) {
+//			doCreateWorld = false;
+//			loadSavedWorld();
+//		} else {
+//			doCreateWorld = true;
+//			makeNewWorld();
+//		}
+		
+//		if (loadWorldBool) {
+//			doCreateWorld = false;
+//			loadSavedWorld();
+//		} else {
+//			doCreateWorld = true;
+//			makeNewWorld();
+//		}
+		
+		if(doCreateWorld) {
 			makeNewWorld();
+		}
+		else {
+			loadSavedWorld();
 		}
 	}
 
