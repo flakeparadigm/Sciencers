@@ -26,6 +26,7 @@ public class BuildingsView extends JPanel {
 			farm = ImageIO.read(new File("imgs/Farm.png"));
 			warehouse = ImageIO.read(new File("imgs/Warehouse.png"));
 			lab = ImageIO.read(new File("imgs/Lab.png"));
+			factory = ImageIO.read(new File("imgs/Factory.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -60,6 +61,14 @@ public class BuildingsView extends JPanel {
 			} else if (b.getType() == EBuilding.LAB) {
 				g2.drawImage(lab, WorldView.TILE_SIZE * pos.x,
 						WorldView.TILE_SIZE * (pos.y - height + 1), null);
+			}else if (b.getType() == EBuilding.FACTORY) {
+				g2.drawImage(factory, WorldView.TILE_SIZE * pos.x,
+						WorldView.TILE_SIZE * (pos.y - height + 1), null);
+				g2.setFont(new Font("Verdana", Font.BOLD, 10));
+				g2.setColor(Color.WHITE);
+				g2.drawString("STORED: " + b.getInventory().getTotal(),
+						WorldView.TILE_SIZE * pos.x, WorldView.TILE_SIZE
+								* (pos.y - height));
 			}
 
 			// g2.drawString("B", WorldView.TILE_SIZE*(e.getPos().x + 1),
