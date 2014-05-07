@@ -167,8 +167,6 @@ public abstract class AgentReplacement implements Entity {
 				dy = GRAVITY_CONSTANT * jumpTick + jumpVelocity;
 				jumpTick++;
 			}
-			System.out.println("c" + currentPosition);
-			System.out.println("m" + new Point2D.Double(movements.peek().x, movements.peek().y));
 			// for jumping:
 			if (jumpTick == 0
 					&& (double) movements.peek().getY()
@@ -251,7 +249,7 @@ public abstract class AgentReplacement implements Entity {
 			
 			if (sameLocation(currentPosition,
 					new Point2D.Double(movements.peek().x, movements.peek().y),
-					.1, .1)) {
+					.1, .2)) {
 				// System.out.println("pop Standard");
 				movements.pop();
 			}
