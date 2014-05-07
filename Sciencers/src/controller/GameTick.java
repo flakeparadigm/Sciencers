@@ -30,7 +30,6 @@ public class GameTick extends Thread {
 	public void run() {
 		for (int i = 0;; i++) {
 			while (shouldUpdate) {
-
 				// Until the game ends, always update the given list of
 				// entities
 				// every tickTime milliseconds

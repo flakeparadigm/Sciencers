@@ -44,7 +44,6 @@ public class WorldView extends JFrame {
 	public static SelectionView selectionPanel;
 	public static UpperStatsView upperStatsPanel;
 
-	// observers
 	public static SciencersObserver terrainWatch;
 	public static InfoObserver infoWatch;
 	

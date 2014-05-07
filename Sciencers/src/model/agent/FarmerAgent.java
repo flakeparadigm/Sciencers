@@ -1,6 +1,5 @@
 package model.agent;
 
-
 import java.awt.Point;
 
 import model.AlertCollection;
@@ -13,7 +12,6 @@ import model.task.BuildBuildingTask;
 import model.task.CraftToolTask;
 import model.task.HarvestTreeTask;
 import model.task.WorkNearbyBuildingTask;
-
 
 public class FarmerAgent extends AgentReplacement {
 
@@ -38,8 +36,8 @@ public class FarmerAgent extends AgentReplacement {
 			taskTimer = 0;
 			AlertCollection.addAlert("An agent has died!");
 		}
-		
-		if (hunger < 0.5 * SEEK_FOOD_HUNGER)  {
+
+		if (hunger < 0.5 * SEEK_FOOD_HUNGER) {
 			AlertCollection.addAlert("An agent is starving! D:");
 		}
 
@@ -52,16 +50,16 @@ public class FarmerAgent extends AgentReplacement {
 			}
 		}
 
-		
-		
 		// get task from list if agent doesn't have one
 		getNextTaskIfNotBusy(EAgent.FARMER);
 
-		if (currentTask == null && !isWorking){
-			currentTask = new WorkNearbyBuildingTask(this, EBuilding.FARM, new Point(getCurrentX(currentPosition), getCurrentY(currentPosition)));
+		if (currentTask == null && !isWorking && World.buildings.size() > 0) {
+			currentTask = new WorkNearbyBuildingTask(this, EBuilding.FARM,
+					new Point(getCurrentX(currentPosition),
+							getCurrentY(currentPosition)));
 			isWorking = true;
 		}
-		
+
 		executeCurrentTask();
 
 		updateMovement(currentPosition, movements);

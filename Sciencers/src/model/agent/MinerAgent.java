@@ -26,7 +26,6 @@ public class MinerAgent extends AgentReplacement {
 	@Override
 	public void update() {
 		updateStats();
-
 		/*
 		 * The following code should be focused upon specific tasks for this
 		 * type of Agent
@@ -59,6 +58,7 @@ public class MinerAgent extends AgentReplacement {
 			((GoMineAreaTask) currentTask).setAgentSource(this);
 			
 		} else if (currentTask instanceof BuildBuildingTask) {
+			System.out.println("HasTask");
 			((BuildBuildingTask) currentTask).setSourceAgent(this);
 			if (getInventory().getAmount(Resource.WOOD) < 5) {
 				tasks.add(currentTask);

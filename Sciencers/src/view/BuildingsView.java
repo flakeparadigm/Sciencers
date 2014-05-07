@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -38,6 +39,7 @@ public class BuildingsView extends JPanel {
 						* (e.getPos().getY() + 1) - farm.getHeight(null)) + 16,
 						null);
 				g2.setFont(new Font("Verdana", Font.BOLD, 10));
+				g2.setColor(Color.WHITE);
 				g2.drawString("FOOD: " + ((Building)e).getInventory().getAmount(Resource.FOOD), (int) (WorldView.TILE_SIZE * (e.getPos()
 						.getX() + 1)), (int) (WorldView.TILE_SIZE
 						* (e.getPos().getY() - 1) - farm.getHeight(null)) + 16);
