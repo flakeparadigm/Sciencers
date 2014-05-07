@@ -40,8 +40,6 @@ public class BuildBuildingTask implements Task {
 	@Override
 	public Point getPos() {
 		return location;
-		// TODO Auto-generated method stub
-
 	}
 
 	public String toString() {
