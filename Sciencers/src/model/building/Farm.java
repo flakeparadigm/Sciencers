@@ -16,8 +16,8 @@ public class Farm extends Building {
 	// Magic Numbers
 	private final int TICKS_PER_ITEM = 50;
 //	private final Point POSITION;
-	private final int BUILDING_WIDTH = 5;
-	private final int BUILDING_HEIGHT = 1;
+	private final int BUILDING_WIDTH = 4;
+	private final int BUILDING_HEIGHT = 3;
 	private final int MAX_WORKERS = 5;
 	private final int ITEMS_PER_UPDATE = 100;
 	private final int CAPACITY = 100;

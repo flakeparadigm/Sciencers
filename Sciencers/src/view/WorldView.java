@@ -336,7 +336,7 @@ public class WorldView extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// continuous right pressed code here:
 			xPanelLocation -= moveSpeed;
-			int maxX = -(X_MAP_SIZE * TILE_SIZE - gameWindow.getWidth() + 30);
+			int maxX = -(X_MAP_SIZE * TILE_SIZE - gameWindow.getContentPane().getWidth());
 			if (xPanelLocation < maxX)
 				xPanelLocation = maxX;
 			updateTerrain();
@@ -386,7 +386,7 @@ public class WorldView extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// continuous down pressed code here:
 			yPanelLocation -= moveSpeed;
-			int maxY = -(Y_MAP_SIZE * TILE_SIZE - gameWindow.getHeight() + 55);
+			int maxY = -(Y_MAP_SIZE * TILE_SIZE - gameWindow.getContentPane().getHeight());
 			if (yPanelLocation < maxY)
 				yPanelLocation = maxY;
 			updateTerrain();

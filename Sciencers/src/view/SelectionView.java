@@ -58,36 +58,17 @@ public class SelectionView extends JPanel {
 		}
 	}
 
-	private void paintBox(Graphics2D g2, Point startPoiont, Point endPoint) {
-		int currX = startPoiont.x;
-		int currY = startPoiont.y;
-
-		while (currX != (endPoint.x + 1)) {
-			while (currY != (endPoint.y + 1)) {
-
-				// draw the image!
-				g2.drawImage(selectionImg, currX * WorldView.TILE_SIZE, currY
+	private void paintBox(Graphics2D g2, Point startPoint, Point endPoint) {
+		
+		Rectangle r = makeRectangle(startPoint, endPoint);
+		for(int x = 0; x <= r.width; x++) {
+			for(int y = 0; y <= r.height; y++) {
+				g2.drawImage(selectionImg, (r.x+x) * WorldView.TILE_SIZE, (r.y+y)
 						* WorldView.TILE_SIZE, WorldView.TILE_SIZE,
 						WorldView.TILE_SIZE, null);
-
-				// increment the y point and do it again!
-				if (currY < (currPoint.y + 1))
-					currY++;
-				else
-					currY--;
-
 			}
-
-			// reset currY
-			currY = startPoiont.y;
-
-			// increment the x point and do it again!
-			if (currX < (endPoint.x + 1))
-				currX++;
-			else
-				currX--;
-
 		}
+		
 	}
 
 	public Point getPoint() {
@@ -102,7 +83,8 @@ public class SelectionView extends JPanel {
 			}
 			System.out.print("\0");
 		}
-		return new Point(firstPoint.x - 1, firstPoint.y - 1);
+		
+		return new Point(firstPoint.x, firstPoint.y);
 	}
 
 	public Rectangle getRectangle() {
@@ -118,17 +100,20 @@ public class SelectionView extends JPanel {
 				waitingForRectangle = false;
 			System.out.print("\0");
 		}
-
-		// set top left point and dimensions using two points
-		// Trevor: not entirely sure why these point modifiers needed to be
-		// added, but for now they are correcting the area selection for mining
-		int x1 = firstPoint.x - 1;
-		int x2 = secondPoint.x - 1;
-		int y1 = firstPoint.y - 2;
-		int y2 = secondPoint.y - 2;
+		
+		// make a rectangle using those
+		return makeRectangle(firstPoint, secondPoint);
+	}
+	
+	// creates a rectangle, where the location is the top-left point.
+	private Rectangle makeRectangle(Point p1, Point p2) {
+		int x1 = p1.x;
+		int x2 = p2.x;
+		int y1 = p1.y;
+		int y2 = p2.y;
 
 		int x = Math.min(x1, x2);
-		int y = Math.max(y1, y2);
+		int y = Math.min(y1, y2);
 
 		int dx = Math.abs(x2 - x1);
 		int dy = Math.abs(y2 - y1);

@@ -56,19 +56,19 @@ public class AgentsView extends JPanel{
 //			g2.drawImage(placeholder, (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getX() + 1)), (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getY() + 1)), null);
 			
 			if(e instanceof FarmerAgent) {
-				g2.drawImage(farmer, (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getX() + 1)), (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getY() + 1)), null);
+				g2.drawImage(farmer, (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getX())), (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getY())), null);
 			} else if(e instanceof SciencerAgent) {
-				g2.drawImage(sciencer, (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getX() + 1)), (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getY() + 1)), null);
+				g2.drawImage(sciencer, (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getX())), (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getY())), null);
 			} else if(e instanceof MinerAgent) {
-				g2.drawImage(miner, (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getX() + 1)), (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getY() + 1)), null);
+				g2.drawImage(miner, (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getX())), (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getY())), null);
 			} else {
-				g2.drawImage(placeholder, (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getX() + 1)), (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getY() + 1)), null);
+				g2.drawImage(placeholder, (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getX())), (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getY())), null);
 				System.out.println("AgentsView is drawing a generic agent. Why does this exist?");
 			}
 			
 			AgentReplacement a = ((AgentReplacement) e);
 			if(a.workingTool != null) {
-				g2.drawImage(tools.get(a.workingTool), (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getX() + 1)), (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getY() + 1)), null);
+				g2.drawImage(tools.get(a.workingTool), (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getX())), (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getY())), null);
 			}
 		}
 	}

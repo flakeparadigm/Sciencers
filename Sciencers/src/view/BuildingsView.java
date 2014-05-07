@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 
@@ -35,35 +36,32 @@ public class BuildingsView extends JPanel {
 		Graphics2D g2 = (Graphics2D) g;
 
 		for (Entity e : World.buildings) {
-			if (((Building) e).getType() == EBuilding.FARM) {
-				g2.drawImage(farm, (int) (WorldView.TILE_SIZE * (e.getPos()
-						.getX() + 1)), (int) (WorldView.TILE_SIZE
-						* (e.getPos().getY() + 1) - farm.getHeight(null)) + 16,
-						null);
+			Building b = (Building) e;
+			Point pos = b.getPos();
+			int height = b.getSize().height;
+
+			if (b.getType() == EBuilding.FARM) {
+				g2.drawImage(farm, WorldView.TILE_SIZE * pos.x,
+						WorldView.TILE_SIZE * (pos.y - height + 1), null);
 				g2.setFont(new Font("Verdana", Font.BOLD, 10));
 				g2.setColor(Color.WHITE);
-				g2.drawString("FOOD: " + ((Building)e).getInventory().getAmount(Resource.FOOD), (int) (WorldView.TILE_SIZE * (e.getPos()
-						.getX() + 1)), (int) (WorldView.TILE_SIZE
-						* (e.getPos().getY() - 1) - farm.getHeight(null)) + 16);
-			}
-			else if(((Building) e).getType() == EBuilding.WAREHOUSE) {
-				g2.drawImage(warehouse, (int) (WorldView.TILE_SIZE * (e.getPos()
-						.getX() + 1)), (int) (WorldView.TILE_SIZE
-						* (e.getPos().getY() + 1) - warehouse.getHeight(null)) + 16,
-						null);
+				g2.drawString(
+						"FOOD: " + b.getInventory().getAmount(Resource.FOOD),
+						WorldView.TILE_SIZE * pos.x, WorldView.TILE_SIZE
+								* (pos.y - height));
+			} else if (b.getType() == EBuilding.WAREHOUSE) {
+				g2.drawImage(warehouse, WorldView.TILE_SIZE * pos.x,
+						WorldView.TILE_SIZE * (pos.y - height + 1), null);
 				g2.setFont(new Font("Verdana", Font.BOLD, 10));
 				g2.setColor(Color.WHITE);
-				g2.drawString("STORED: " + ((Building)e).getInventory().getTotal(), (int) (WorldView.TILE_SIZE * (e.getPos()
-						.getX() + 1)), (int) (WorldView.TILE_SIZE
-						* (e.getPos().getY() - 1) - warehouse.getHeight(null)) + 16);
+				g2.drawString("STORED: " + b.getInventory().getTotal(),
+						WorldView.TILE_SIZE * pos.x, WorldView.TILE_SIZE
+								* (pos.y - height));
+			} else if (b.getType() == EBuilding.LAB) {
+				g2.drawImage(lab, WorldView.TILE_SIZE * pos.x,
+						WorldView.TILE_SIZE * (pos.y - height + 1), null);
 			}
-			else if(((Building)e).getType() == EBuilding.LAB) {
-				g2.drawImage(lab, (int) (WorldView.TILE_SIZE * (e.getPos()
-						.getX() + 1)), (int) (WorldView.TILE_SIZE
-						* (e.getPos().getY() + 1) - lab.getHeight(null)) + 16,
-						null);
-			}
-			
+
 			// g2.drawString("B", WorldView.TILE_SIZE*(e.getPos().x + 1),
 			// WorldView.TILE_SIZE*(e.getPos().y + 1));
 		}

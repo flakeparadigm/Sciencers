@@ -48,14 +48,14 @@ public class TerrainView extends JPanel {
 //		for (int i = 0; i < grid.length; i++) {
 //			for (int j = 0; j < grid[0].length; j++) {
 //				g2.drawImage(textures.get(grid[i][j]), WorldView.TILE_SIZE
-//						* (i + 1), WorldView.TILE_SIZE * (j + 1), null);
+//						* (i), WorldView.TILE_SIZE * (j), null);
 //			}
 //		}
 		for (int i = -BUFFER; i < X_TILES + BUFFER; i++) {
 			for (int j = -BUFFER; j < Y_TILES + BUFFER; j++) {
 				try {
 					g2.drawImage(textures.get(grid[viewLocation.x + i][viewLocation.y + j]), WorldView.TILE_SIZE
-					* (viewLocation.x + i + 1), WorldView.TILE_SIZE * (viewLocation.y + j + 1), null);
+					* (viewLocation.x + i), WorldView.TILE_SIZE * (viewLocation.y + j), null);
 				} catch (ArrayIndexOutOfBoundsException e) {
 					System.out.println("out!");
 				}
