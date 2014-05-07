@@ -105,7 +105,7 @@ public class InfoPanes extends JPanel {
 
 		// Generic Task Pane
 		genericTaskScroller = new JScrollPane();
-		genericTaskPane = new TaskPane(null);
+		genericTaskPane = new TaskPane(EAgent.GENERIC);
 		genericTaskScroller.setViewportView(genericTaskPane);
 		genericTaskScroller.setOpaque(false);
 		genericTaskScroller.setBorder(null);
@@ -124,7 +124,7 @@ public class InfoPanes extends JPanel {
 		xTemp += genericTaskScroller.getWidth() + 10;
 		
 		farmerTaskScroller = new JScrollPane();
-		farmerTaskPane = new TaskPane(FarmerAgent.class);
+		farmerTaskPane = new TaskPane(EAgent.FARMER);
 		farmerTaskScroller.setViewportView(farmerTaskPane);
 		farmerTaskScroller.setOpaque(false);
 		farmerTaskScroller.setBorder(null);
@@ -143,7 +143,7 @@ public class InfoPanes extends JPanel {
 		xTemp += farmerTaskScroller.getWidth() + 10;
 		
 		minerTaskScroller = new JScrollPane();
-		minerTaskPane = new TaskPane(MinerAgent.class);
+		minerTaskPane = new TaskPane(EAgent.MINER);
 		minerTaskScroller.setViewportView(minerTaskPane);
 		minerTaskScroller.setOpaque(false);
 		minerTaskScroller.setBorder(null);
@@ -162,7 +162,7 @@ public class InfoPanes extends JPanel {
 		xTemp += minerTaskScroller.getWidth() + 10;
 		
 		sciencerTaskScroller = new JScrollPane();
-		sciencerTaskPane = new TaskPane(SciencerAgent.class);
+		sciencerTaskPane = new TaskPane(EAgent.SCIENCER);
 		sciencerTaskScroller.setViewportView(sciencerTaskPane);
 		sciencerTaskScroller.setOpaque(false);
 		sciencerTaskScroller.setBorder(null);
@@ -319,14 +319,18 @@ public class InfoPanes extends JPanel {
 
 	private class TaskPane extends JPanel {
 		
-		private Class<?> clazz;
+		private EAgent a;
 
-		public TaskPane(Class<?> c) {
+		public TaskPane(EAgent a) {
 			this.setLayout(new FlowLayout());
 			this.setBackground(new Color(0, 0, 0, 0));
 			
-			this.clazz = c;
-
+			this.a = a;
+			
+			JLabel nameLabel = new JLabel(a.getName() + " Tasks");
+			nameLabel.setForeground(Color.white);
+			this.add(nameLabel);
+			
 			setupBoxes();
 			this.setPreferredSize(new Dimension(TASK_BOX_WIDTH,
 					(TASK_BOX_HEIGHT + 5) * this.getComponentCount() + 5));
@@ -337,7 +341,7 @@ public class InfoPanes extends JPanel {
 		}
 		
 		public void setupBoxes() {
-			for(Task t : TaskList.getList(clazz)) {
+			for(Task t : TaskList.getList(a)) {
 				if(t.shouldBeSeen())
 					this.add(new TaskBox(t));
 			}

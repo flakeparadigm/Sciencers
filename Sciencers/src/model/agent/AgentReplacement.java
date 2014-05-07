@@ -441,5 +441,7 @@ public abstract class AgentReplacement implements Entity {
 		inventory.changeAmount(tool, 1);
 		//TODO handle overfilling inventory
 	}
+	
+	public abstract String getUserFriendlyName();
 
 }

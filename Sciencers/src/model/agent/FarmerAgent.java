@@ -67,4 +67,9 @@ public class FarmerAgent extends AgentReplacement {
 		updateMovement(currentPosition, movements);
 
 	}
+
+	@Override
+	public String getUserFriendlyName() {
+		return "Farmer";
+	}
 }

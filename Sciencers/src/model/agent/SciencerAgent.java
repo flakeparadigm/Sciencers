@@ -16,11 +16,13 @@ public class SciencerAgent extends AgentReplacement{
 	@Override
 	public void update() {
 		updateStats();
-		
-		
 		getNextTaskIfNotBusy(EAgent.SCIENCER);
-		
-		
+
+	}
+
+	@Override
+	public String getUserFriendlyName() {
+		return "Sciencer";
 	}
 
 }
