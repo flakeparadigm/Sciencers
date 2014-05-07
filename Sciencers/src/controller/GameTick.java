@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.ArrayList;
+
 import model.Entity;
 
 public class GameTick extends Thread {
@@ -22,6 +23,7 @@ public class GameTick extends Thread {
 	public void pauseTick() {
 		shouldUpdate = false;
 	}
+
 	public void resumeTick() {
 		shouldUpdate = true;
 	}
@@ -34,9 +36,9 @@ public class GameTick extends Thread {
 				// entities
 				// every tickTime milliseconds
 				for (Entity e : entities) {
-					if(!shouldUpdate)				// prevent concurrent modification.
-						break;						// stops updates when paused, even mid-cycle;
-					
+					if (!shouldUpdate) // prevent concurrent modification.
+						break; // stops updates when paused, even mid-cycle;
+
 					e.update();
 				}
 
@@ -58,8 +60,8 @@ public class GameTick extends Thread {
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}
-			
-			if(terminate)
+
+			if (terminate)
 				return;
 		}
 	}
