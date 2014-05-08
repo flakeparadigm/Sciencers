@@ -12,7 +12,7 @@ import model.task.AgentDeath;
 import model.task.GoHereTask;
 import model.task.HarvestTreeTask;
 
-public class SciencerAgent extends AgentReplacement{
+public class SciencerAgent extends Agent{
 
 	public SciencerAgent(Point currentPosition) {
 		super(currentPosition);

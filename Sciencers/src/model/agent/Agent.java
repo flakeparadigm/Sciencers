@@ -19,7 +19,7 @@ import model.task.HarvestTreeTask;
 import model.task.Task;
 import model.task.TaskList;
 
-public abstract class AgentReplacement implements Entity {
+public abstract class Agent implements Entity {
 
 	// agent id tracking
 	private static int currentId = 0;
@@ -52,7 +52,7 @@ public abstract class AgentReplacement implements Entity {
 
 	private int jumpTick = 0;
 
-	public AgentReplacement(Point currentPosition) {
+	public Agent(Point currentPosition) {
 		MY_ID = currentId++;
 		priorityResource = Resource.FOOD;
 

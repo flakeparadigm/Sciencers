@@ -7,7 +7,7 @@ import java.util.Random;
 
 import model.Entity;
 import model.World;
-import model.agent.AgentReplacement;
+import model.agent.Agent;
 import model.building.Building;
 import model.building.EBuilding;
 import model.building.Factory;
@@ -17,12 +17,12 @@ import model.building.Warehouse;
 
 public class WorkNearbyBuildingTask implements Task {
 
-	private AgentReplacement sourceAgent;
+	private Agent sourceAgent;
 	private Point currentPosition;
 	private EBuilding buildingType;
 	private Building targetBuilding;
 
-	public WorkNearbyBuildingTask(AgentReplacement sourceAgent,
+	public WorkNearbyBuildingTask(Agent sourceAgent,
 			EBuilding buildingType, Point currentPosition) {
 		this.currentPosition = currentPosition;
 		this.buildingType = buildingType;

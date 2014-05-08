@@ -14,7 +14,7 @@ import model.task.CraftToolTask;
 import model.task.GoMineAreaTask;
 import model.task.HarvestTreeTask;
 
-public class MinerAgent extends AgentReplacement {
+public class MinerAgent extends Agent {
 
 	public MinerAgent(Point currentPosition) {
 		super(currentPosition);

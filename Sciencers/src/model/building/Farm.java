@@ -8,7 +8,7 @@ import java.util.Random;
 import model.AlertCollection;
 import model.Entity;
 import model.World;
-import model.agent.AgentReplacement;
+import model.agent.Agent;
 import model.inventory.Inventory;
 import model.inventory.Resource;
 import model.task.MoveResourcesTask;
@@ -27,11 +27,11 @@ public class Farm extends Building {
 	
 	//Variables
 	private Inventory inv;
-	private ArrayList<AgentReplacement> workers;
+	private ArrayList<Agent> workers;
 	
 	public Farm(Point pos) {
 		super(pos);
-		workers = new ArrayList<AgentReplacement>();
+		workers = new ArrayList<Agent>();
 		inv = new Inventory(CAPACITY, Resource.FOOD, Resource.FOOD); //allows only food in internal inv storage
 //		inv.changeAmount(Resource.FOOD, 10000000);
 	}
@@ -82,7 +82,7 @@ public class Farm extends Building {
 	}
 
 	@Override
-	public boolean addWorker(AgentReplacement a) {
+	public boolean addWorker(Agent a) {
 		if(workers.size() <= MAX_WORKERS)
 			return false;
 		
@@ -91,7 +91,7 @@ public class Farm extends Building {
 	}
 
 	@Override
-	public boolean removeWorker(AgentReplacement a) {
+	public boolean removeWorker(Agent a) {
 		if(!workers.contains(a))
 			return false;
 		

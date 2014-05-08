@@ -2,19 +2,19 @@ package model.task;
 
 import java.awt.Point;
 
-import model.agent.AgentReplacement;
+import model.agent.Agent;
 import model.building.Building;
 import model.inventory.Resource;
 import model.inventory.Storable;
 
 public class GiveToBuilding implements Task{
 
-	private AgentReplacement sourceAgent;
+	private Agent sourceAgent;
 	private Building sinkBuilding;
 	private Storable item;
 	private int quantity;
 	
-	public GiveToBuilding(AgentReplacement sourceAgent, Building sinkBuilding, Storable resource, int quantity){
+	public GiveToBuilding(Agent sourceAgent, Building sinkBuilding, Storable resource, int quantity){
 		this.sourceAgent = sourceAgent;
 		this.sinkBuilding = sinkBuilding;
 		this.item = resource;

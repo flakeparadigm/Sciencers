@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 
 import model.Entity;
 import model.World;
-import model.agent.AgentReplacement;
+import model.agent.Agent;
 import model.agent.FarmerAgent;
 import model.agent.MinerAgent;
 import model.agent.SciencerAgent;
@@ -66,7 +66,7 @@ public class AgentsView extends JPanel{
 				System.out.println("AgentsView is drawing a generic agent. Why does this exist?");
 			}
 			
-			AgentReplacement a = ((AgentReplacement) e);
+			Agent a = ((Agent) e);
 			if(a.workingTool != null) {
 				g2.drawImage(tools.get(a.workingTool), (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getX())), (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getY())), null);
 			}

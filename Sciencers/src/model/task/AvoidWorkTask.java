@@ -4,15 +4,15 @@ import java.awt.Point;
 import java.util.Random;
 
 import model.World;
-import model.agent.AgentReplacement;
+import model.agent.Agent;
 
 public class AvoidWorkTask implements Task{
 	
-	private AgentReplacement sourceAgent;
+	private Agent sourceAgent;
 	private Point position;
 	
 
-	public AvoidWorkTask(AgentReplacement sourceAgent, Point position){
+	public AvoidWorkTask(Agent sourceAgent, Point position){
 		this.sourceAgent = sourceAgent;
 		this.position = position;
 	}

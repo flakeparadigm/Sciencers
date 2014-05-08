@@ -5,7 +5,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 import model.Research;
-import model.agent.AgentReplacement;
+import model.agent.Agent;
 import model.inventory.Inventory;
 
 public class Lab extends Building {
@@ -20,14 +20,14 @@ public class Lab extends Building {
 	
 	//Variables
 //	private Inventory inv;
-	private ArrayList<AgentReplacement> workers;
+	private ArrayList<Agent> workers;
 	
 	//Lab-specific stats
 	private final int TICK_RESEARCH = 1;
 
 	public Lab(Point pos) {
 		super(pos);
-		workers = new ArrayList<AgentReplacement>();
+		workers = new ArrayList<Agent>();
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class Lab extends Building {
 	}
 
 	@Override
-	public boolean addWorker(AgentReplacement a) {
+	public boolean addWorker(Agent a) {
 		if(workers.size() <= MAX_WORKERS)
 			return false;
 		
@@ -55,7 +55,7 @@ public class Lab extends Building {
 	}
 
 	@Override
-	public boolean removeWorker(AgentReplacement a) {
+	public boolean removeWorker(Agent a) {
 		if(!workers.contains(a))
 			return false;
 		

@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 
 import model.Entity;
 import model.World;
-import model.agent.AgentReplacement;
+import model.agent.Agent;
 import model.inventory.Inventory;
 import model.inventory.Resource;
 
@@ -52,7 +52,7 @@ public class UpperStatsView extends JPanel {
 			}
 			g2.setColor(Color.WHITE);
 			g2.setFont(new Font("Verdana", Font.BOLD, 20));
-			g2.drawString(((AgentReplacement) agents.get(i)).getType().getName().substring(0, 1), 0 , i * WorldView.TILE_SIZE + 56);
+			g2.drawString(((Agent) agents.get(i)).getType().getName().substring(0, 1), 0 , i * WorldView.TILE_SIZE + 56);
 		}
 	}
 
@@ -81,11 +81,11 @@ public class UpperStatsView extends JPanel {
 //		}
 		agents = World.agents;
 		for (Entity e : agents) {
-			inventories.add(((AgentReplacement) e).getInventory());
+			inventories.add(((Agent) e).getInventory());
 		}
 		
 		for (int i = 0; i < agents.size(); i++) {
-			inventories.add(i, ((AgentReplacement) agents.get(i)).getInventory());
+			inventories.add(i, ((Agent) agents.get(i)).getInventory());
 		}
 
 		repaint();

@@ -9,7 +9,7 @@ import java.util.Random;
 
 import model.AlertCollection;
 import model.World;
-import model.agent.AgentReplacement;
+import model.agent.Agent;
 import model.inventory.Inventory;
 import model.inventory.Resource;
 import model.inventory.Storable;
@@ -27,12 +27,12 @@ public class Factory extends Building {
 	
 	//Variables
 	private Inventory inv;
-	private ArrayList<AgentReplacement> workers;
+	private ArrayList<Agent> workers;
 	private Queue<ProductionItem> productionQueue;
 
 	public Factory(Point pos) {
 		super(pos);
-		workers = new ArrayList<AgentReplacement>();
+		workers = new ArrayList<Agent>();
 		inv = new Inventory(CAPACITY, Resource.URANIUM);
 		productionQueue = new LinkedList<ProductionItem>();
 	}
@@ -63,7 +63,7 @@ public class Factory extends Building {
 		}
 	}
 	
-	public void makeTool(AgentReplacement a, Tool t) {
+	public void makeTool(Agent a, Tool t) {
 		productionQueue.add(new ProductionItem(a, t));
 	}
 
@@ -78,7 +78,7 @@ public class Factory extends Building {
 	}
 
 	@Override
-	public boolean addWorker(AgentReplacement a) {
+	public boolean addWorker(Agent a) {
 		if(workers.size() <= MAX_WORKERS)
 			return false;
 		
@@ -87,7 +87,7 @@ public class Factory extends Building {
 	}
 
 	@Override
-	public boolean removeWorker(AgentReplacement a) {
+	public boolean removeWorker(Agent a) {
 		if(!workers.contains(a))
 			return false;
 		
@@ -108,14 +108,14 @@ public class Factory extends Building {
 }
 
 class ProductionItem {
-	private AgentReplacement agent;
+	private Agent agent;
 	private Tool tool;
-	public ProductionItem(AgentReplacement agent, Tool tool) {
+	public ProductionItem(Agent agent, Tool tool) {
 		this.agent = agent;
 		this.tool = tool;
 	}
 	
-	public AgentReplacement getAgent() {
+	public Agent getAgent() {
 		return agent;
 	}
 	

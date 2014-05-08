@@ -5,7 +5,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 import model.AlertCollection;
-import model.agent.AgentReplacement;
+import model.agent.Agent;
 import model.inventory.Inventory;
 import model.inventory.Resource;
 
@@ -19,12 +19,12 @@ public class Warehouse extends Building {
 	
 	// Variables
 	private Inventory inv;
-	private ArrayList<AgentReplacement> workers;
+	private ArrayList<Agent> workers;
 	
 	public Warehouse(Point pos) {
 		super(pos);
 		inv = new Inventory(CAPACITY, Resource.FOOD);
-		workers = new ArrayList<AgentReplacement>();
+		workers = new ArrayList<Agent>();
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class Warehouse extends Building {
 	}
 	
 	@Override
-	public boolean addWorker(AgentReplacement a) {
+	public boolean addWorker(Agent a) {
 		if(workers.size() <= MAX_WORKERS)
 			return false;
 		
@@ -64,7 +64,7 @@ public class Warehouse extends Building {
 	}
 
 	@Override
-	public boolean removeWorker(AgentReplacement a) {
+	public boolean removeWorker(Agent a) {
 		if(!workers.contains(a))
 			return false;
 		

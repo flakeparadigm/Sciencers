@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import model.agent.AgentReplacement;
+import model.agent.Agent;
 import model.agent.EAgent;
 import model.agent.FarmerAgent;
 import model.agent.MinerAgent;
@@ -60,7 +60,7 @@ public class World implements Serializable {
 
 	public static void addAgent(EAgent type, int xPos){
 		//this adds an Agent at the highest point on the terrain at a certain point
-		AgentReplacement agent = null;
+		Agent agent = null;
 		if(type == EAgent.FARMER)
 			agent = new FarmerAgent(new Point(xPos, terrain.getAltitude(xPos) - 1)) ;
 		if(type == EAgent.MINER)

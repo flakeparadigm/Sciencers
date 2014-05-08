@@ -2,16 +2,16 @@ package model.task;
 
 import java.awt.Point;
 
-import model.agent.AgentReplacement;
+import model.agent.Agent;
 import model.inventory.Tool;
 
 public class CraftToolTask implements Task {
 	
 	private Tool t;
-	private AgentReplacement a;
+	private Agent a;
 	private Point agentPosition;
 	
-	public CraftToolTask(Tool t, AgentReplacement a, Point agentPosition) {
+	public CraftToolTask(Tool t, Agent a, Point agentPosition) {
 		this.t= t;
 		this.a = a;
 		this.agentPosition = agentPosition;

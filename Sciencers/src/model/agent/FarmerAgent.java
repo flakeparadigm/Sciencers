@@ -13,7 +13,7 @@ import model.task.CraftToolTask;
 import model.task.HarvestTreeTask;
 import model.task.WorkNearbyBuildingTask;
 
-public class FarmerAgent extends AgentReplacement {
+public class FarmerAgent extends Agent {
 
 	public FarmerAgent(Point currentPosition) {
 		super(currentPosition);

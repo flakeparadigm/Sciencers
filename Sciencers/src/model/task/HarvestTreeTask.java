@@ -5,19 +5,19 @@ import java.awt.Point;
 import view.Tile;
 import model.Terrain;
 import model.World;
-import model.agent.AgentReplacement;
+import model.agent.Agent;
 import model.inventory.Resource;
 
 public class HarvestTreeTask implements Task {
 
 	private Point location;
 	private Terrain terrain;
-	private AgentReplacement sourceAgent;
+	private Agent sourceAgent;
 	
 	private final int WOOD_VALUE = 1;
 	private final int FOOD_VALUE = 1;
 
-	public HarvestTreeTask(AgentReplacement sourceAgent, Point location, Terrain terrain) {
+	public HarvestTreeTask(Agent sourceAgent, Point location, Terrain terrain) {
 		this.location = location;
 		this.terrain = terrain;
 		this.sourceAgent = sourceAgent;

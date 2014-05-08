@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 
 import view.Tile;
 import model.World;
-import model.agent.AgentReplacement;
+import model.agent.Agent;
 import model.inventory.Resource;
 
 public class GoMineAreaTask implements Task {
@@ -14,7 +14,7 @@ public class GoMineAreaTask implements Task {
 	private Point point2;
 	private Point upperLeft;
 	private Point lowerRight;
-	private AgentReplacement agentSource;
+	private Agent agentSource;
 
 	public GoMineAreaTask(Rectangle r) {
 		this(r.getLocation(), new Point(r.x+r.width, r.y+r.height));
@@ -48,7 +48,7 @@ public class GoMineAreaTask implements Task {
 		
 	}
 
-	public void setAgentSource(AgentReplacement agentSource) {
+	public void setAgentSource(Agent agentSource) {
 		this.agentSource = agentSource;
 	}
 

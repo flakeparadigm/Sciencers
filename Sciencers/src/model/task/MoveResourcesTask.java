@@ -2,7 +2,7 @@ package model.task;
 
 import java.awt.Point;
 
-import model.agent.AgentReplacement;
+import model.agent.Agent;
 import model.building.Building;
 import model.building.Factory;
 import model.building.Farm;
@@ -14,7 +14,7 @@ import model.inventory.Tool;
 public class MoveResourcesTask implements Task {
 
 	private Building getFrom, giveTo;
-	private AgentReplacement agentSource;
+	private Agent agentSource;
 	
 	public MoveResourcesTask(Building getFrom, Building giveTo) {
 		this.getFrom = getFrom;
@@ -60,7 +60,7 @@ public class MoveResourcesTask implements Task {
 		return true;
 	}
 	
-	public void setAgentSource(AgentReplacement agentSource) {
+	public void setAgentSource(Agent agentSource) {
 		this.agentSource = agentSource;
 	}
 

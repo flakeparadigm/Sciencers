@@ -5,7 +5,7 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 import controller.InfoObserver;
-import model.agent.AgentReplacement;
+import model.agent.Agent;
 import model.agent.EAgent;
 import model.agent.FarmerAgent;
 import model.agent.MinerAgent;

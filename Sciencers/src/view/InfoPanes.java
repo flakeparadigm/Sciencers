@@ -25,7 +25,7 @@ import model.Entity;
 import model.Research;
 import model.World;
 import model.agent.AgentFactory;
-import model.agent.AgentReplacement;
+import model.agent.Agent;
 import model.agent.EAgent;
 import model.agent.FarmerAgent;
 import model.agent.MinerAgent;

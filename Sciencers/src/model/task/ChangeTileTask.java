@@ -7,17 +7,17 @@ import java.util.ArrayList;
 
 import view.Tile;
 import model.World;
-import model.agent.AgentReplacement;
+import model.agent.Agent;
 import model.inventory.Resource;
 
 public class ChangeTileTask implements Task {
 
 	private Point position;
-	private AgentReplacement sourceAgent;
+	private Agent sourceAgent;
 	private ArrayList<Tile> passableTiles;
 	private Tile tileType;
 	
-	public ChangeTileTask(AgentReplacement sourceAgent, Point position, Tile tileType) { 
+	public ChangeTileTask(Agent sourceAgent, Point position, Tile tileType) { 
 		//i think the player should select a rectangle to be mined
 		this.position = position;
 		this.sourceAgent = sourceAgent;
