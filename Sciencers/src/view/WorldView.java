@@ -24,6 +24,7 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
+import model.WinChecker;
 import model.World;
 import controller.InfoObserver;
 import controller.SciencersObserver;
@@ -90,11 +91,16 @@ public class WorldView extends JFrame {
 		World.startTicks();
 		if (doCreateWorld)
 			World.giveStarter();
+		
+		Thread t = new WinChecker();
+		t.run();
+		System.out.println("Setup procedure completed. Game is now happy, and indeed quite playable.");
 	}
 
 	private void setupObservers() {
 		terrainWatch = new SciencersObserver(this);
 		infoWatch = new InfoObserver(this);
+		System.out.println("Observers set up");
 	}
 
 	private void setupProperties() {
@@ -106,6 +112,8 @@ public class WorldView extends JFrame {
 		setSize(X_WINDOW_SIZE, Y_WINDOW_SIZE);
 		setLayout(null);
 		setLocation(50, 50);
+		
+		System.out.println("Properties set");
 
 		// this.addComponentListener(new ComponentAdapter() {
 		// @Override
@@ -437,6 +445,7 @@ public class WorldView extends JFrame {
 
 	private void makeNewWorld() {
 		world = new World(12345, X_MAP_SIZE, Y_MAP_SIZE);
+		System.out.println("New world created");
 	}
 
 	private void loadSavedWorld() {
@@ -456,6 +465,7 @@ public class WorldView extends JFrame {
 
 			loadWorld.close();
 			loadFile.close();
+			System.out.println("Loaded saved world");
 
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(gameWindow,

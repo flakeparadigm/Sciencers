@@ -13,7 +13,6 @@ import model.building.EBuilding;
 import model.building.Farm;
 import model.building.Warehouse;
 import model.task.TaskList;
-import view.WorldView;
 import controller.GameTick;
 import controller.InfoObserver;
 
@@ -54,8 +53,8 @@ public class World implements Serializable {
 		buildings = new ArrayList<Entity>();
 		projectiles = new ArrayList<Projectile>();
 		tasks = new TaskList();
-		
-		(new WinChecker()).run();
+		System.out.println("World constructed");
+
 	}
 
 	public static void addAgent(EAgent type, int xPos){
@@ -141,6 +140,7 @@ public class World implements Serializable {
 
 		agentsTick.start();
 		buildingsTick.start();
+		System.out.println("Ticks started");
 	}
 
 	// Saving info.
@@ -211,25 +211,7 @@ public class World implements Serializable {
 		World.addAgent(EAgent.FARMER, width / 2 - 2);
 		World.addAgent(EAgent.MINER, width / 2 + 2);
 		World.addAgent(EAgent.MINER, width / 2 + 6);
-
+		System.out.println("Starter agents spawned");
 	}
 	
-	private class WinChecker extends Thread {	
-		boolean running = true;
-		
-		public void terminate() {
-			running = false;
-		}
-		
-		public void run() {
-			while(running) {
-				if(playerScience >= WINNING_SCIENCE) {
-					WorldView.win();
-				}
-				if(agents.size() == 0) {
-					WorldView.lose();
-				}
-			}
-		}
-	}
 }
