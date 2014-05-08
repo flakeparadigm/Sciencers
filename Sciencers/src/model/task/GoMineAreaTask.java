@@ -56,7 +56,7 @@ public class GoMineAreaTask implements Task {
 	public Point getPos() {
 		// this is where the agent needs to go before this task can be executed
 		return new Point(upperLeft.x,
-				World.terrain.getAltitude(upperLeft.x) - 1);
+				World.terrain.getDeepestPassable(upperLeft.x));
 	}
 
 	public String toString() {
