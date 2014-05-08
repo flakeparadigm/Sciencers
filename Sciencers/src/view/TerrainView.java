@@ -45,12 +45,7 @@ public class TerrainView extends JPanel {
 
 		// display char array for tiles here
 		Tile[][] grid = World.terrain.getTileArray();
-//		for (int i = 0; i < grid.length; i++) {
-//			for (int j = 0; j < grid[0].length; j++) {
-//				g2.drawImage(textures.get(grid[i][j]), WorldView.TILE_SIZE
-//						* (i), WorldView.TILE_SIZE * (j), null);
-//			}
-//		}
+
 		for (int i = -BUFFER; i < X_TILES + BUFFER; i++) {
 			for (int j = -BUFFER; j < Y_TILES + BUFFER; j++) {
 				try {

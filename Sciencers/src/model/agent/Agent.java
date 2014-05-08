@@ -64,6 +64,7 @@ public abstract class Agent implements Entity {
 		passableTiles.add(Tile.Wood);
 		passableTiles.add(Tile.Leaves);
 		passableTiles.add(Tile.Ladder);
+		passableTiles.add(Tile.BackgroundDirt);
 
 		inventory = new Inventory(CAPACITY, priorityResource);
 
@@ -414,6 +415,10 @@ public abstract class Agent implements Entity {
 		}
 	}
 
+	public ArrayList<Tile> getPassableTiles(){
+		return passableTiles;
+	}
+	
 	// for testing
 	public void setHunger(int i) {
 		hunger = i;

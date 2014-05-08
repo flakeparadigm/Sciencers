@@ -21,11 +21,13 @@ public class ChangeTileTask implements Task {
 		//i think the player should select a rectangle to be mined
 		this.position = position;
 		this.sourceAgent = sourceAgent;
-		passableTiles = new ArrayList<Tile>();
-		passableTiles.add(Tile.Sky);
-		passableTiles.add(Tile.Wood);
-		passableTiles.add(Tile.Leaves);
-		passableTiles.add(Tile.Ladder);
+//		passableTiles = new ArrayList<Tile>();
+//		passableTiles.add(Tile.Sky);
+//		passableTiles.add(Tile.Wood);
+//		passableTiles.add(Tile.Leaves);
+//		passableTiles.add(Tile.Ladder);
+//		passableTiles.add(Tile.BackgroundDirt);
+		this.passableTiles = sourceAgent.getPassableTiles();
 		this.tileType = tileType;
 	}
 	

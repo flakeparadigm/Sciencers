@@ -76,10 +76,15 @@ public class MinerAgent extends Agent {
 				currentTask = new CraftToolTask(Tool.HAMMER, this, new Point(
 						(int) currentPosition.getX(),
 						(int) currentPosition.getY()));
-				taskTimer = 100;
+				taskTimer = 10;
 			}
 
 		} else if (currentTask instanceof ChangeTileTask) {
+			if (!passableTiles.contains(((ChangeTileTask) currentTask)
+					.getTileLocation().getY())){
+				((ChangeTileTask) currentTask).changeTileType(Tile.BackgroundDirt);
+				System.out.println("ChangedTile");
+			}
 			if (currentTask.getPos().getY() < ((ChangeTileTask) currentTask)
 					.getTileLocation().getY()) {
 				((ChangeTileTask) currentTask).changeTileType(Tile.Ladder);
