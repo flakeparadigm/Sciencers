@@ -65,7 +65,6 @@ public class MinerAgent extends Agent {
 			((GoMineAreaTask) currentTask).setAgentSource(this);
 			
 		} else if (currentTask instanceof BuildBuildingTask) {
-			System.out.println("HasTask");
 			((BuildBuildingTask) currentTask).setSourceAgent(this);
 			if (getInventory().getAmount(Resource.WOOD) < 5) {
 				tasks.add(currentTask);
@@ -111,6 +110,7 @@ public class MinerAgent extends Agent {
 								(int) ((ChangeTileTask) currentTask)
 										.getTileLocation().getY() - i),
 								Tile.Sky);
+						taskTimer = 10;
 					}
 				}
 			}
