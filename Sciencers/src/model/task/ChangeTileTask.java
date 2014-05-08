@@ -27,7 +27,7 @@ public class ChangeTileTask implements Task {
 //		passableTiles.add(Tile.Leaves);
 //		passableTiles.add(Tile.Ladder);
 //		passableTiles.add(Tile.BackgroundDirt);
-		this.passableTiles = sourceAgent.getPassableTiles();
+		this.passableTiles = World.terrain.passableTiles;
 		this.tileType = tileType;
 	}
 	

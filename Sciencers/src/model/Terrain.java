@@ -2,6 +2,7 @@ package model;
 
 import java.awt.Point;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 
@@ -69,17 +70,28 @@ public class Terrain implements Serializable {
 	private final double uraniumDepthExp = .8;
 
 	private final double treePlacement = .5;
+	
+	public ArrayList<Tile> passableTiles;
 
 	public Terrain(long seed, int mapWidth, int mapHeight) {
 		this.seed = seed;
 		this.mapWidth = mapWidth;
 		this.mapHeight = mapHeight;
+		
+		passableTiles = new ArrayList<Tile>();
+		passableTiles.add(Tile.Sky);
+		passableTiles.add(Tile.Wood);
+		passableTiles.add(Tile.Leaves);
+		passableTiles.add(Tile.Ladder);
+		passableTiles.add(Tile.BackgroundDirt);
+		
 		terrain = new Tile[this.mapWidth][this.mapHeight];
 		random = new Random(seed);
 		generateSky();
 		generateRandomTerrain();
 		generateGroundDetails();
 		generateTrees();
+		
 	}
 
 	public void generateTrees() {
@@ -302,8 +314,16 @@ public class Terrain implements Serializable {
 
 	public int getAltitude(int xPos) {
 		for (int j = 0; j < mapHeight; j++) {
-			if (!terrain[xPos][j].equals(Tile.Sky)
-					&& !terrain[xPos][j].equals(Tile.Wood) && !terrain[xPos][j].equals(Tile.Leaves)) {
+			if (!passableTiles.contains(terrain[xPos][j])) {
+				return j;
+			}
+		}
+		return -1;
+	}
+	
+	public int getDeepestPassable(int xPos){
+		for (int j = mapHeight - 1; j > 0; j--) {
+			if (passableTiles.contains(terrain[xPos][j])) {
 				return j;
 			}
 		}

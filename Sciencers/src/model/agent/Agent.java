@@ -58,16 +58,8 @@ public abstract class Agent implements Entity {
 	public Agent(Point currentPosition) {
 		MY_ID = currentId++;
 		priorityResource = Resource.FOOD;
-
-		passableTiles = new ArrayList<Tile>();
-		passableTiles.add(Tile.Sky);
-		passableTiles.add(Tile.Wood);
-		passableTiles.add(Tile.Leaves);
-		passableTiles.add(Tile.Ladder);
-		passableTiles.add(Tile.BackgroundDirt);
-
+		passableTiles = World.terrain.passableTiles;
 		inventory = new Inventory(CAPACITY, priorityResource);
-
 		this.currentPosition = new Point2D.Double((double) currentPosition.x,
 				(double) currentPosition.y);
 		currentTask = null;
@@ -228,14 +220,16 @@ public abstract class Agent implements Entity {
 				}
 			} else if (currentPosition.getY()
 					+ dy
-					- World.terrain.getAltitude((int) Math
+					- World.terrain.getDeepestPassable((int) Math
 							.round(currentPosition.getX())) > .1) {
 				System.out.println("Safety Block");
 				// safety block for jumping
 				System.out.println("Variable dy used for jumping:" + dy);
+				System.out.println("Reseting to altitude: " + World.terrain.getDeepestPassable(getCurrentX(currentPosition) + (int)dx));
+				jumpTick = 0;
 				currentPosition.setLocation(
 						(double) (currentPosition.getX() + dx),
-						(double) (currentPosition.getY() + dy));
+						(double) (World.terrain.getDeepestPassable(getCurrentX(currentPosition) + (int)dx)));
 			} else {
 				currentPosition.setLocation(
 						(double) (currentPosition.getX() + dx),
