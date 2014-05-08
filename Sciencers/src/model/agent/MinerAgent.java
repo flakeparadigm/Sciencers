@@ -59,7 +59,6 @@ public class MinerAgent extends Agent {
 
 		// get task from list if agent doesn't have one
 		getNextTaskIfNotBusy(EAgent.MINER);
-		System.out.println(movements);
 		// build hammer before building Building
 		if (currentTask instanceof GoMineAreaTask) {
 			((GoMineAreaTask) currentTask).setAgentSource(this);
