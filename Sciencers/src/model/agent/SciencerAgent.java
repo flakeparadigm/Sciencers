@@ -6,11 +6,14 @@ import model.AlertCollection;
 import model.Entity;
 import model.World;
 import model.building.Building;
+import model.building.EBuilding;
 import model.building.Lab;
 import model.inventory.Resource;
 import model.task.AgentDeath;
 import model.task.GoHereTask;
 import model.task.HarvestTreeTask;
+import model.task.Task;
+import model.task.WorkNearbyBuildingTask;
 
 public class SciencerAgent extends Agent{
 
@@ -57,11 +60,11 @@ public class SciencerAgent extends Agent{
 			AlertCollection.addAlert("Sciencers have no lab!");
 			return;
 		}
-		if(!currentPosition.equals(lab.getPos())) {
-			tasks.add(new GoHereTask(lab.getPos()));
-		}
-		//do research //TODO write this
-		
+		if(currentTask == null) {
+			Task task = new WorkNearbyBuildingTask(this, EBuilding.LAB, new Point((int) currentPosition.x, (int) currentPosition.y));
+			(new GoHereTask(task.getPos())).execute();
+			task.execute();
+		}		
 		
 	}
 
