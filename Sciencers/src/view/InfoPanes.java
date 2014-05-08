@@ -258,13 +258,9 @@ public class InfoPanes extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == buildButton) {
 					if(selectedBuilding.equals("Select Building"))
-						return;
-					
-					System.out.println("WIP! Begin process of building: " + selectedBuilding + 
-					"\nClick a point for bottom left corner");
+						return;					
 					
 					WorldView.selectionPanel.addBuilding(selectedBuilding);
-					
 					return;
 				}
 				else if(e.getSource() == hireButton) {
@@ -272,14 +268,10 @@ public class InfoPanes extends JPanel {
 						return;
 					
 					WorldView.selectionPanel.addAgent(selectedAgent);
-					
 					return;
 				}
 				else if(e.getSource() == mineButton) {			
-					
-					System.out.println("WIP! Begin process of selecting a square to mine.");
 					WorldView.selectionPanel.mineArea();
-					
 					return;
 				}
 				else System.out.println("ButtonListener registered a click from a button that doesn't exist!");

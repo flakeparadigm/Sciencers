@@ -46,10 +46,10 @@ public class WorldView extends JFrame {
 
 	public static SciencersObserver terrainWatch;
 	public static InfoObserver infoWatch;
-	
-	//boolean
+
+	// boolean
 	public static boolean doCreateWorld;
-//	public static boolean loadWorldBool;
+	// public static boolean loadWorldBool;
 
 	// Magic Numbers
 	static Toolkit tk = Toolkit.getDefaultToolkit();
@@ -65,20 +65,20 @@ public class WorldView extends JFrame {
 	public final static int X_UPPER_STATS_SIZE = 150;
 	public final static int Y_UPPER_STATS_SIZE = 200;
 
-
 	private static final String SAVE_LOCATION = "world.save";
 
-	private static int moveSpeed = 8;//not 15
+	private static int moveSpeed = 8;// not 15
 	private static int panTimerMS = 1;
-	private static int xPanelLocation = -X_MAP_SIZE/2 * TILE_SIZE;
+	private static int xPanelLocation = -X_MAP_SIZE / 2 * TILE_SIZE;
 	private static int yPanelLocation = -30 * TILE_SIZE;
 
 	public static void main(String[] args) {
-		System.out.println("Wouldn't it be nice to launch from the pretty new menu screen?");
+		System.out
+				.println("Wouldn't it be nice to launch from the pretty new menu screen?");
 		gameWindow = new WorldView();
 		gameWindow.setVisible(true);
 	}
-	
+
 	public WorldView() {
 		gameWindow = this;
 		setupObservers();
@@ -88,7 +88,7 @@ public class WorldView extends JFrame {
 		registerListeners();
 
 		World.startTicks();
-		if(doCreateWorld)
+		if (doCreateWorld)
 			World.giveStarter();
 	}
 
@@ -121,30 +121,29 @@ public class WorldView extends JFrame {
 	}
 
 	private void setupModel() {
-//		int loadWorld = JOptionPane.showConfirmDialog(gameWindow,
-//				"Would you like to load the previous game?", "Load Game?",
-//				JOptionPane.YES_NO_OPTION);
-//
-//		if (loadWorld == JOptionPane.YES_OPTION) {
-//			doCreateWorld = false;
-//			loadSavedWorld();
-//		} else {
-//			doCreateWorld = true;
-//			makeNewWorld();
-//		}
-		
-//		if (loadWorldBool) {
-//			doCreateWorld = false;
-//			loadSavedWorld();
-//		} else {
-//			doCreateWorld = true;
-//			makeNewWorld();
-//		}
-		
-		if(doCreateWorld) {
+		// int loadWorld = JOptionPane.showConfirmDialog(gameWindow,
+		// "Would you like to load the previous game?", "Load Game?",
+		// JOptionPane.YES_NO_OPTION);
+		//
+		// if (loadWorld == JOptionPane.YES_OPTION) {
+		// doCreateWorld = false;
+		// loadSavedWorld();
+		// } else {
+		// doCreateWorld = true;
+		// makeNewWorld();
+		// }
+
+		// if (loadWorldBool) {
+		// doCreateWorld = false;
+		// loadSavedWorld();
+		// } else {
+		// doCreateWorld = true;
+		// makeNewWorld();
+		// }
+
+		if (doCreateWorld) {
 			makeNewWorld();
-		}
-		else {
+		} else {
 			loadSavedWorld();
 		}
 	}
@@ -153,11 +152,12 @@ public class WorldView extends JFrame {
 
 		upperStatsPanel = new UpperStatsView();
 		add(upperStatsPanel);
-		upperStatsPanel.setLocation(X_WINDOW_SIZE - X_UPPER_STATS_SIZE, Y_WINDOW_SIZE - Y_UPPER_STATS_SIZE);
+		upperStatsPanel.setLocation(X_WINDOW_SIZE - X_UPPER_STATS_SIZE,
+				Y_WINDOW_SIZE - Y_UPPER_STATS_SIZE);
 		upperStatsPanel.setSize(150, 200);
 		upperStatsPanel.setOpaque(false);
 		upperStatsPanel.setBackground(new Color(0, 0, 0, 0));
-		
+
 		infoPanes = new InfoPanes();
 		add(infoPanes);
 		infoPanes.setSize(X_WINDOW_SIZE, INFO_PANE_SIZE);
@@ -183,7 +183,8 @@ public class WorldView extends JFrame {
 		buildingPanel.setOpaque(false);
 		buildingPanel.setBackground(new Color(0, 0, 0, 0));
 
-		terrainPanel = new TerrainView(new Point(-xPanelLocation/TILE_SIZE, -yPanelLocation/TILE_SIZE));
+		terrainPanel = new TerrainView(new Point(-xPanelLocation / TILE_SIZE,
+				-yPanelLocation / TILE_SIZE));
 		add(terrainPanel);
 		terrainPanel.setLocation(xPanelLocation, yPanelLocation);
 		// TODO: figure out correct panel size
@@ -336,7 +337,8 @@ public class WorldView extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// continuous right pressed code here:
 			xPanelLocation -= moveSpeed;
-			int maxX = -(X_MAP_SIZE * TILE_SIZE - gameWindow.getContentPane().getWidth());
+			int maxX = -(X_MAP_SIZE * TILE_SIZE - gameWindow.getContentPane()
+					.getWidth());
 			if (xPanelLocation < maxX)
 				xPanelLocation = maxX;
 			updateTerrain();
@@ -363,7 +365,7 @@ public class WorldView extends JFrame {
 			yPanelLocation += moveSpeed;
 			if (yPanelLocation > 0)
 				yPanelLocation = 0;
-			
+
 			updateTerrain();
 			agentPanel.setLocation(xPanelLocation, yPanelLocation);
 			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
@@ -386,7 +388,8 @@ public class WorldView extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// continuous down pressed code here:
 			yPanelLocation -= moveSpeed;
-			int maxY = -(Y_MAP_SIZE * TILE_SIZE - gameWindow.getContentPane().getHeight());
+			int maxY = -(Y_MAP_SIZE * TILE_SIZE - gameWindow.getContentPane()
+					.getHeight());
 			if (yPanelLocation < maxY)
 				yPanelLocation = maxY;
 			updateTerrain();
@@ -413,7 +416,8 @@ public class WorldView extends JFrame {
 	}
 
 	public static void updateTerrain() {
-		terrainPanel.update(new Point(-xPanelLocation/TILE_SIZE, -yPanelLocation/TILE_SIZE));
+		terrainPanel.update(new Point(-xPanelLocation / TILE_SIZE,
+				-yPanelLocation / TILE_SIZE));
 	}
 
 	public void updateAgents() {
@@ -515,5 +519,19 @@ public class WorldView extends JFrame {
 
 	public static String getSaveLocation() {
 		return SAVE_LOCATION;
+	}
+
+	public static void win() {
+		World.stopTicks();
+		JOptionPane
+				.showMessageDialog(gameWindow, "You won the game!\nCongrats!");
+		System.exit(0);
+	}
+
+	public static void lose() {
+		World.stopTicks();
+		JOptionPane
+				.showMessageDialog(gameWindow, "You lost the game!\nThat sucks!");
+		System.exit(0);
 	}
 }

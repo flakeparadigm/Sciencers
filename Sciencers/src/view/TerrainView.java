@@ -21,8 +21,8 @@ public class TerrainView extends JPanel {
 	static Toolkit tk = Toolkit.getDefaultToolkit();
 	private final int X_SCREEN_SIZE = ((int) tk.getScreenSize().getWidth());
 	private final int Y_SCREEN_SIZE = ((int) tk.getScreenSize().getHeight());
-	private final int X_TILES = X_SCREEN_SIZE / 16;
-	private final int Y_TILES = Y_SCREEN_SIZE / 16;
+	private final int X_TILES = X_SCREEN_SIZE / WorldView.TILE_SIZE;
+	private final int Y_TILES = Y_SCREEN_SIZE / WorldView.TILE_SIZE;
 	private final int BUFFER = 1;
 
 	public TerrainView(Point viewLocation) {

@@ -13,6 +13,7 @@ import model.building.EBuilding;
 import model.building.Farm;
 import model.building.Warehouse;
 import model.task.TaskList;
+import view.WorldView;
 import controller.GameTick;
 import controller.InfoObserver;
 
@@ -37,6 +38,7 @@ public class World implements Serializable {
 	// resources
 	public static int playerScience;
 	public static int playerMoney;
+	public static final int WINNING_SCIENCE = 500;
 	
 	// generation info
 	public static long seed;	// (NOTE: we can use the same seed to generate everything. Consistency for simulation)
@@ -53,6 +55,7 @@ public class World implements Serializable {
 		projectiles = new ArrayList<Projectile>();
 		tasks = new TaskList();
 		
+		(new WinChecker()).run();
 	}
 
 	public static void addAgent(EAgent type, int xPos){
@@ -186,6 +189,8 @@ public class World implements Serializable {
 		saveWidth = 0;
 		height = saveHeight;
 		saveHeight = 0;
+		
+		(new WinChecker()).run();
 	}
 
 	public static void reset() {
@@ -207,5 +212,24 @@ public class World implements Serializable {
 		World.addAgent(EAgent.MINER, width / 2 + 2);
 		World.addAgent(EAgent.MINER, width / 2 + 6);
 
+	}
+	
+	private class WinChecker extends Thread {	
+		boolean running = true;
+		
+		public void terminate() {
+			running = false;
+		}
+		
+		public void run() {
+			while(running) {
+				if(playerScience >= WINNING_SCIENCE) {
+					WorldView.win();
+				}
+				if(agents.size() == 0) {
+					WorldView.lose();
+				}
+			}
+		}
 	}
 }

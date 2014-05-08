@@ -30,7 +30,7 @@ public abstract class AgentReplacement implements Entity {
 	public final int HUNGER_SPEED = 100;
 	private final double GRAVITY_CONSTANT = .0981;
 	protected int SEEK_FOOD_HUNGER = 800;
-
+	//
 	protected int hunger = 1000;
 	protected int fatigue = 1000;
 	boolean isWorking = false;
