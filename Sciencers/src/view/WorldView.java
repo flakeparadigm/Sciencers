@@ -73,12 +73,12 @@ public class WorldView extends JFrame {
 	private static int xPanelLocation = -X_MAP_SIZE / 2 * TILE_SIZE;
 	private static int yPanelLocation = -30 * TILE_SIZE;
 
-	public static void main(String[] args) {
-		System.out
-				.println("Wouldn't it be nice to launch from the pretty new menu screen?");
-		gameWindow = new WorldView();
-		gameWindow.setVisible(true);
-	}
+//	public static void main(String[] args) {
+//		System.out
+//				.println("Wouldn't it be nice to launch from the pretty new menu screen?");
+//		gameWindow = new WorldView();
+//		gameWindow.setVisible(true);
+//	}
 
 	public WorldView() {
 		gameWindow = this;
@@ -92,9 +92,9 @@ public class WorldView extends JFrame {
 		if (doCreateWorld)
 			World.giveStarter();
 		
-		Thread t = new WinChecker();
-		t.run();
-		System.out.println("Setup procedure completed. Game is now happy, and indeed quite playable.");
+		new Thread(new WinChecker()).start();
+		System.out.println("WorldView constructed, WinChecker running");
+
 	}
 
 	private void setupObservers() {

@@ -133,7 +133,8 @@ public class MainMenuScreen extends JFrame {
 				}
 				WorldView.gameWindow = new WorldView();
 				WorldView.gameWindow.setVisible(true);
-				
+				System.out.println("Setup procedure completed. Game is now happy, and indeed quite playable.");
+
 				hideThis();
 //				closeThis();
 			}

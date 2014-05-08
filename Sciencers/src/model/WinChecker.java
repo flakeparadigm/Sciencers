@@ -9,6 +9,7 @@ public class WinChecker extends Thread {
 		running = false;
 	}
 	
+	@Override
 	public void run() {
 		while(running) {
 			if(World.playerScience >= World.WINNING_SCIENCE) {
@@ -19,7 +20,6 @@ public class WinChecker extends Thread {
 			}
 			try {
 				Thread.sleep(100);
-				System.out.println("loop");
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
