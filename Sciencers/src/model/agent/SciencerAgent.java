@@ -10,6 +10,7 @@ import model.building.EBuilding;
 import model.building.Lab;
 import model.inventory.Resource;
 import model.task.AgentDeath;
+import model.task.BuildBuildingTask;
 import model.task.GoHereTask;
 import model.task.HarvestTreeTask;
 import model.task.Task;
@@ -28,10 +29,17 @@ public class SciencerAgent extends Agent{
 	public void update() {
 		updateStats();
 		
-		if (hunger < 0 && currentTask == null) {
-			currentTask = (new AgentDeath(this, new Point(
-					(int) currentPosition.x, (int) currentPosition.y)));
-			taskTimer = 0;
+//		if (hunger < 0 && currentTask == null) {
+//			currentTask = (new AgentDeath(this, new Point(
+//					(int) currentPosition.x, (int) currentPosition.y)));
+//			taskTimer = 0;
+//		}
+		
+		// new agent death using flag variable
+		if (hunger <= 0 || fatigue >= MAX_FATIGUE) {
+			dead = true;
+			AlertCollection.addAlert("An agent has died!");
+			return;
 		}
 
 		if (hunger < 0.5 * SEEK_FOOD_HUNGER) {

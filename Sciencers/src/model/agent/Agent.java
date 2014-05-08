@@ -29,10 +29,11 @@ public abstract class Agent implements Entity {
 	// every 100 ticks, hunger goes down
 	public final int HUNGER_SPEED = 100;
 	private final double GRAVITY_CONSTANT = .0981;
-	protected int SEEK_FOOD_HUNGER = 800;
+	protected final int SEEK_FOOD_HUNGER = 500;
+	protected final int MAX_FATIGUE = 1000;
 	//
 	protected int hunger = 1000;
-	protected int fatigue = 1000;
+	protected int fatigue = 0;
 	boolean isWorking = false;
 	private double jumpVelocity = -.6;
 
@@ -49,6 +50,8 @@ public abstract class Agent implements Entity {
 	public Tool workingTool = null;
 	private Tool mainTool = null, secondaryTool = null;
 	protected Resource priorityResource;
+	
+	protected boolean dead = false;
 
 	private int jumpTick = 0;
 
@@ -142,10 +145,10 @@ public abstract class Agent implements Entity {
 		if (tickCount % HUNGER_SPEED == 0) {
 			if (isWorking) {
 				hunger -= 6;
-				fatigue -= 3;
+				fatigue += 3;
 			} else {
 				hunger -= 1;
-				fatigue -= 1;
+				fatigue += 1;
 			}
 		}
 		tickCount++;
@@ -428,6 +431,10 @@ public abstract class Agent implements Entity {
 	public void giveItem(Tool tool) { //AUTHOR: JAKE
 		inventory.changeAmount(tool, 1);
 		//TODO handle overfilling inventory
+	}
+	
+	public boolean isDead() {
+		return dead;
 	}
 	
 	public abstract String getUserFriendlyName();

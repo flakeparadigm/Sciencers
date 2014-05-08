@@ -2,11 +2,13 @@ package controller;
 
 import java.util.ArrayList;
 
+import model.AlertCollection;
 import model.Entity;
 
 public class GameTick extends Thread {
 
 	ArrayList<Entity> entities;
+	ArrayList<Entity> deadEntities = new ArrayList<Entity>();
 	int tickTime;
 	boolean shouldUpdate = true;
 	boolean terminate = false;
@@ -40,8 +42,20 @@ public class GameTick extends Thread {
 						break; // stops updates when paused, even mid-cycle;
 
 					e.update();
+
+					// if the agent has died, add it to the deadEntities list.
+					if (e.isDead()) {
+						deadEntities.add(e);
+					}
 				}
 
+				// Clean up dead entities and clear the DE array list
+				for (Entity d : deadEntities) {
+					entities.remove(d);
+				}
+				deadEntities.clear();
+
+				// If there are any entities, update the view
 				if (entities.size() > 0) {
 					SciencersObserver.updateObserver(entities.get(0));
 				}

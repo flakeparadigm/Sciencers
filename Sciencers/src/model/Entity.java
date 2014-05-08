@@ -8,4 +8,5 @@ public interface Entity extends Serializable {
 	public void update();
 	public Point2D getPos();
 	public Dimension getSize();
+	public boolean isDead();
 }

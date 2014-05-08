@@ -48,4 +48,8 @@ public abstract class Building implements Entity {
 		
 		return output;
 	}
+	
+	public boolean isDead() {
+		return false;
+	}
 }
