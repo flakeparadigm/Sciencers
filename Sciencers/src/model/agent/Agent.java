@@ -194,7 +194,7 @@ public abstract class Agent implements Entity {
 			 }
 
 			// set to fall if above nothing:
-			 if (jumpTick == 0 && movements.size() == 0 && passableDirectlyBelow(currentPosition)){
+			 if (jumpTick == 0 && passableDirectlyBelow(currentPosition)){
 				 System.out.println("Forced fall");
 				 jumpTick = 1;
 				 jumpVelocity = 0;
