@@ -31,7 +31,7 @@ public class World implements Serializable {
 	// tick Info
 	public static GameTick agentsTick;
 	public static GameTick buildingsTick;
-	private static final int AGENT_TICK_TIME = 30;
+	private static final int AGENT_TICK_TIME = 10;
 	private static final int BUILDING_TICK_TIME = 100;
 	
 	// resources

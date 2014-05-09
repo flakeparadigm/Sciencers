@@ -10,6 +10,7 @@ import java.util.Stack;
 import view.Tile;
 import model.Entity;
 import model.PathFinder;
+import model.Terrain;
 import model.World;
 import model.building.Building;
 import model.inventory.Inventory;
@@ -86,12 +87,12 @@ public abstract class Agent implements Entity {
 				// if movements needs updated:
 				System.out.println("updating movements");
 				movements = goHere(currentPosition, currentTask.getPos());
-
 			}
 
 			// System.out.println("cur" + currentPosition);
 			// System.out.println("task" + new Point2D.Double(currentTask
 			// .getPos().getX(), currentTask.getPos().getY()));
+
 			if (sameLocation(currentPosition, new Point2D.Double(currentTask
 					.getPos().getX(), currentTask.getPos().getY()), .1, .1)
 					&& taskTimer < 0) {
@@ -110,7 +111,7 @@ public abstract class Agent implements Entity {
 			}
 		}
 	}
-
+	
 	protected void getNextTaskIfNotBusy(EAgent type) {
 		if (currentTask == null && tasks.size() != 0) {
 			currentTask = tasks.pop();
@@ -145,6 +146,19 @@ public abstract class Agent implements Entity {
 		}
 		tickCount++;
 		taskTimer--;
+		
+		if (taskTimer < -1000){
+			resetAgent();
+			taskTimer = 0;
+		}
+	}
+	
+	protected void resetAgent(){
+		currentPosition.setLocation(
+		(double) (currentPosition.getX()),
+		(double) (World.terrain.getAltitude(getCurrentX(currentPosition)) - 1));
+		movements.removeAllElements();
+		tasks.removeAllElements();
 	}
 
 	protected void updateMovement(Point2D.Double currentPosition,

@@ -43,7 +43,6 @@ public class MinerAgent extends Agent {
 			AlertCollection.addAlert("An agent has died!");
 			return;
 		}
-
 		if (hunger < 0.5 * SEEK_FOOD_HUNGER) {
 			AlertCollection.addAlert("An agent is starving! D:");
 		}
