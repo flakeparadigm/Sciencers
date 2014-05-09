@@ -82,7 +82,6 @@ public class MinerAgent extends Agent {
 			if (!passableTiles.contains(((ChangeTileTask) currentTask)
 					.getTileLocation().getY())){
 				((ChangeTileTask) currentTask).changeTileType(Tile.BackgroundDirt);
-				System.out.println("ChangedTile");
 			}
 			if (currentTask.getPos().getY() < ((ChangeTileTask) currentTask)
 					.getTileLocation().getY()) {

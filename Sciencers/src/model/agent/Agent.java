@@ -28,14 +28,15 @@ public abstract class Agent implements Entity {
 	public final int CAPACITY = 5;
 	// every 100 ticks, hunger goes down
 	public final int HUNGER_SPEED = 100;
-	private final double GRAVITY_CONSTANT = .0981;
+	private final double GRAVITY_CONSTANT = .0581;
+	protected final double MAX_JUMP_VELOCITY = -.45;
 	protected final int SEEK_FOOD_HUNGER = 500;
 	protected final int MAX_FATIGUE = 1000;
 	//
 	protected int hunger = 1000;
 	protected int fatigue = 0;
 	boolean isWorking = false;
-	private double jumpVelocity = -.6;
+	private double jumpVelocity = 0;
 
 	protected int tickCount;
 	protected Point2D.Double currentPosition;
@@ -50,7 +51,7 @@ public abstract class Agent implements Entity {
 	public Tool workingTool = null;
 	private Tool mainTool = null, secondaryTool = null;
 	protected Resource priorityResource;
-	
+
 	protected boolean dead = false;
 
 	private int jumpTick = 0;
@@ -92,9 +93,7 @@ public abstract class Agent implements Entity {
 			// System.out.println("task" + new Point2D.Double(currentTask
 			// .getPos().getX(), currentTask.getPos().getY()));
 			if (sameLocation(currentPosition, new Point2D.Double(currentTask
-					.getPos().getX(), 
-					currentTask
-					.getPos().getY()), .1, .1)
+					.getPos().getX(), currentTask.getPos().getY()), .1, .1)
 					&& taskTimer < 0) {
 				// if in location of current task:
 				currentTask.execute();
@@ -154,110 +153,150 @@ public abstract class Agent implements Entity {
 		double dy = 0;
 		boolean error = false;
 		if (!movements.isEmpty()) {
-			if ((double) movements.peek().getX() - currentPosition.getX() > .1) {
+			if ((double) movements.peek().getX() - currentPosition.getX() > .05) {
 				dx = SPEED;
 			}
-			if ((double) movements.peek().getX() - currentPosition.getX() < -.1) {
+			if ((double) movements.peek().getX() - currentPosition.getX() < -.05) {
 				dx = -SPEED;
 			}
 
 			if (jumpTick != 0) {
-				dy = GRAVITY_CONSTANT * jumpTick + jumpVelocity;
+				dy = (GRAVITY_CONSTANT * jumpTick) + jumpVelocity;
 				jumpTick++;
 			}
 			// for jumping:
 			if (jumpTick == 0
 					&& (double) movements.peek().getY()
-							- currentPosition.getY() < -.5
-					&& passableTiles.contains(World.terrain.getTile(
-							(int) Math.round(currentPosition.getX()),
-							(int) Math.round(currentPosition.getY() - 1)))) {
+							- currentPosition.getY() < -.1
+					&& passableDirectlyAbove(currentPosition)) {
+				System.out.println("Jumping");
 				jumpTick = 1;
-				jumpVelocity = -.6;
+				jumpVelocity = MAX_JUMP_VELOCITY;
 			}
 			// for falling:
 			if (jumpTick == 0
 					&& (double) movements.peek().getY()
-							- currentPosition.getY() > .1) {
+							- currentPosition.getY() > .1
+					&& passableDirectlyBelow(currentPosition)) {
+				System.out.println("Falling");
 				jumpTick = 1;
 				jumpVelocity = 0;
 			}
 
-			if (World.terrain.getTile(getCurrentX(currentPosition),
-					getCurrentY(currentPosition)).equals(Tile.Ladder)
-					|| (World.terrain.getTile(getCurrentX(currentPosition),
-							getCurrentY(currentPosition) + 1).equals(
-							Tile.Ladder) && !sameLocation(currentPosition,
-							new Point2D.Double(movements.peek().getX(),
-									movements.peek().getY()), .1, .1))) {
-				jumpTick = 0;
-				if ((double) movements.peek().getY() - currentPosition.getY() < -.1) {
-					dy = -SPEED / 2;
-					// System.out.println("Going up");
-				} else if ((double) movements.peek().getY()
-						- currentPosition.getY() > .05) {
-					dy = SPEED / 2;
-					// System.out.println("Going down");
-				}
-				currentPosition.setLocation((double) (currentPosition.getX()),
-						(double) (currentPosition.getY() + dy));
-				if (Math.abs(movements.peek().getY() - currentPosition.getY()) < .1
-						&& (!World.terrain.getTile(
-								getCurrentX(currentPosition),
-								getCurrentY(currentPosition)).equals(
-								Tile.Ladder))) {
-					currentPosition.setLocation(
-							(double) (currentPosition.getX() + dx),
-							(double) (currentPosition.getY()));
-				}
-				if (Math.abs(movements.peek().getY() - currentPosition.getY()) < .1
-						&& passableTiles.contains(World.terrain.getTile(
-								getCurrentX(currentPosition) + 1,
-								getCurrentY(currentPosition) + 1))) {
-					currentPosition.setLocation(
-							(double) (currentPosition.getX() + dx),
-							(double) (currentPosition.getY()));
-				}
-			} else if (currentPosition.getY()
-					+ dy
-					- World.terrain.getDeepestPassable((int) Math
-							.round(currentPosition.getX())) > .1) {
-				System.out.println("Safety Block");
-				// safety block for jumping
-				System.out.println("Variable dy used for jumping:" + dy);
-				System.out.println("Reseting to altitude: " + World.terrain.getDeepestPassable(getCurrentX(currentPosition) + (int)dx));
-				jumpTick = 0;
-				currentPosition.setLocation(
-						(double) (currentPosition.getX() + dx),
-						(double) (World.terrain.getDeepestPassable(getCurrentX(currentPosition) + (int)dx)));
-			} else {
-				currentPosition.setLocation(
-						(double) (currentPosition.getX() + dx),
-						(double) (currentPosition.getY() + dy));
-			}
+			 //for stopping jumpTick
+			 if (jumpTick != 0 && dy > 0 && (double) movements.peek().getY()
+						- currentPosition.getY() < .1){
+				 jumpTick = 0;
+				 dy = 0;
+				 System.out.println("Stopped jumpTick");
+				 currentPosition.setLocation((double) (currentPosition.getX()),
+				(double) (movements.peek().getY()));
+			 }
 
-			// adjust tolerances to allow correct stopping after jump or fall:
+			// set to fall if above nothing:
+			 if (jumpTick == 0 && movements.size() == 0 && passableDirectlyBelow(currentPosition)){
+				 System.out.println("Forced fall");
+				 jumpTick = 1;
+				 jumpVelocity = 0;
+			 }
+	 
+			// change position
+				currentPosition.setLocation(
+				(double) (currentPosition.getX() + dx),
+				(double) (currentPosition.getY() + dy));
+				
 			if (sameLocation(currentPosition,
 					new Point2D.Double(movements.peek().x, movements.peek().y),
-					2.5, .15)) {
-				if (dy > 0) {
-					jumpTick = 0;
-				}
-			}
-			// adjust to allow correct switching of target tiles (for jumping
-			// and falling and standard)
-			
-			if (sameLocation(currentPosition,
-					new Point2D.Double(movements.peek().x, movements.peek().y),
-					.1, .2)) {
-				// System.out.println("pop Standard");
+					.1, .1)) {
 				movements.pop();
 			}
+			 
+//			if (onLadder(currentPosition)
+//					|| (World.terrain.getTile(getCurrentX(currentPosition),
+//							getCurrentY(currentPosition) + 1).equals(
+//							Tile.Ladder) && !sameLocation(currentPosition,
+//							new Point2D.Double(movements.peek().getX(),
+//									movements.peek().getY()), .1, .1))) {
+//				jumpTick = 0;
+//				if ((double) movements.peek().getY() - currentPosition.getY() < -.1) {
+//					dy = -SPEED / 2;
+//					// System.out.println("Going up");
+//				} else if ((double) movements.peek().getY()
+//						- currentPosition.getY() > .05) {
+//					dy = SPEED / 2;
+//					// System.out.println("Going down");
+//				}
+//				currentPosition.setLocation((double) (currentPosition.getX()),
+//						(double) (currentPosition.getY() + dy));
+//				if (Math.abs(movements.peek().getY() - currentPosition.getY()) < .1
+//						&& !onLadder(currentPosition)) {
+//					currentPosition.setLocation(
+//							(double) (currentPosition.getX() + dx),
+//							(double) (currentPosition.getY()));
+//				}
+//				if (Math.abs(movements.peek().getY() - currentPosition.getY()) < .15
+//						&& passableTiles.contains(World.terrain.getTile(
+//								getCurrentX(currentPosition) + 1,
+//								getCurrentY(currentPosition) + 1))) {
+//					currentPosition.setLocation(
+//							(double) (currentPosition.getX() + dx),
+//							(double) (currentPosition.getY()));
+//				}
+//			} else if (currentPosition.getY()
+//					+ dy
+//					- World.terrain.getDeepestPassable((int) Math
+//							.round(currentPosition.getX())) > .1) {
+//				System.out.println("Safety Block");
+//				// safety block for jumping
+//				System.out.println("Variable dy used for jumping:" + dy);
+//				System.out
+//						.println("Reseting to altitude: "
+//								+ World.terrain
+//										.getDeepestPassable(getCurrentX(currentPosition)
+//												+ (int) dx));
+//				jumpTick = 0;
+//				currentPosition
+//						.setLocation(
+//								(double) (currentPosition.getX() + dx),
+//								(double) (World.terrain
+//										.getDeepestPassable(getCurrentX(currentPosition)
+//												+ (int) dx)));
+//			} else {
+//				currentPosition.setLocation(
+//						(double) (currentPosition.getX() + dx),
+//						(double) (currentPosition.getY() + dy));
+//			}
+//
+//			// adjust tolerances to allow correct stopping after jump or
+//			fall: if (sameLocation(currentPosition, new Point2D.Double(
+//					movements.peek().x, movements.peek().y), 2.5, .15)) {
+//				if (dy > 0) {
+//					jumpTick = 0;
+//				}
+//			}
+
+
 		}
 	}
 
-	public Stack<Point> goHere(Point2D.Double currentPosition,
-			Point destination) {
+	private boolean passableDirectlyAbove(Point2D.Double currentPosition) {
+		return passableTiles.contains(World.terrain.getTile(
+				(int) Math.round(currentPosition.getX()),
+				(int) Math.round(currentPosition.getY() - 1)));
+	}
+
+	private boolean passableDirectlyBelow(Point2D.Double currentPosition) {
+		return passableTiles.contains(World.terrain.getTile(
+				(int) Math.round(currentPosition.getX()),
+				(int) Math.round(currentPosition.getY() + 1)));
+	}
+
+	private boolean onLadder(Point2D.Double currentPosition) {
+		return World.terrain.getTile(getCurrentX(currentPosition),
+				getCurrentY(currentPosition)).equals(Tile.Ladder);
+	}
+
+	public Stack<Point> goHere(Point2D.Double currentPosition, Point destination) {
 		Stack<Point> movements = new Stack<Point>();
 		PathFinder thePath = new PathFinder(new Point(
 				getCurrentX(currentPosition), getCurrentY(currentPosition)),
@@ -313,10 +352,11 @@ public abstract class Agent implements Entity {
 							i + getCurrentX(currentPosition),
 							World.terrain.getAltitude(i
 									+ getCurrentX(currentPosition)) - 1)
-							.equals(Tile.Leaves)) && !passableTiles.contains(World.terrain.getTile(
-									i + getCurrentX(currentPosition),
-									World.terrain.getAltitude(i
-											+ getCurrentX(currentPosition))))) {
+							.equals(Tile.Leaves))
+					&& !passableTiles.contains(World.terrain.getTile(
+							i + getCurrentX(currentPosition),
+							World.terrain.getAltitude(i
+									+ getCurrentX(currentPosition))))) {
 				if (goHere(
 						currentPosition,
 						new Point(i + getCurrentX(currentPosition),
@@ -340,7 +380,8 @@ public abstract class Agent implements Entity {
 							-i + getCurrentX(currentPosition),
 							World.terrain.getAltitude(-i
 									+ getCurrentX(currentPosition)) - 1)
-							.equals(Tile.Leaves) && !passableTiles.contains(World.terrain.getTile(
+							.equals(Tile.Leaves)
+							&& !passableTiles.contains(World.terrain.getTile(
 									-i + getCurrentX(currentPosition),
 									World.terrain.getAltitude(-i
 											+ getCurrentX(currentPosition)))))) {
@@ -409,10 +450,10 @@ public abstract class Agent implements Entity {
 		}
 	}
 
-	public ArrayList<Tile> getPassableTiles(){
+	public ArrayList<Tile> getPassableTiles() {
 		return passableTiles;
 	}
-	
+
 	// for testing
 	public void setHunger(int i) {
 		hunger = i;
@@ -422,20 +463,20 @@ public abstract class Agent implements Entity {
 		// TODO Auto-generated method stub
 		return inventory;
 	}
-	
-	public EAgent getType(){
+
+	public EAgent getType() {
 		return agentType;
 	}
 
-	public void giveItem(Tool tool) { //AUTHOR: JAKE
+	public void giveItem(Tool tool) { // AUTHOR: JAKE
 		inventory.changeAmount(tool, 1);
-		//TODO handle overfilling inventory
+		// TODO handle overfilling inventory
 	}
-	
+
 	public boolean isDead() {
 		return dead;
 	}
-	
+
 	public abstract String getUserFriendlyName();
 
 }
