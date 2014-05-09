@@ -45,8 +45,12 @@ public class GameTick extends Thread {
 				for (Entity e : entities) {
 					if (!shouldUpdate) // prevent concurrent modification.
 						break; // stops updates when paused, even mid-cycle;
-
-					e.update();
+					
+					try{
+						e.update();
+					} catch(Exception ex) {
+						ex.printStackTrace();
+					}
 
 					// if the agent has died, add it to the deadEntities list.
 					if (e.isDead()) {
