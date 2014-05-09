@@ -32,8 +32,13 @@ public class GameTick extends Thread {
 
 	@Override
 	public void run() {
+		 int count = 0;
 		for (int i = 0;; i++) {
 			while (shouldUpdate) {
+				count++;
+				if(count % 100 == 0) {
+					System.out.println("100 ticks since last count on this thread, " + count + " total");
+				}
 				// Until the game ends, always update the given list of
 				// entities
 				// every tickTime milliseconds
