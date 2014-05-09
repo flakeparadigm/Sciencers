@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Stack;
 
 import view.Tile;
@@ -85,7 +86,6 @@ public abstract class Agent implements Entity {
 							currentTask.getPos().getX(), currentTask.getPos()
 									.getY()), .1, .1)) {
 				// if movements needs updated:
-				System.out.println("updating movements");
 				movements = goHere(currentPosition, currentTask.getPos());
 			}
 
@@ -147,7 +147,7 @@ public abstract class Agent implements Entity {
 		tickCount++;
 		taskTimer--;
 		
-		if (taskTimer < -1000){
+		if (taskTimer < -500){
 			resetAgent();
 			taskTimer = 0;
 		}
@@ -155,8 +155,9 @@ public abstract class Agent implements Entity {
 	
 	protected void resetAgent(){
 		currentPosition.setLocation(
-		(double) (currentPosition.getX()),
-		(double) (World.terrain.getAltitude(getCurrentX(currentPosition)) - 1));
+		(double) (currentPosition.getX() + 1),
+		(double) (World.terrain.getAltitude(getCurrentX(currentPosition) + 1) - 1));
+		currentTask = null;
 		movements.removeAllElements();
 		tasks.removeAllElements();
 	}
@@ -500,6 +501,17 @@ public abstract class Agent implements Entity {
 
 	public boolean isDead() {
 		return dead;
+	}
+	
+	public boolean randomProb(int probability){
+		Random r = new Random();
+		int Low = 0;
+		int High = probability;
+		int R = r.nextInt(High-Low) + Low;
+		if (R == 0){
+			return true;
+		}
+		return false;		
 	}
 
 	public abstract String getUserFriendlyName();

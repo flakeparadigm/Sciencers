@@ -13,6 +13,7 @@ import model.task.ChangeTileTask;
 import model.task.CraftToolTask;
 import model.task.GoMineAreaTask;
 import model.task.HarvestTreeTask;
+import model.task.WanderTask;
 
 public class MinerAgent extends Agent {
 
@@ -118,10 +119,12 @@ public class MinerAgent extends Agent {
 			}
 		} 
 
-		/*
-		 * tasks is a stack of tasks that must be completed after the current
-		 * task
-		 */
+		
+		//if all else fails: Wander
+		if (currentTask == null && randomProb(200)){
+			currentTask = new WanderTask(new Point(getCurrentX(currentPosition),
+					getCurrentY(currentPosition)));
+		}
 
 		executeCurrentTask();
 

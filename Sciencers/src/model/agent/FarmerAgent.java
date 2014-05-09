@@ -3,7 +3,9 @@ package model.agent;
 import java.awt.Point;
 
 import model.AlertCollection;
+import model.Entity;
 import model.World;
+import model.building.Building;
 import model.building.EBuilding;
 import model.inventory.Resource;
 import model.inventory.Tool;
@@ -11,6 +13,7 @@ import model.task.AgentDeath;
 import model.task.BuildBuildingTask;
 import model.task.CraftToolTask;
 import model.task.HarvestTreeTask;
+import model.task.WanderTask;
 import model.task.WorkNearbyBuildingTask;
 
 public class FarmerAgent extends Agent {
@@ -65,17 +68,32 @@ public class FarmerAgent extends Agent {
 		// get task from list if agent doesn't have one
 		getNextTaskIfNotBusy(EAgent.FARMER);
 
-		if (currentTask == null && !isWorking && World.buildings.size() > 0) {
+		if (currentTask == null && !isWorking && farmExists()) {
 			currentTask = new WorkNearbyBuildingTask(this, EBuilding.FARM,
 					new Point(getCurrentX(currentPosition),
 							getCurrentY(currentPosition)));
 			isWorking = true;
+		}
+		
+		//if all else fails: Wander
+		if (currentTask == null && randomProb(200)){
+			currentTask = new WanderTask(new Point(getCurrentX(currentPosition),
+					getCurrentY(currentPosition)));
 		}
 
 		executeCurrentTask();
 
 		updateMovement(currentPosition, movements);
 
+	}
+
+	private boolean farmExists() {
+		for (Entity b : World.buildings){
+			if (((Building) b).getType() == EBuilding.FARM){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
