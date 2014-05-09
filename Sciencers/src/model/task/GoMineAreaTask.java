@@ -61,7 +61,7 @@ public class GoMineAreaTask implements Task {
 			return new Point(upperLeft.x,
 					World.terrain.getDeepestPassable(upperLeft.x));
 		} else {
-			return new Point(upperLeft.x, World.terrain.getDeepestPassable(upperLeft.x) - 1);
+			return new Point(upperLeft.x, World.terrain.getAltitude(upperLeft.x) - 1);
 		}
 	}
 

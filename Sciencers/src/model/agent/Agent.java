@@ -151,7 +151,6 @@ public abstract class Agent implements Entity {
 			Stack<Point> movements) {
 		double dx = 0;
 		double dy = 0;
-		boolean error = false;
 		if (!movements.isEmpty()) {
 			if ((double) movements.peek().getX() - currentPosition.getX() > .05) {
 				dx = SPEED;
@@ -198,6 +197,18 @@ public abstract class Agent implements Entity {
 				 System.out.println("Forced fall");
 				 jumpTick = 1;
 				 jumpVelocity = 0;
+			 }
+			 
+			 if (onLadder(currentPosition) && (double) movements.peek().getY()
+						- currentPosition.getY() < .1){
+				 dy = -SPEED;
+				 jumpTick = 0;
+			 }
+			 
+			 if (onLadder(currentPosition) && (double) movements.peek().getY()
+						- currentPosition.getY() > -.1){
+				 dy = SPEED;
+				 jumpTick = 0;
 			 }
 	 
 			// change position
