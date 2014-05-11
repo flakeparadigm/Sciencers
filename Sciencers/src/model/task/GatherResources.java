@@ -67,11 +67,11 @@ public class GatherResources implements Task {
 //									+ agentY);
 //							System.out.println("Found resource at "
 //									+ ((i * j) + agentX) + ", " + (k + agentY));
-							double distance = Math.sqrt((agentX - ((i * j) + agentX))^2 + (agentY - (k + agentY))^2);
-							System.out.println(distance);
+							double distance = Math.pow(agentX - ((i * j) + agentX),2) + Math.pow((agentY - (k + agentY)), 2);
+//							System.out.println(distance);
 							if (distance < shortestDistance || shortestDistance == -1){
 								shortestDistance = distance;
-//								System.out.println(distance);
+								System.out.println(distance);
 								bestPointX = (i * j) + agentX;
 								bestPointY = k + agentY;
 							}
