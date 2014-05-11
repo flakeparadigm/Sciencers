@@ -41,7 +41,7 @@ public abstract class Agent implements Entity {
 	private double jumpVelocity = 0;
 
 	protected int tickCount;
-	protected Point2D.Double currentPosition;
+	public Point2D.Double currentPosition;
 	protected Stack<Point> movements;
 	public Task currentTask;
 	private boolean rejectedLastTask;
@@ -54,7 +54,7 @@ public abstract class Agent implements Entity {
 	protected ArrayList<Tile> passableTiles;
 	public Tool workingTool = null;
 	private Tool mainTool = null, secondaryTool = null;
-	protected Resource priorityResource;
+	public Resource priorityResource;
 
 	protected boolean dead = false;
 
@@ -442,11 +442,11 @@ public abstract class Agent implements Entity {
 		return null;
 	}
 
-	protected int getCurrentY(Point2D.Double currentPosition) {
+	public int getCurrentY(Point2D.Double currentPosition) {
 		return (int) Math.floor(currentPosition.y);
 	}
 
-	protected int getCurrentX(Point2D.Double currentPosition) {
+	public int getCurrentX(Point2D.Double currentPosition) {
 		return (int) Math.round(currentPosition.x);
 	}
 

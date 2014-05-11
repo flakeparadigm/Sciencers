@@ -43,7 +43,6 @@ public class WorkNearbyBuildingTask implements Task {
 			boolean isCorrectType = false;
 			if (buildingType == EBuilding.FARM && b instanceof Farm) {
 				isCorrectType = true;
-				System.out.println("Found the building");
 			} else if (buildingType == EBuilding.FACTORY
 					&& b instanceof Factory) {
 				isCorrectType = true;
@@ -60,9 +59,7 @@ public class WorkNearbyBuildingTask implements Task {
 								new Point((int) Math.round(b.getPos().getX()),
 										(int) Math.round(b.getPos().getY())))
 						.size();
-				System.out.println("IN outer loop");
 				if (distance < shortestDistance) {
-					System.out.println("IN inner loop");
 					shortestDistance = distance;
 					closestBuilding = (Building) b;
 				}

@@ -32,7 +32,9 @@ import model.agent.MinerAgent;
 import model.agent.SciencerAgent;
 import model.building.BuildingFactory;
 import model.building.EBuilding;
+import model.inventory.Resource;
 import model.task.BuildBuildingTask;
+import model.task.GatherResources;
 import model.task.GoMineAreaTask;
 import model.task.Task;
 import model.task.TaskList;
@@ -197,6 +199,7 @@ public class InfoPanes extends JPanel {
 		private JComboBox<String> hireMenu;
 		private JButton hireButton;
 		private JButton mineButton;
+		private JButton gatherButton;
 		
 		private String selectedBuilding = "Select Building";
 		private String selectedAgent;
@@ -238,6 +241,10 @@ public class InfoPanes extends JPanel {
 			mineButton.addActionListener(new ButtonListener());
 			add(mineButton);
 			
+			gatherButton = new JButton("Gather");
+			gatherButton.addActionListener(new ButtonListener());
+			add(gatherButton);
+			
 		}
 		
 		private class MenuListener implements ActionListener {
@@ -273,6 +280,8 @@ public class InfoPanes extends JPanel {
 				else if(e.getSource() == mineButton) {			
 					WorldView.selectionPanel.mineArea();
 					return;
+				} if (e.getSource() == gatherButton) {
+					TaskList.addTask(new GatherResources(Resource.IRON), EAgent.MINER);
 				}
 				else System.out.println("ButtonListener registered a click from a button that doesn't exist!");
 			}

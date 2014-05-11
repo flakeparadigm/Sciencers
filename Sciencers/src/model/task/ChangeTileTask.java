@@ -33,17 +33,20 @@ public class ChangeTileTask implements Task {
 	
 	@Override
 	public void execute() {
-		World.terrain.setTile(tileType, position.x, position.y);
 		if (World.terrain.getTile(position.x, position.y).equals(Tile.Stone)){
 			sourceAgent.getInventory().changeAmount(Resource.STONE, 1);
 		} else if (World.terrain.getTile(position.x, position.y).equals(Tile.Iron)){
+			System.out.println("Added Iron");
 			sourceAgent.getInventory().changeAmount(Resource.IRON, 1);
 		} else if (World.terrain.getTile(position.x, position.y).equals(Tile.Uranium)){
 			sourceAgent.getInventory().changeAmount(Resource.URANIUM, 1);
 		} else if (World.terrain.getTile(position.x, position.y).equals(Tile.Wood)){
 			sourceAgent.getInventory().changeAmount(Resource.WOOD, 1);
+			System.out.println("GotWood");
 		} 
 		
+		World.terrain.setTile(tileType, position.x, position.y);
+
 		if (tileType.equals(Tile.Ladder)){
 			sourceAgent.getInventory().changeAmount(Resource.WOOD, -1);
 		}

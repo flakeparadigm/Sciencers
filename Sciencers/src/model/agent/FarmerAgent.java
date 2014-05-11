@@ -12,6 +12,7 @@ import model.inventory.Tool;
 import model.task.AgentDeath;
 import model.task.BuildBuildingTask;
 import model.task.CraftToolTask;
+import model.task.GatherResources;
 import model.task.HarvestTreeTask;
 import model.task.WanderTask;
 import model.task.WorkNearbyBuildingTask;
@@ -40,6 +41,10 @@ public class FarmerAgent extends Agent {
 //			AlertCollection.addAlert("An agent has died!");
 //		}
 
+		if (isWorking){
+			taskTimer = 0;
+		}
+		
 		// new agent death using flag variable
 		if (hunger <= 0 || fatigue >= MAX_FATIGUE) {
 			dead = true;
@@ -76,10 +81,14 @@ public class FarmerAgent extends Agent {
 		}
 		
 		//if all else fails: Wander
-		if (currentTask == null && randomProb(200)){
+		if (currentTask == null && randomProb(200) && !isWorking){
 			currentTask = new WanderTask(new Point(getCurrentX(currentPosition),
 					getCurrentY(currentPosition)));
 			taskTimer = 10;
+		}
+		
+		if (currentTask instanceof GatherResources){
+			((GatherResources) currentTask).setAgentSource(this);
 		}
 
 		executeCurrentTask();

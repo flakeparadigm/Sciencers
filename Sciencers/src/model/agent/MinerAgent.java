@@ -11,6 +11,7 @@ import model.task.AgentDeath;
 import model.task.BuildBuildingTask;
 import model.task.ChangeTileTask;
 import model.task.CraftToolTask;
+import model.task.GatherResources;
 import model.task.GoMineAreaTask;
 import model.task.HarvestTreeTask;
 import model.task.WanderTask;
@@ -79,6 +80,7 @@ public class MinerAgent extends Agent {
 			}
 
 		} else if (currentTask instanceof ChangeTileTask) {
+			priorityResource = Resource.WOOD;
 			if (!passableTiles.contains(((ChangeTileTask) currentTask)
 					.getTileLocation().getY())){
 				((ChangeTileTask) currentTask).changeTileType(Tile.BackgroundDirt);
@@ -119,6 +121,9 @@ public class MinerAgent extends Agent {
 			}
 		} 
 
+		if (currentTask instanceof GatherResources){
+			((GatherResources) currentTask).setAgentSource(this);
+		}
 		
 		//if all else fails: Wander
 		if (currentTask == null && randomProb(200)){

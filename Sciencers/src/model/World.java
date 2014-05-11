@@ -210,7 +210,7 @@ public class World implements Serializable {
 		World.addAgent(EAgent.FARMER, width / 2 - 6);
 		World.addAgent(EAgent.FARMER, width / 2 - 2);
 		World.addAgent(EAgent.MINER, width / 2 + 2);
-		World.addAgent(EAgent.MINER, width / 2 + 5);
+//		World.addAgent(EAgent.MINER, width / 2 + 5);
 		System.out.println("Starter agents spawned");
 	}
 	
