@@ -92,8 +92,7 @@ public abstract class Agent implements Entity {
 				movements = goHere(currentPosition, currentTask.getPos());
 				if (movements.isEmpty() && currentTask != null) {
 					if (!rejectedLastTask){
-						TaskList.addTask(currentTask, agentType);
-						System.out.println(TaskList.getList(EAgent.MINER).size());
+//						TaskList.addTask(currentTask, agentType);
 					} else {
 						setNull = true;
 						System.out.println("Trash task");
@@ -125,6 +124,7 @@ public abstract class Agent implements Entity {
 		if (currentTask == null && tasks.size() != 0) {
 			currentTask = tasks.pop();
 			personalTask = true;
+			taskTimer = 10;
 		}
 		// if (!TaskList.getList(type).isEmpty()) {
 		// System.out.println(TaskList.getList(type).peek()
@@ -133,11 +133,13 @@ public abstract class Agent implements Entity {
 		if (currentTask == null && !TaskList.getList(type).isEmpty()) {
 			currentTask = TaskList.getList(type).poll();
 			personalTask = false;
+			taskTimer = 10;
 		}
 
 		if (currentTask == null && !TaskList.getList(EAgent.GENERIC).isEmpty()) {
 			currentTask = TaskList.getList(EAgent.GENERIC).poll();
 			personalTask = false;
+			taskTimer = 10;
 		}
 	}
 
@@ -175,6 +177,11 @@ public abstract class Agent implements Entity {
 		currentTask = null;
 		movements.removeAllElements();
 		tasks.removeAllElements();
+		tickCount = 0;
+		rejectedLastTask = false;
+		personalTask = false;
+		isWorking = false;
+		jumpTick = 0;
 	}
 
 	protected void updateMovement(Point2D.Double currentPosition,
