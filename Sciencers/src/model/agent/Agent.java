@@ -44,7 +44,7 @@ public abstract class Agent implements Entity {
 	protected Point2D.Double currentPosition;
 	protected Stack<Point> movements;
 	public Task currentTask;
-	private Task lastTaskRejected;
+	private boolean rejectedLastTask;
 	private boolean personalTask;
 	public Stack<Task> tasks;
 	protected int taskTimer;
@@ -91,9 +91,17 @@ public abstract class Agent implements Entity {
 				// if movements needs updated:
 				movements = goHere(currentPosition, currentTask.getPos());
 				if (movements.isEmpty() && currentTask != null) {
-					TaskList.addTask(currentTask, agentType);
-					lastTaskRejected = currentTask;
-					setNull = true;
+					if (!rejectedLastTask){
+						TaskList.addTask(currentTask, agentType);
+						System.out.println(TaskList.getList(EAgent.MINER).size());
+					} else {
+						setNull = true;
+						System.out.println("Trash task");
+					}
+					
+					rejectedLastTask = true;
+				} else {
+					rejectedLastTask = false;
 				}
 			}
 
@@ -110,7 +118,6 @@ public abstract class Agent implements Entity {
 		}
 		if (setNull) {
 			currentTask = null;
-			taskTimer = 100;
 		}
 	}
 
@@ -119,12 +126,11 @@ public abstract class Agent implements Entity {
 			currentTask = tasks.pop();
 			personalTask = true;
 		}
-//		if (!TaskList.getList(type).isEmpty()) {
-//			System.out.println(TaskList.getList(type).peek()
-//					.equals(lastTaskRejected));
-//		}
-		if (currentTask == null && !TaskList.getList(type).isEmpty()
-				&& !TaskList.getList(type).peek().equals(lastTaskRejected)) {
+		// if (!TaskList.getList(type).isEmpty()) {
+		// System.out.println(TaskList.getList(type).peek()
+		// .equals(lastTaskRejected));
+		// }
+		if (currentTask == null && !TaskList.getList(type).isEmpty()) {
 			currentTask = TaskList.getList(type).poll();
 			personalTask = false;
 		}
