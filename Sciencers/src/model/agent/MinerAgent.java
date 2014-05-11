@@ -124,6 +124,7 @@ public class MinerAgent extends Agent {
 		if (currentTask == null && randomProb(200)){
 			currentTask = new WanderTask(new Point(getCurrentX(currentPosition),
 					getCurrentY(currentPosition)));
+			taskTimer = 10;
 		}
 
 		executeCurrentTask();
