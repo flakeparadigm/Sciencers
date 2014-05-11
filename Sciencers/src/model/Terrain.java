@@ -25,7 +25,7 @@ public class Terrain implements Serializable {
 	 * and high value for frequency. (High frequency number means the points are
 	 * farther apart).
 	 */
-	private final int averageTerrainHeight = 50;
+	private final int averageTerrainHeight = 30;
 	private final int perlin1Magnitude = 20;
 	private final int perlin2Magnitude = 2;
 	private final int perlin3Magnitude = 1;

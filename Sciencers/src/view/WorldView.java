@@ -44,6 +44,7 @@ public class WorldView extends JFrame {
 	public static InfoPanes infoPanes;
 	public static SelectionView selectionPanel;
 	public static UpperStatsView upperStatsPanel;
+	public static BackgroundView backgroundPanel;
 
 	public static SciencersObserver terrainWatch;
 	public static InfoObserver infoWatch;
@@ -59,8 +60,8 @@ public class WorldView extends JFrame {
 	private static int X_WINDOW_SIZE = 1200;
 	private static int Y_WINDOW_SIZE = 700;
 
-	private final static int X_MAP_SIZE = 1500;
-	private final static int Y_MAP_SIZE = 600;
+	public final static int X_MAP_SIZE = 625;
+	public final static int Y_MAP_SIZE = 200;
 	public final static int TILE_SIZE = 16;
 	public final static int INFO_PANE_SIZE = 200;
 	public final static int X_UPPER_STATS_SIZE = 150;
@@ -199,6 +200,15 @@ public class WorldView extends JFrame {
 		terrainPanel.setSize(X_MAP_SIZE * TILE_SIZE, Y_MAP_SIZE * TILE_SIZE);
 		terrainPanel.setOpaque(false);
 		terrainPanel.setBackground(new Color(0, 0, 0, 0));
+		
+		backgroundPanel = new BackgroundView(new Point(-xPanelLocation / TILE_SIZE,
+				-yPanelLocation / TILE_SIZE));
+		add(backgroundPanel);
+		backgroundPanel.setLocation(xPanelLocation, yPanelLocation);
+		// TODO: figure out correct panel size
+		backgroundPanel.setSize(X_MAP_SIZE * TILE_SIZE, Y_MAP_SIZE * TILE_SIZE);
+		backgroundPanel.setOpaque(false);
+		backgroundPanel.setBackground(new Color(0, 0, 0, 0));
 
 	}
 
@@ -328,6 +338,7 @@ public class WorldView extends JFrame {
 			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
 			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
 			selectionPanel.setLocation(xPanelLocation, yPanelLocation);
+			backgroundPanel.setLocation(xPanelLocation, yPanelLocation);
 		}
 	};
 	static Timer leftButtonTimer = new Timer(panTimerMS, leftTimerAction);
@@ -354,6 +365,7 @@ public class WorldView extends JFrame {
 			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
 			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
 			selectionPanel.setLocation(xPanelLocation, yPanelLocation);
+			backgroundPanel.setLocation(xPanelLocation, yPanelLocation);
 		}
 	};
 	static Timer rightButtonTimer = new Timer(panTimerMS, rightTimerAction);
@@ -379,6 +391,7 @@ public class WorldView extends JFrame {
 			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
 			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
 			selectionPanel.setLocation(xPanelLocation, yPanelLocation);
+			backgroundPanel.setLocation(xPanelLocation, yPanelLocation);
 		}
 	};
 	static Timer upButtonTimer = new Timer(panTimerMS, upTimerAction);
@@ -405,6 +418,7 @@ public class WorldView extends JFrame {
 			buildingPanel.setLocation(xPanelLocation, yPanelLocation);
 			terrainPanel.setLocation(xPanelLocation, yPanelLocation);
 			selectionPanel.setLocation(xPanelLocation, yPanelLocation);
+			backgroundPanel.setLocation(xPanelLocation, yPanelLocation);
 		}
 	};
 	static Timer downButtonTimer = new Timer(panTimerMS, downTimerAction);
@@ -425,6 +439,8 @@ public class WorldView extends JFrame {
 
 	public static void updateTerrain() {
 		terrainPanel.update(new Point(-xPanelLocation / TILE_SIZE,
+				-yPanelLocation / TILE_SIZE));
+		backgroundPanel.update(new Point(-xPanelLocation / TILE_SIZE,
 				-yPanelLocation / TILE_SIZE));
 	}
 

@@ -1,16 +1,22 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 
 import model.World;
 
@@ -33,29 +39,37 @@ public class TerrainView extends JPanel {
 				Image i = ImageIO.read(new File(s));
 				textures.put(t, i);
 			}
+			
+//			background = ImageIO.read(new File("imgs/panorama.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		this.viewLocation = viewLocation;
+		
+
+		
 	}
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 
-		// display char array for tiles here
+		// display char array for tiles heres
 		Tile[][] grid = World.terrain.getTileArray();
 
 		for (int i = -BUFFER; i < X_TILES + BUFFER; i++) {
 			for (int j = -BUFFER; j < Y_TILES + BUFFER; j++) {
 				try {
-					g2.drawImage(textures.get(grid[viewLocation.x + i][viewLocation.y + j]), WorldView.TILE_SIZE
-					* (viewLocation.x + i), WorldView.TILE_SIZE * (viewLocation.y + j), null);
+					if (grid[viewLocation.x + i][viewLocation.y + j] != Tile.Sky){
+						g2.drawImage(textures.get(grid[viewLocation.x + i][viewLocation.y + j]), WorldView.TILE_SIZE
+								* (viewLocation.x + i), WorldView.TILE_SIZE * (viewLocation.y + j), null);
+					}
 				} catch (ArrayIndexOutOfBoundsException e) {
-					System.out.println("out!");
 				}
 			}
 		}
+		
+
 	}
 
 	public void update(Point viewLocation) {
