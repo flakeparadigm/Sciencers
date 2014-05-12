@@ -32,13 +32,7 @@ public class MinerAgent extends Agent {
 		 * The following code should be focused upon specific tasks for this
 		 * type of Agent
 		 */
-		// die if hunger < 0
-//		if (hunger < 0 && currentTask == null) {
-//			currentTask = (new AgentDeath(this, new Point(
-//					(int) currentPosition.x, (int) currentPosition.y)));
-//			taskTimer = 0;
-//		}
-		
+
 		// new agent death using flag variable
 		if (hunger <= 0 || fatigue >= MAX_FATIGUE) {
 			dead = true;

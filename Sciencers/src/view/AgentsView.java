@@ -15,15 +15,14 @@ import model.World;
 import model.agent.Agent;
 import model.agent.FarmerAgent;
 import model.agent.MinerAgent;
+import model.agent.RogueAgent;
 import model.agent.SciencerAgent;
 import model.inventory.Tool;
 
 public class AgentsView extends JPanel{
 	private Image placeholder;
 	
-	private Image farmer;
-	private Image sciencer;
-	private Image miner;
+	private Image farmer, sciencer, miner, rogue;
 	
 	private HashMap<Tool,Image> tools;
 	
@@ -36,6 +35,7 @@ public class AgentsView extends JPanel{
 			farmer = ImageIO.read(new File("imgs/FarmerAgent16.png"));
 			sciencer = ImageIO.read(new File("imgs/SciencerAgent16.png"));
 			miner = ImageIO.read(new File("imgs/MinerAgent16.png"));
+			rogue = ImageIO.read(new File("imgs/RogueAgent.png"));
 			
 			for(Tool t : Tool.values()) {
 				tools.put(t, ImageIO.read(new File("imgs/" + t + ".png")));
@@ -61,6 +61,8 @@ public class AgentsView extends JPanel{
 				g2.drawImage(sciencer, (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getX())), (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getY())), null);
 			} else if(e instanceof MinerAgent) {
 				g2.drawImage(miner, (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getX())), (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getY())), null);
+			} else if(e instanceof RogueAgent) {
+				g2.drawImage(rogue, (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getX())), (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getY())), null);
 			} else {
 				g2.drawImage(placeholder, (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getX())), (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getY())), null);
 				System.out.println("AgentsView is drawing a generic agent. Why does this exist?");

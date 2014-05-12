@@ -33,13 +33,6 @@ public class FarmerAgent extends Agent {
 		 * The following code should be focused upon specific tasks for this
 		 * type of Agent
 		 */
-		// die if hunger < 0
-//		if (hunger < 0 && currentTask == null) {
-//			currentTask = (new AgentDeath(this, new Point(
-//					(int) currentPosition.x, (int) currentPosition.y)));
-//			taskTimer = 0;
-//			AlertCollection.addAlert("An agent has died!");
-//		}
 
 		if (isWorking){
 			taskTimer = 0;
@@ -49,11 +42,6 @@ public class FarmerAgent extends Agent {
 		if (hunger <= 0 || fatigue >= MAX_FATIGUE) {
 			dead = true;
 			AlertCollection.addAlert("An agent has died!");
-			return;
-		}
-		
-		if (hunger <= 0 || fatigue >= MAX_FATIGUE) {
-			dead = true;
 			return;
 		}
 

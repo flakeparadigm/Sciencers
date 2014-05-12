@@ -29,12 +29,6 @@ public class SciencerAgent extends Agent{
 	public void update() {
 		updateStats();
 		
-//		if (hunger < 0 && currentTask == null) {
-//			currentTask = (new AgentDeath(this, new Point(
-//					(int) currentPosition.x, (int) currentPosition.y)));
-//			taskTimer = 0;
-//		}
-		
 		// new agent death using flag variable
 		if (hunger <= 0 || fatigue >= MAX_FATIGUE) {
 			dead = true;

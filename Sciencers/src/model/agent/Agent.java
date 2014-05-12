@@ -37,6 +37,7 @@ public abstract class Agent implements Entity {
 	//
 	protected int hunger = 1000;
 	protected int fatigue = 0;
+	protected int blood = 100;
 	boolean isWorking = false;
 	private double jumpVelocity = 0;
 
