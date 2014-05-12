@@ -39,9 +39,12 @@ public class GoMineAreaTask implements Task {
 		int height = lowerRight.y - upperLeft.y;
 		for (int j = height; j >= 0; j--) {
 			for (int i = width; i >= 0; i--) {
-				agentSource.tasks.add(new ChangeTileTask(agentSource,
-						new Point(upperLeft.x + i, upperLeft.y + j), Tile.Sky));
-				System.out.println("TileRemve");
+				Tile hereTile = World.terrain.getTile(upperLeft.x + i, upperLeft.y + j);
+				if(hereTile != Tile.Sky && hereTile != Tile.Wood && hereTile != Tile.Leaves) {
+					agentSource.tasks.add(new ChangeTileTask(agentSource,
+							new Point(upperLeft.x + i, upperLeft.y + j), Tile.Sky));
+					System.out.println("TileRemove");
+				}
 			}
 		}
 

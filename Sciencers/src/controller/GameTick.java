@@ -36,8 +36,8 @@ public class GameTick extends Thread {
 		for (int i = 0;; i++) {
 			while (shouldUpdate) {
 				count++;
-				if(count % 100 == 0) {
-					System.out.println("100 ticks since last count on this thread, " + count + " total");
+				if(count % 1000 == 0) {
+					System.out.println("1000 ticks since last count on this thread, " + count + " total");
 				}
 				// Until the game ends, always update the given list of
 				// entities

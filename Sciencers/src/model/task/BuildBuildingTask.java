@@ -1,6 +1,7 @@
 package model.task;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 
 import model.Entity;
 import model.World;

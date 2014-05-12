@@ -63,7 +63,8 @@ public class MinerAgent extends Agent {
 		// build hammer before building Building
 		if (currentTask instanceof GoMineAreaTask) {
 			((GoMineAreaTask) currentTask).setAgentSource(this);
-			
+//		} else if(currentTask instanceof HarvestTreeTask) {
+//			((HarvestTreeTask) currentTask).setAgentSource(this); 
 		} else if (currentTask instanceof BuildBuildingTask) {
 			((BuildBuildingTask) currentTask).setSourceAgent(this);
 			if (getInventory().getAmount(Resource.WOOD) < 5) {
@@ -83,7 +84,12 @@ public class MinerAgent extends Agent {
 			priorityResource = Resource.WOOD;
 			if (!passableTiles.contains(((ChangeTileTask) currentTask)
 					.getTileLocation().getY())){
-				((ChangeTileTask) currentTask).changeTileType(Tile.BackgroundDirt);
+				Tile hereTile = World.terrain.getTile(currentTask.getPos().x, currentTask.getPos().y);
+				if(hereTile == Tile.Sky || hereTile == Tile.Wood || hereTile == Tile.Leaves) {
+//					((ChangeTileTask) currentTask).changeTileType(Tile.Sky);
+				} else {
+					((ChangeTileTask) currentTask).changeTileType(Tile.BackgroundDirt);
+				}
 			}
 			if (currentTask.getPos().getY() < ((ChangeTileTask) currentTask)
 					.getTileLocation().getY()) {

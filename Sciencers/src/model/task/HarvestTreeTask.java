@@ -6,6 +6,7 @@ import view.Tile;
 import model.Terrain;
 import model.World;
 import model.agent.Agent;
+import model.agent.EAgent;
 import model.inventory.Resource;
 
 public class HarvestTreeTask implements Task {
@@ -22,6 +23,12 @@ public class HarvestTreeTask implements Task {
 		this.terrain = terrain;
 		this.sourceAgent = sourceAgent;
 	}
+//	
+//	public HarvestTreeTask(Point location, Terrain terrain, EAgent aType) {
+//		System.out.println("Harvest tree task is being made without explicit sourceAgent, make sure to assign one");
+//		this.location = location;
+//		this.terrain = terrain;
+//	}
 
 	@Override
 	public void execute() {
@@ -74,6 +81,10 @@ public class HarvestTreeTask implements Task {
 	@Override
 	public boolean shouldBeSeen() {
 		return true;
+	}
+	
+	public void setAgentSource(Agent sourceAgent) {
+		this.sourceAgent = sourceAgent;
 	}
 
 }

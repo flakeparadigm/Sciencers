@@ -39,7 +39,7 @@ public class WorkNearbyBuildingTask implements Task {
 		Building closestBuilding = null;
 		int shortestDistance = 100;
 		for (Entity b : World.buildings) {
-			System.out.println("getPos");
+//			System.out.println("getPos");
 			boolean isCorrectType = false;
 			if (buildingType == EBuilding.FARM && b instanceof Farm) {
 				isCorrectType = true;

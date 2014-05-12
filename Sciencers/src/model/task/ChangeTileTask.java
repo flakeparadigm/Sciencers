@@ -40,6 +40,7 @@ public class ChangeTileTask implements Task {
 			sourceAgent.getInventory().changeAmount(Resource.IRON, 1);
 		} else if (World.terrain.getTile(position.x, position.y).equals(Tile.Uranium)){
 			sourceAgent.getInventory().changeAmount(Resource.URANIUM, 1);
+			System.out.println("Got uranium");
 		} else if (World.terrain.getTile(position.x, position.y).equals(Tile.Wood)){
 			sourceAgent.getInventory().changeAmount(Resource.WOOD, 1);
 			System.out.println("GotWood");

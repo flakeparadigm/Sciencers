@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -21,6 +22,7 @@ import model.agent.EAgent;
 import model.building.BuildingFactory;
 import model.task.BuildBuildingTask;
 import model.task.GoMineAreaTask;
+import model.task.HarvestTreeTask;
 import model.task.TaskList;
 
 public class SelectionView extends JPanel {
@@ -124,6 +126,10 @@ public class SelectionView extends JPanel {
 
 				Entity bldg = BuildingFactory.makeBuilding(newClass,
 						scaledPoint);
+				Point location = (Point)bldg.getPos();
+				Point upperLeft = new Point(location.x, location.y - (bldg.getSize().height-1));
+				TaskList.addTask(new GoMineAreaTask(new Rectangle(upperLeft, new Dimension(bldg.getSize().width-1, bldg.getSize().height-1))), EAgent.MINER);
+//				TaskList.addTask(new HarvestTreeTask(upperLeft, null, null));
 				TaskList.addTask(new BuildBuildingTask(bldg), EAgent.MINER);
 			} else if (waitingForMiningArea) {
 				if (firstPoint == null) {
