@@ -28,16 +28,8 @@ public class SciencerAgent extends Agent{
 	@Override
 	public void update() {
 		updateStats();
-		
-		// new agent death using flag variable
-		if (hunger <= 0 || fatigue >= MAX_FATIGUE) {
-			dead = true;
-			AlertCollection.addAlert("An agent has died!");
+		if(dead) {
 			return;
-		}
-
-		if (hunger < 0.5 * SEEK_FOOD_HUNGER) {
-			AlertCollection.addAlert("An agent is starving! D:");
 		}
 
 		// seek food if hungry

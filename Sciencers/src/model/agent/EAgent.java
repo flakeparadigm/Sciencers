@@ -1,7 +1,7 @@
 package model.agent;
 
 public enum EAgent {
-	FARMER("Farmer"), SCIENCER("Sciencer"), MINER("Miner"), GENERIC("Generic");
+	FARMER("Farmer"), SCIENCER("Sciencer"), MINER("Miner"), GENERIC("Generic"), ROGUE("Rogue");
 	
 	private String name;
 

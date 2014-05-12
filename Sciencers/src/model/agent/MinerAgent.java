@@ -28,20 +28,14 @@ public class MinerAgent extends Agent {
 	@Override
 	public void update() {
 		updateStats();
+		if(dead) {
+			return;
+		}
+		
 		/*
 		 * The following code should be focused upon specific tasks for this
 		 * type of Agent
 		 */
-
-		// new agent death using flag variable
-		if (hunger <= 0 || fatigue >= MAX_FATIGUE) {
-			dead = true;
-			AlertCollection.addAlert("An agent has died!");
-			return;
-		}
-		if (hunger < 0.5 * SEEK_FOOD_HUNGER) {
-			AlertCollection.addAlert("An agent is starving! D:");
-		}
 
 		// seek food if hungry
 		if (hunger < SEEK_FOOD_HUNGER && currentTask == null) {

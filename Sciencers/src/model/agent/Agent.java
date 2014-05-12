@@ -9,6 +9,7 @@ import java.util.Random;
 import java.util.Stack;
 
 import view.Tile;
+import model.AlertCollection;
 import model.Entity;
 import model.PathFinder;
 import model.Terrain;
@@ -153,8 +154,24 @@ public abstract class Agent implements Entity {
 	}
 
 	protected void updateStats() {
+		// new agent death using flag variable
+		
+		if (blood <= 0) {
+			dead = true;
+			AlertCollection.addAlert("An agent has died!");
+			return;
+		}
+
+		if (hunger < 0.5 * SEEK_FOOD_HUNGER) {
+			AlertCollection.addAlert("An agent is starving! D:");
+		}
+		
 		if (tickCount % HUNGER_SPEED == 0) {
-			if (isWorking) {
+			if(hunger <= 10 || fatigue >= MAX_FATIGUE) {
+				blood--;
+				hunger -= 6;
+				fatigue += 3;
+			} else if (isWorking) {
 				hunger -= 6;
 				fatigue += 3;
 			} else {
@@ -521,6 +538,15 @@ public abstract class Agent implements Entity {
 	public void giveItem(Tool tool) { // AUTHOR: JAKE
 		inventory.changeAmount(tool, 1);
 		// TODO handle overfilling inventory
+	}
+	
+	public void attack(Agent target, int damage) {
+		target.hurt(damage);
+	}
+
+	private void hurt(int damage) {
+		System.out.println("Ouch! -" + damage + " >> " + blood);
+		blood -= damage;
 	}
 
 	public boolean isDead() {
