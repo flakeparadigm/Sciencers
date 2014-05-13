@@ -14,6 +14,7 @@ import model.task.BuildBuildingTask;
 import model.task.GoHereTask;
 import model.task.HarvestTreeTask;
 import model.task.Task;
+import model.task.WanderTask;
 import model.task.WorkNearbyBuildingTask;
 
 public class SciencerAgent extends Agent{
@@ -44,22 +45,52 @@ public class SciencerAgent extends Agent{
 		Building lab = null;
 		
 		//if stats ok, then science!
-		for(Entity e : World.buildings) {
-			if(e instanceof Lab) {
-				lab = (Building) e;
-				break;
+//		for(Entity e : World.buildings) {
+//			if(e instanceof Lab) {
+//				lab = (Building) e;
+//				break;
+//			}
+//		}
+//		if(lab == null) {
+//			AlertCollection.addAlert("Sciencers have no lab!");
+//			return;
+//		}
+//		if(currentTask == null) {
+//			Task task = new WorkNearbyBuildingTask(this, EBuilding.LAB, new Point((int) currentPosition.x, (int) currentPosition.y));
+//			(new GoHereTask(task.getPos())).execute();
+//			task.execute();
+//		}		
+		if (currentTask == null && !isWorking && labExists() && tasks.isEmpty()) {
+			currentTask = new WorkNearbyBuildingTask(this, EBuilding.LAB,
+					new Point(getCurrentX(currentPosition),
+							getCurrentY(currentPosition)));
+			isWorking = true;
+		}
+		
+		getNextTaskIfNotBusy(EAgent.SCIENCER);
+		
+		
+		
+
+		//if all else fails: Wander
+		if (currentTask == null && randomProb(200) && isWorking == false){
+			currentTask = new WanderTask(new Point(getCurrentX(currentPosition),
+					getCurrentY(currentPosition)));
+			taskTimer = 10;
+		}
+
+		executeCurrentTask();
+
+		updateMovement(currentPosition, movements);
+	}
+	
+	private boolean labExists() {
+		for (Entity b : World.buildings){
+			if (((Building) b).getType() == EBuilding.LAB){
+				return true;
 			}
 		}
-		if(lab == null) {
-			AlertCollection.addAlert("Sciencers have no lab!");
-			return;
-		}
-		if(currentTask == null) {
-			Task task = new WorkNearbyBuildingTask(this, EBuilding.LAB, new Point((int) currentPosition.x, (int) currentPosition.y));
-			(new GoHereTask(task.getPos())).execute();
-			task.execute();
-		}		
-		
+		return false;
 	}
 
 	@Override

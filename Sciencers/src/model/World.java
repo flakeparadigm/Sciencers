@@ -236,7 +236,7 @@ public class World implements Serializable {
 
 		for (int i = 0; i <= rogues; i++) {
 			int x = (width / 2) + 2 * (rand.nextInt(20) - 10);
-			Point p = new Point(x, terrain.getAltitude(x));
+			Point p = new Point(x, terrain.getAltitude(x) - 1);
 			Agent a = new RogueAgent(p);
 			World.addAgent(a);
 		}

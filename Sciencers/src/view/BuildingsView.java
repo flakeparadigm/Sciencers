@@ -50,10 +50,10 @@ public class BuildingsView extends JPanel {
 						"FOOD: " + b.getInventory().getAmount(Resource.FOOD),
 						WorldView.TILE_SIZE * pos.x, WorldView.TILE_SIZE
 								* (pos.y - height));
-				g2.drawString(
-						"WORKERS: " + b.getNumWorkers(),
-						WorldView.TILE_SIZE * pos.x, WorldView.TILE_SIZE
-								* (pos.y - height) + 12);
+//				g2.drawString(
+//						"WORKERS: " + b.getNumWorkers(),
+//						WorldView.TILE_SIZE * pos.x, WorldView.TILE_SIZE
+//								* (pos.y - height) + 12);
 			} else if (b.getType() == EBuilding.WAREHOUSE) {
 				g2.drawImage(warehouse, WorldView.TILE_SIZE * pos.x,
 						WorldView.TILE_SIZE * (pos.y - height + 1), null);

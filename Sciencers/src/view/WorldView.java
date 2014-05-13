@@ -461,7 +461,7 @@ public class WorldView extends JFrame {
 	// CREATE, LOAD, AND SAVE WORLDS
 
 	private void makeNewWorld() {
-		world = new World(12345, X_MAP_SIZE, Y_MAP_SIZE);
+		world = new World((long)(Math.random()*500), X_MAP_SIZE, Y_MAP_SIZE);
 		System.out.println("New world created");
 	}
 
