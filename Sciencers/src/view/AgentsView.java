@@ -63,9 +63,9 @@ public class AgentsView extends JPanel{
 				g2.drawImage(miner, (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getX())), (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getY())), null);
 			} else if(e instanceof RogueAgent) {
 				g2.drawImage(rogue, (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getX())), (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getY())), null);
-			} else {
-				g2.drawImage(placeholder, (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getX())), (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getY())), null);
-				System.out.println("AgentsView is drawing a generic agent. Why does this exist?");
+//			} else {
+//				g2.drawImage(placeholder, (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getX())), (int) (((double)WorldView.TILE_SIZE)*(e.getPos().getY())), null);
+//				System.out.println("AgentsView is drawing a generic agent. Why does this exist?");
 			}
 			
 			Agent a = ((Agent) e);

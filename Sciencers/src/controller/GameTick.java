@@ -1,9 +1,10 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.Random;
 
-import model.AlertCollection;
 import model.Entity;
+import model.World;
 
 public class GameTick extends Thread {
 
@@ -12,6 +13,9 @@ public class GameTick extends Thread {
 	int tickTime;
 	boolean shouldUpdate = true;
 	boolean terminate = false;
+	
+	Random rand = new Random();
+	private final int TRAGIC_EVENT_TIME = 1000;
 
 	public GameTick(ArrayList<Entity> entities, int tickTime) {
 		this.entities = entities;
@@ -32,12 +36,19 @@ public class GameTick extends Thread {
 
 	@Override
 	public void run() {
-		 int count = 0;
+		int count = 0;
 		for (int i = 0;; i++) {
 			while (shouldUpdate) {
 				count++;
-				if(count % 1000 == 0) {
-					System.out.println("1000 ticks since last count on this thread, " + count + " total");
+				if (count % 1000 == 0) {
+					System.out
+							.println("1000 ticks since last count on this thread, "
+									+ count + " total");
+					
+					if(count >= TRAGIC_EVENT_TIME) {
+//					if(rand.nextInt(count) >= TRAGIC_EVENT_TIME) {
+						World.rogueAttack();
+					}
 				}
 				// Until the game ends, always update the given list of
 				// entities
@@ -45,10 +56,10 @@ public class GameTick extends Thread {
 				for (Entity e : entities) {
 					if (!shouldUpdate) // prevent concurrent modification.
 						break; // stops updates when paused, even mid-cycle;
-					
-					try{
+
+					try {
 						e.update();
-					} catch(Exception ex) {
+					} catch (Exception ex) {
 						ex.printStackTrace();
 					}
 

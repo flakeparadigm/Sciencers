@@ -28,6 +28,9 @@ public class RogueAgent extends Agent {
 
 	public RogueAgent(Point currentPosition) {
 		super(currentPosition);
+		priorityResource = Resource.WOOD;
+		inventory.changePriority(priorityResource);
+		
 		agentType = EAgent.ROGUE;
 		workingTool = Tool.DEATHBLADE;
 

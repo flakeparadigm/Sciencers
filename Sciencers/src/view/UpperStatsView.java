@@ -249,5 +249,18 @@ public class UpperStatsView extends JPanel {
 
 		repaint();
 	}
+	
+	private class FireButton extends JButton {
+		private Agent agent;
+		
+		FireButton(Agent a) {
+			super("Fire Me!");
+			agent = a;
+		}
+		
+		public Agent firedAgent() {
+			return agent;
+		}
+	}
 
 }
