@@ -274,7 +274,7 @@ public class InfoPanes extends JPanel {
 					WorldView.selectionPanel.addBuilding(selectedBuilding);
 					return;
 				}
-				else if(e.getSource() == hireButton) {
+				else if(e.getSource() == hireButton && World.agents.size() < 7) {
 					if(selectedAgent.equals("Select Dood") || selectedAgent.equals("Generic"))//TODO
 						return;
 					
