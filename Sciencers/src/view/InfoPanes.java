@@ -79,7 +79,7 @@ public class InfoPanes extends JPanel {
 		// Stats Pane
 		statsPane = new StatsPane();
 		statsPane.setBorder(null);
-		statsPane.setOpaque(false);
+		statsPane.setOpaque(true);
 		this.add(statsPane);
 		statsPane.setSize(STATS_PANE_WIDTH + 30, INFO_PANE_SIZE);
 		statsPane.setLocation(xTemp, 0);
@@ -111,7 +111,7 @@ public class InfoPanes extends JPanel {
 		genericTaskScroller.setViewportView(genericTaskPane);
 		genericTaskScroller.setOpaque(false);
 		genericTaskScroller.setBorder(null);
-		this.add(genericTaskScroller);
+//		this.add(genericTaskScroller);
 		genericTaskScroller.setSize(TASK_BOX_WIDTH + 30, INFO_PANE_SIZE);
 		genericTaskScroller.setLocation(xTemp, 0);
 
@@ -130,7 +130,7 @@ public class InfoPanes extends JPanel {
 		farmerTaskScroller.setViewportView(farmerTaskPane);
 		farmerTaskScroller.setOpaque(false);
 		farmerTaskScroller.setBorder(null);
-		this.add(farmerTaskScroller);
+//		this.add(farmerTaskScroller);
 		farmerTaskScroller.setSize(TASK_BOX_WIDTH + 30, INFO_PANE_SIZE);
 		farmerTaskScroller.setLocation(xTemp, 0);
 
@@ -149,7 +149,7 @@ public class InfoPanes extends JPanel {
 		minerTaskScroller.setViewportView(minerTaskPane);
 		minerTaskScroller.setOpaque(false);
 		minerTaskScroller.setBorder(null);
-		this.add(minerTaskScroller);
+//		this.add(minerTaskScroller);
 		minerTaskScroller.setSize(TASK_BOX_WIDTH + 30, INFO_PANE_SIZE);
 		minerTaskScroller.setLocation(xTemp, 0);
 
@@ -168,7 +168,7 @@ public class InfoPanes extends JPanel {
 		sciencerTaskScroller.setViewportView(sciencerTaskPane);
 		sciencerTaskScroller.setOpaque(false);
 		sciencerTaskScroller.setBorder(null);
-		this.add(sciencerTaskScroller);
+//		this.add(sciencerTaskScroller);
 		sciencerTaskScroller.setSize(TASK_BOX_WIDTH + 30, INFO_PANE_SIZE);
 		sciencerTaskScroller.setLocation(xTemp, 0);
 
@@ -181,6 +181,10 @@ public class InfoPanes extends JPanel {
 				});
 		
 		// make sure to increment xTemp before each new panel
+		
+//		farmerTaskPane.setVisible(false);
+//		minerTaskPane.setVisible(false);
+//		sciencerTaskPane.setVisible(false);
 	}
 
 	public void performUpdate() {
@@ -220,7 +224,7 @@ public class InfoPanes extends JPanel {
 			buildMenu.addActionListener(new MenuListener());
 			add(buildMenu);
 			
-			buildButton = new JButton("GO");
+			buildButton = new JButton("BUILD!");
 			buildButton.addActionListener(new ButtonListener());
 			add(buildButton);
 			
@@ -233,7 +237,7 @@ public class InfoPanes extends JPanel {
 			hireMenu.addActionListener(new MenuListener());
 			add(hireMenu);
 			
-			hireButton = new JButton("GO");
+			hireButton = new JButton("HIRE! - 100 Research");
 			hireButton.addActionListener(new ButtonListener());
 			add(hireButton);
 			
@@ -356,7 +360,7 @@ public class InfoPanes extends JPanel {
 		JLabel lAgents, lResearch, lBuildings;
 		public StatsPane() {
 			this.setLayout(new FlowLayout());
-			this.setBackground(new Color(0, 0, 0, 0));
+			this.setBackground(Color.BLACK);
 			
 			lAgents = new JLabel();
 			lResearch = new JLabel();

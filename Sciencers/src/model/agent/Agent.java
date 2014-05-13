@@ -552,6 +552,10 @@ public abstract class Agent implements Entity {
 	public boolean isDead() {
 		return dead;
 	}
+	
+	public void setDead(){
+		dead = true;
+	}
 
 	public boolean randomProb(int probability) {
 		Random r = new Random();

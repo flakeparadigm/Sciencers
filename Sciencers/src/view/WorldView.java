@@ -64,15 +64,15 @@ public class WorldView extends JFrame {
 	public final static int Y_MAP_SIZE = 200;
 	public final static int TILE_SIZE = 16;
 	public final static int INFO_PANE_SIZE = 200;
-	public final static int X_UPPER_STATS_SIZE = 150;
-	public final static int Y_UPPER_STATS_SIZE = 200;
+	public final static int X_UPPER_STATS_SIZE = 500;
+	public final static int Y_UPPER_STATS_SIZE = 260;
 
 	private static final String SAVE_LOCATION = "world.save";
 
 	private static int moveSpeed = 8;// not 15
 	private static int panTimerMS = 1;
 	private static int xPanelLocation = -X_MAP_SIZE / 2 * TILE_SIZE;
-	private static int yPanelLocation = -30 * TILE_SIZE;
+	private static int yPanelLocation = -10 * TILE_SIZE;
 
 //	public static void main(String[] args) {
 //		System.out
@@ -95,6 +95,7 @@ public class WorldView extends JFrame {
 		
 		new Thread(new WinChecker()).start();
 		System.out.println("WorldView constructed, WinChecker running");
+		updateTerrain();
 
 	}
 
@@ -163,7 +164,7 @@ public class WorldView extends JFrame {
 		add(upperStatsPanel);
 		upperStatsPanel.setLocation(X_WINDOW_SIZE - X_UPPER_STATS_SIZE,
 				Y_WINDOW_SIZE - Y_UPPER_STATS_SIZE);
-		upperStatsPanel.setSize(150, 200);
+		upperStatsPanel.setSize(X_UPPER_STATS_SIZE, Y_UPPER_STATS_SIZE);
 		upperStatsPanel.setOpaque(false);
 		upperStatsPanel.setBackground(new Color(0, 0, 0, 0));
 
