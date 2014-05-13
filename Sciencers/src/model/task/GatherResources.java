@@ -19,9 +19,13 @@ public class GatherResources implements Task {
 	private int agentY;
 	int bestPointX = 0;
 	int bestPointY = 0;
+	private boolean tree = false;
 
 	public GatherResources(Resource resourceType) {
 		this.resourceType = resourceType;
+		if (resourceType == Resource.WOOD || resourceType == Resource.FOOD) {
+			tree = true;
+		}
 	}
 
 	public void setAgentSource(Agent agentSource) {
@@ -32,9 +36,16 @@ public class GatherResources implements Task {
 
 	@Override
 	public void execute() {
-		agentSource.priorityResource = resourceType;
-		System.out.println("ON IT!!!!!!!!!!!!!!!");
-		agentSource.tasks.add(new ChangeTileTask(agentSource, new Point(bestPointX, bestPointY), Tile.Sky));
+		if (tree) {
+			agentSource.tasks.add(new HarvestTreeTask(agentSource, new Point(
+					agentX, agentY), World.terrain));
+			System.out.println("TreeTaskAdded");
+		} else {
+			agentSource.priorityResource = resourceType;
+			System.out.println("ON IT!!!!!!!!!!!!!!!");
+			agentSource.tasks.add(new ChangeTileTask(agentSource, new Point(
+					bestPointX, bestPointY), Tile.Sky));
+		}
 	}
 
 	@Override
@@ -43,7 +54,6 @@ public class GatherResources implements Task {
 		Tile searchForThis = Tile.Dirt;
 		double shortestDistance = -1;
 
-		
 		if (resourceType == Resource.STONE) {
 			searchForThis = Tile.Stone;
 		} else if (resourceType == Resource.URANIUM) {
@@ -53,23 +63,25 @@ public class GatherResources implements Task {
 		}
 
 		if (resourceType == Resource.WOOD || resourceType == Resource.FOOD) {
-			agentSource.tasks.add(new HarvestTreeTask(agentSource, new Point(
-					agentX, agentY), World.terrain));
+			tree = true;
 		} else {
 			// search for ground resource:
 			for (int i = -1; i < 2; i++) {
 				for (int j = 1; j < SEARCH_RANGE; j++) {
 					for (int k = 1; k < SEARCH_DEPTH; k++) {
-//						System.out.println((i * j) + agentX);
-//						System.out.println(k + agentY);
+						// System.out.println((i * j) + agentX);
+						// System.out.println(k + agentY);
 						if (World.terrain.getTile((i * j) + agentX, k + agentY) == searchForThis) {
-//							System.out.println("Current Pos:" + agentX + ", "
-//									+ agentY);
-//							System.out.println("Found resource at "
-//									+ ((i * j) + agentX) + ", " + (k + agentY));
-							double distance = Math.pow(agentX - ((i * j) + agentX),2) + Math.pow((agentY - (k + agentY)), 2);
-//							System.out.println(distance);
-							if (distance < shortestDistance || shortestDistance == -1){
+							// System.out.println("Current Pos:" + agentX + ", "
+							// + agentY);
+							// System.out.println("Found resource at "
+							// + ((i * j) + agentX) + ", " + (k + agentY));
+							double distance = Math.pow(agentX
+									- ((i * j) + agentX), 2)
+									+ Math.pow((agentY - (k + agentY)), 2);
+							// System.out.println(distance);
+							if (distance < shortestDistance
+									|| shortestDistance == -1) {
 								shortestDistance = distance;
 								System.out.println(distance);
 								bestPointX = (i * j) + agentX;
@@ -80,7 +92,6 @@ public class GatherResources implements Task {
 				}
 			}
 		}
-		System.out.println("DONE finding");
 		return new Point(bestPointX, World.terrain.getAltitude(bestPointX) - 1);
 	}
 

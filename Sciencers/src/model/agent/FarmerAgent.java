@@ -12,7 +12,9 @@ import model.inventory.Tool;
 import model.task.AgentDeath;
 import model.task.BuildBuildingTask;
 import model.task.CraftToolTask;
+import model.task.GatherForBuildingTask;
 import model.task.GatherResources;
+import model.task.GiveToBuilding;
 import model.task.HarvestTreeTask;
 import model.task.WanderTask;
 import model.task.WorkNearbyBuildingTask;
@@ -38,9 +40,9 @@ public class FarmerAgent extends Agent {
 		 * type of Agent
 		 */
 
-		if (isWorking){
-			taskTimer = 0;
-		}
+//		if (isWorking){
+//			taskTimer = 0;
+//		}
 
 		// seek food if hungry
 		if (hunger < SEEK_FOOD_HUNGER && currentTask == null) {
@@ -50,16 +52,37 @@ public class FarmerAgent extends Agent {
 				taskTimer = 10;
 			}
 		}
-
-		// get task from list if agent doesn't have one
-		getNextTaskIfNotBusy(EAgent.FARMER);
-
-		if (currentTask == null && !isWorking && farmExists()) {
+		
+		if (currentTask == null && !isWorking && farmExists() && tasks.isEmpty()) {
 			currentTask = new WorkNearbyBuildingTask(this, EBuilding.FARM,
 					new Point(getCurrentX(currentPosition),
 							getCurrentY(currentPosition)));
 			isWorking = true;
 		}
+		
+		if (isWorking && currentTask == null && buildingWorked != null && tasks.isEmpty() && inventory.getAmount(Resource.FOOD)<5){
+			currentTask = new HarvestTreeTask(this, findNearestTree(currentPosition), World.terrain);
+			System.out.println("added gatherForBuildingTask");
+			taskTimer = 10;
+		}
+		
+		if (inventory.getAmount(Resource.FOOD)>3){
+			currentTask = new GiveToBuilding(this, buildingWorked, Resource.FOOD, 3);
+		}
+		//new HarvestTreeTask(this, new Point(getCurrentX(currentPosition), getCurrentY(currentPosition)), World.terrain)
+
+		// get task from list if agent doesn't have one
+		getNextTaskIfNotBusy(EAgent.FARMER);
+		
+		if (currentTask instanceof GatherResources){
+			((GatherResources) currentTask).setAgentSource(this);
+		}
+		
+//		if (currentTask instanceof GatherForBuildingTask){
+//			((GatherForBuildingTask) currentTask).setAgentSource(this);
+//		}
+
+		
 		
 		//if all else fails: Wander
 		if (currentTask == null && randomProb(200) && !isWorking){
@@ -68,9 +91,7 @@ public class FarmerAgent extends Agent {
 			taskTimer = 10;
 		}
 		
-		if (currentTask instanceof GatherResources){
-			((GatherResources) currentTask).setAgentSource(this);
-		}
+
 
 		executeCurrentTask();
 

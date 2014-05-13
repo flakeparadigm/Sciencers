@@ -51,6 +51,7 @@ public abstract class Agent implements Entity {
 	public Stack<Task> tasks;
 	protected int taskTimer;
 	protected EAgent agentType;
+	public Building buildingWorked;
 
 	protected Inventory inventory;
 	protected ArrayList<Tile> passableTiles;
@@ -113,6 +114,7 @@ public abstract class Agent implements Entity {
 					.getPos().getX(), currentTask.getPos().getY()), .1, .1)
 					&& taskTimer < 0) {
 				// if in location of current task:
+				System.out.println("execute the task");
 				currentTask.execute();
 				setNull = true;
 			}
@@ -120,6 +122,8 @@ public abstract class Agent implements Entity {
 		if (setNull) {
 			currentTask = null;
 		}
+		
+		getNextTaskIfNotBusy(agentType);
 	}
 
 	protected void getNextTaskIfNotBusy(EAgent type) {

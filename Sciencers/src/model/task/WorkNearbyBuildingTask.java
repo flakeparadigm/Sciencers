@@ -22,8 +22,8 @@ public class WorkNearbyBuildingTask implements Task {
 	private EBuilding buildingType;
 	private Building targetBuilding;
 
-	public WorkNearbyBuildingTask(Agent sourceAgent,
-			EBuilding buildingType, Point currentPosition) {
+	public WorkNearbyBuildingTask(Agent sourceAgent, EBuilding buildingType,
+			Point currentPosition) {
 		this.currentPosition = currentPosition;
 		this.buildingType = buildingType;
 		this.sourceAgent = sourceAgent;
@@ -31,6 +31,7 @@ public class WorkNearbyBuildingTask implements Task {
 
 	@Override
 	public void execute() {
+		sourceAgent.buildingWorked = targetBuilding;
 		targetBuilding.addWorker(sourceAgent);
 	}
 
@@ -39,7 +40,7 @@ public class WorkNearbyBuildingTask implements Task {
 		Building closestBuilding = null;
 		int shortestDistance = 100;
 		for (Entity b : World.buildings) {
-//			System.out.println("getPos");
+			// System.out.println("getPos");
 			boolean isCorrectType = false;
 			if (buildingType == EBuilding.FARM && b instanceof Farm) {
 				isCorrectType = true;
@@ -71,10 +72,11 @@ public class WorkNearbyBuildingTask implements Task {
 			return currentPosition;
 		}
 
-		Random r = new Random();
-		int Low = 0;
-		int High = closestBuilding.getSize().width;
-		int R = r.nextInt(High - Low) + Low;
+//		Random r = new Random();
+//		int Low = 0;
+//		int High = closestBuilding.getSize().width;
+//		int R = r.nextInt(High - Low) + Low;
+		int R = 0;
 		targetBuilding = closestBuilding;
 		return new Point((int) Math.round(closestBuilding.getPos().getX() + R),
 				(int) Math.round(closestBuilding.getPos().getY()));
