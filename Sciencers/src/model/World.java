@@ -9,6 +9,8 @@ import model.agent.Agent;
 import model.agent.EAgent;
 import model.agent.FarmerAgent;
 import model.agent.MinerAgent;
+import model.agent.RogueAgent;
+import model.agent.SciencerAgent;
 import model.building.Building;
 import model.building.EBuilding;
 import model.building.Farm;
@@ -28,6 +30,7 @@ public class World implements Serializable {
 	public static ArrayList<Entity> buildings;
 	public static ArrayList<Projectile> projectiles;
 	public static TaskList tasks;
+	private static Random rand = new Random();
 
 	// tick Info
 	public static GameTick agentsTick;
@@ -59,6 +62,8 @@ public class World implements Serializable {
 
 	}
 
+	// This doesn't seem to work quite right.
+	@Deprecated
 	public static void addAgent(EAgent type, int xPos) {
 		// this adds an Agent at the highest point on the terrain at a certain
 		// point
@@ -211,20 +216,29 @@ public class World implements Serializable {
 	}
 
 	public static void giveStarter() {
-		World.addAgent(EAgent.FARMER, width / 2 - 6);
-		World.addAgent(EAgent.FARMER, width / 2 - 2);
-		World.addAgent(EAgent.MINER, width / 2 + 2);
-		// World.addAgent(EAgent.MINER, width / 2 + 5);
+		int x = width / 2 + (rand.nextInt(12) - 6);
+		World.addAgent(new FarmerAgent(new Point(x, terrain.getAltitude(x))));
+		
+		x = width / 2 + (rand.nextInt(12) - 6);
+		World.addAgent(new FarmerAgent(new Point(x, terrain.getAltitude(x))));
+
+		x = width / 2 + (rand.nextInt(12) - 6);
+		World.addAgent(new MinerAgent(new Point(x, terrain.getAltitude(x))));
+
+		x = width / 2 + (rand.nextInt(12) - 6);
+		World.addAgent(new SciencerAgent(new Point(x, terrain.getAltitude(x))));
+		
 		System.out.println("Starter agents spawned");
 	}
 
 	public static void rogueAttack() {
-		Random rand = new Random();
 		int rogues = rand.nextInt(agents.size() / 2);
 
 		for (int i = 0; i <= rogues; i++) {
-			World.addAgent(EAgent.ROGUE, (width / 2) + 2
-					* (rand.nextInt(20) - 10));
+			int x = (width / 2) + 2 * (rand.nextInt(20) - 10);
+			Point p = new Point(x, terrain.getAltitude(x));
+			Agent a = new RogueAgent(p);
+			World.addAgent(a);
 		}
 	}
 
