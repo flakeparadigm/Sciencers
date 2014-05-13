@@ -62,11 +62,10 @@ public class FarmerAgent extends Agent {
 		
 		if (isWorking && currentTask == null && buildingWorked != null && tasks.isEmpty() && inventory.getAmount(Resource.FOOD)<5){
 			currentTask = new HarvestTreeTask(this, findNearestTree(currentPosition), World.terrain);
-			System.out.println("added gatherForBuildingTask");
 			taskTimer = 10;
 		}
 		
-		if (inventory.getAmount(Resource.FOOD)>3){
+		if (inventory.getAmount(Resource.FOOD)>3 && farmExists()){
 			currentTask = new GiveToBuilding(this, buildingWorked, Resource.FOOD, 3);
 		}
 		//new HarvestTreeTask(this, new Point(getCurrentX(currentPosition), getCurrentY(currentPosition)), World.terrain)

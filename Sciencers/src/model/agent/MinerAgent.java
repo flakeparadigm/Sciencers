@@ -4,7 +4,10 @@ import java.awt.Point;
 
 import view.Tile;
 import model.AlertCollection;
+import model.Entity;
 import model.World;
+import model.building.Building;
+import model.building.EBuilding;
 import model.inventory.Resource;
 import model.inventory.Tool;
 import model.task.AgentDeath;
@@ -12,9 +15,11 @@ import model.task.BuildBuildingTask;
 import model.task.ChangeTileTask;
 import model.task.CraftToolTask;
 import model.task.GatherResources;
+import model.task.GiveToBuilding;
 import model.task.GoMineAreaTask;
 import model.task.HarvestTreeTask;
 import model.task.WanderTask;
+import model.task.WorkNearbyBuildingTask;
 
 public class MinerAgent extends Agent {
 
@@ -44,6 +49,23 @@ public class MinerAgent extends Agent {
 						findNearestTree(currentPosition), World.terrain);
 				taskTimer = 10;
 			}
+		}
+		
+		if (currentTask == null && !isWorking && factoryExists() && tasks.isEmpty()) {
+			currentTask = new WorkNearbyBuildingTask(this, EBuilding.FACTORY,
+					new Point(getCurrentX(currentPosition),
+							getCurrentY(currentPosition)));
+			isWorking = true;
+		}
+		
+		if (isWorking && currentTask == null && buildingWorked != null && tasks.isEmpty() && inventory.getAmount(Resource.IRON)<5){
+//			currentTask = new HarvestTreeTask(this, findNearestTree(currentPosition), World.terrain);
+			currentTask = new GatherResources(Resource.IRON);
+			taskTimer = 10;
+		}
+		
+		if (inventory.getAmount(Resource.IRON)>1 && factoryExists()){
+			currentTask = new GiveToBuilding(this, buildingWorked, Resource.IRON, 1);
 		}
 
 		// get task from list if agent doesn't have one
@@ -130,6 +152,15 @@ public class MinerAgent extends Agent {
 
 		updateMovement(currentPosition, movements);
 
+	}
+	
+	private boolean factoryExists() {
+		for (Entity b : World.buildings){
+			if (((Building) b).getType() == EBuilding.FACTORY){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override

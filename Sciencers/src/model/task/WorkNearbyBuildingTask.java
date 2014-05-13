@@ -33,6 +33,7 @@ public class WorkNearbyBuildingTask implements Task {
 	public void execute() {
 		sourceAgent.buildingWorked = targetBuilding;
 		targetBuilding.addWorker(sourceAgent);
+		System.out.println("WorkingBuilding");
 	}
 
 	@Override
