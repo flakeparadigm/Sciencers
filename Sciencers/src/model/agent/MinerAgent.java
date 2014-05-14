@@ -33,10 +33,10 @@ public class MinerAgent extends Agent {
 	@Override
 	public void update() {
 		updateStats();
-		if(dead) {
+		if (dead) {
 			return;
 		}
-		
+
 		/*
 		 * The following code should be focused upon specific tasks for this
 		 * type of Agent
@@ -44,28 +44,32 @@ public class MinerAgent extends Agent {
 
 		// seek food if hungry
 		getFoodIfNecessary();
-		
-		//find building to work
-		if (factoryExists()){
+
+		// find building to work
+		if (factoryExists()) {
 			buildingWorked = getFactory();
 		}
-		
-		if (currentTask == null && !isWorking && factoryExists() && tasks.isEmpty()) {
+
+		if (currentTask == null && !isWorking && factoryExists()
+				&& tasks.isEmpty()) {
 			currentTask = new WorkNearbyBuildingTask(this, EBuilding.FACTORY,
 					new Point(getCurrentX(currentPosition),
 							getCurrentY(currentPosition)));
 			isWorking = true;
 		}
-		
-		if (isWorking && currentTask == null && buildingWorked != null && tasks.isEmpty() && inventory.getAmount(Resource.IRON)<5){
-//			currentTask = new HarvestTreeTask(this, findNearestTree(currentPosition), World.terrain);
+
+		if (isWorking && currentTask == null && buildingWorked != null
+				&& tasks.isEmpty() && inventory.getAmount(Resource.IRON) < 5) {
+			// currentTask = new HarvestTreeTask(this,
+			// findNearestTree(currentPosition), World.terrain);
 			currentTask = new GatherResources(Resource.IRON);
 			System.out.println("added gather iron");
 			taskTimer = 10;
 		}
-		
-		if (inventory.getAmount(Resource.IRON)>1 && factoryExists()){
-			currentTask = new GiveToBuilding(this, buildingWorked, Resource.IRON, 1);
+
+		if (inventory.getAmount(Resource.IRON) > 1 && factoryExists()) {
+			currentTask = new GiveToBuilding(this, buildingWorked,
+					Resource.IRON, 1);
 		}
 
 		// get task from list if agent doesn't have one
@@ -73,16 +77,20 @@ public class MinerAgent extends Agent {
 		// build hammer before building Building
 		if (currentTask instanceof GoMineAreaTask) {
 			((GoMineAreaTask) currentTask).setAgentSource(this);
-//		} else if(currentTask instanceof HarvestTreeTask) {
-//			((HarvestTreeTask) currentTask).setAgentSource(this); 
+			// } else if(currentTask instanceof HarvestTreeTask) {
+			// ((HarvestTreeTask) currentTask).setAgentSource(this);
 		} else if (currentTask instanceof BuildBuildingTask) {
+			if (hasTool(Tool.HAMMER)) {
+				workingTool = Tool.HAMMER;
+			}
+
 			((BuildBuildingTask) currentTask).setSourceAgent(this);
 			if (getInventory().getAmount(Resource.WOOD) < 5) {
 				tasks.add(currentTask);
 				currentTask = new HarvestTreeTask(this,
 						findNearestTree(currentPosition), World.terrain);
 				taskTimer = 10;
-			} else if (!hasTool(Tool.HAMMER)){
+			} else if (!hasTool(Tool.HAMMER)) {
 				tasks.add(currentTask);
 				currentTask = new CraftToolTask(Tool.HAMMER, this, new Point(
 						(int) currentPosition.getX(),
@@ -93,12 +101,15 @@ public class MinerAgent extends Agent {
 		} else if (currentTask instanceof ChangeTileTask) {
 			priorityResource = Resource.WOOD;
 			if (!passableTiles.contains(((ChangeTileTask) currentTask)
-					.getTileLocation().getY())){
-				Tile hereTile = World.terrain.getTile(currentTask.getPos().x, currentTask.getPos().y);
-				if(hereTile == Tile.Sky || hereTile == Tile.Wood || hereTile == Tile.Leaves) {
-//					((ChangeTileTask) currentTask).changeTileType(Tile.Sky);
+					.getTileLocation().getY())) {
+				Tile hereTile = World.terrain.getTile(currentTask.getPos().x,
+						currentTask.getPos().y);
+				if (hereTile == Tile.Sky || hereTile == Tile.Wood
+						|| hereTile == Tile.Leaves) {
+					// ((ChangeTileTask) currentTask).changeTileType(Tile.Sky);
 				} else {
-					((ChangeTileTask) currentTask).changeTileType(Tile.BackgroundDirt);
+					((ChangeTileTask) currentTask)
+							.changeTileType(Tile.BackgroundDirt);
 				}
 			}
 			if (currentTask.getPos().getY() < ((ChangeTileTask) currentTask)
@@ -119,8 +130,9 @@ public class MinerAgent extends Agent {
 							(int) ((ChangeTileTask) currentTask)
 									.getTileLocation().getX(),
 							(int) ((ChangeTileTask) currentTask)
-									.getTileLocation().getY() - i)) && !passableTiles.contains(World.terrain.getTile(
-											(int) ((ChangeTileTask) currentTask)
+									.getTileLocation().getY() - i))
+							&& !passableTiles.contains(World.terrain.getTile(
+									(int) ((ChangeTileTask) currentTask)
 											.getTileLocation().getX() - 1,
 									(int) ((ChangeTileTask) currentTask)
 											.getTileLocation().getY()))) {
@@ -135,19 +147,19 @@ public class MinerAgent extends Agent {
 					}
 				}
 			}
-		} 
+		}
 
-		if (currentTask instanceof GatherResources){
+		if (currentTask instanceof GatherResources) {
 			((GatherResources) currentTask).setAgentSource(this);
 		}
-		
-		//if all else fails: Wander
-		if (currentTask == null && randomProb(200)){
-			currentTask = new WanderTask(new Point(getCurrentX(currentPosition),
-					getCurrentY(currentPosition)));
+
+		// if all else fails: Wander
+		if (currentTask == null && randomProb(200)) {
+			currentTask = new WanderTask(new Point(
+					getCurrentX(currentPosition), getCurrentY(currentPosition)));
 			taskTimer = 10;
-			fatigue-= 5;
-			if (fatigue < 0){
+			fatigue -= 5;
+			if (fatigue < 0) {
 				fatigue = 0;
 			}
 		}
@@ -155,21 +167,20 @@ public class MinerAgent extends Agent {
 		executeCurrentTask();
 
 		updateMovement(currentPosition, movements);
-
 	}
-	
+
 	private Building getFactory() {
-		for (Entity b : World.buildings){
-			if (((Building) b).getType() == EBuilding.FACTORY){
-				return (Building)b;
+		for (Entity b : World.buildings) {
+			if (((Building) b).getType() == EBuilding.FACTORY) {
+				return (Building) b;
 			}
 		}
 		return null;
 	}
 
 	private boolean factoryExists() {
-		for (Entity b : World.buildings){
-			if (((Building) b).getType() == EBuilding.FACTORY){
+		for (Entity b : World.buildings) {
+			if (((Building) b).getType() == EBuilding.FACTORY) {
 				return true;
 			}
 		}

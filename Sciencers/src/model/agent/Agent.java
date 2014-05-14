@@ -31,13 +31,13 @@ public abstract class Agent implements Entity {
 	public final double SPEED = .1;
 	public final int CAPACITY = 5;
 	// every 100 ticks, hunger goes down
-	public final int HUNGER_SPEED = 100;
+	public final int HUNGER_SPEED = 150;
 	private final double GRAVITY_CONSTANT = .0581;
 	protected final double MAX_JUMP_VELOCITY = -.45;
 	protected final int SEEK_FOOD_HUNGER = 40;
 	protected final int MAX_FATIGUE = 100;
 	//
-	protected int hunger = 75;
+	protected int hunger = 100;
 	protected int fatigue = 0;
 	protected int blood = 100;
 	boolean isWorking = false;
@@ -57,7 +57,7 @@ public abstract class Agent implements Entity {
 	protected Inventory inventory;
 	protected ArrayList<Tile> passableTiles;
 	public Tool workingTool = null;
-	private Tool mainTool = null, secondaryTool = null;
+	protected Tool mainTool = null, secondaryTool = null;
 	public Resource priorityResource;
 
 	protected boolean dead = false;
@@ -210,6 +210,9 @@ public abstract class Agent implements Entity {
 				}
 			}
 		}
+		
+		if(!isWorking)
+			workingTool = null;
 	}
 
 	protected void resetAgent() {
