@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import model.Entity;
 import model.World;
 import model.agent.Agent;
+import model.building.Building;
 import model.building.EBuilding;
 import model.inventory.Resource;
 

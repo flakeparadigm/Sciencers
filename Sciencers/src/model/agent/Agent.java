@@ -36,7 +36,7 @@ public abstract class Agent implements Entity {
 	protected final int SEEK_FOOD_HUNGER = 500;
 	protected final int MAX_FATIGUE = 1000;
 	//
-	protected int hunger = 1000;
+	protected int hunger = 500;
 	protected int fatigue = 0;
 	protected int blood = 100;
 	boolean isWorking = false;

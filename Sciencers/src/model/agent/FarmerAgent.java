@@ -14,6 +14,7 @@ import model.task.BuildBuildingTask;
 import model.task.CraftToolTask;
 import model.task.GatherForBuildingTask;
 import model.task.GatherResources;
+import model.task.GetFromBuilding;
 import model.task.GiveToBuilding;
 import model.task.HarvestTreeTask;
 import model.task.WanderTask;
@@ -31,66 +32,78 @@ public class FarmerAgent extends Agent {
 	@Override
 	public void update() {
 		updateStats();
-		if(dead) {
+		if (dead) {
 			return;
 		}
-		
+
 		/*
 		 * The following code should be focused upon specific tasks for this
 		 * type of Agent
 		 */
 
-//		if (isWorking){
-//			taskTimer = 0;
-//		}
+		// if (isWorking){
+		// taskTimer = 0;
+		// }
 
 		// seek food if hungry
 		if (hunger < SEEK_FOOD_HUNGER && currentTask == null) {
-			if (findNearestTree(currentPosition) != null) {
-				currentTask = new HarvestTreeTask(this,
-						findNearestTree(currentPosition), World.terrain);
-				taskTimer = 10;
+			// if (findNearestTree(currentPosition) != null) {
+			// currentTask = new HarvestTreeTask(this,
+			// findNearestTree(currentPosition), World.terrain);
+			// taskTimer = 10;
+			// }
+			if (findClosestBuildingWithType(currentPosition, currentPosition,
+					Resource.FOOD) != null) {
+				Building foodBuilding = findClosestBuildingWithType(
+						currentPosition, currentPosition, Resource.FOOD);
+				currentTask = new GetFromBuilding(this, foodBuilding,
+						Resource.FOOD, 1);
+				hunger += 10;
+				if (foodBuilding.getInventory().getAmount(Resource.FOOD) > 10) {
+					foodBuilding.getInventory().changeAmount(Resource.FOOD, -1);
+				}
 			}
 		}
-		
-		if (currentTask == null && !isWorking && farmExists() && tasks.isEmpty()) {
+
+		if (currentTask == null && !isWorking && farmExists()
+				&& tasks.isEmpty()) {
 			currentTask = new WorkNearbyBuildingTask(this, EBuilding.FARM,
 					new Point(getCurrentX(currentPosition),
 							getCurrentY(currentPosition)));
 			isWorking = true;
 		}
-		
-		if (isWorking && currentTask == null && buildingWorked != null && tasks.isEmpty() && inventory.getAmount(Resource.FOOD)<5){
-			currentTask = new HarvestTreeTask(this, findNearestTree(currentPosition), World.terrain);
+
+		if (isWorking && currentTask == null && buildingWorked != null
+				&& tasks.isEmpty() && inventory.getAmount(Resource.FOOD) < 5) {
+			currentTask = new HarvestTreeTask(this,
+					findNearestTree(currentPosition), World.terrain);
 			taskTimer = 10;
 		}
-		
-		if (inventory.getAmount(Resource.FOOD)>3 && farmExists()){
-			currentTask = new GiveToBuilding(this, buildingWorked, Resource.FOOD, 3);
+
+		if (inventory.getAmount(Resource.FOOD) > 3 && farmExists()) {
+			currentTask = new GiveToBuilding(this, buildingWorked,
+					Resource.FOOD, 3);
 		}
-		//new HarvestTreeTask(this, new Point(getCurrentX(currentPosition), getCurrentY(currentPosition)), World.terrain)
+		// new HarvestTreeTask(this, new Point(getCurrentX(currentPosition),
+		// getCurrentY(currentPosition)), World.terrain)
 
 		// get task from list if agent doesn't have one
 		getNextTaskIfNotBusy(EAgent.FARMER);
-		
-		if (currentTask instanceof GatherResources){
+
+		if (currentTask instanceof GatherResources) {
 			((GatherResources) currentTask).setAgentSource(this);
 		}
-		
-//		if (currentTask instanceof GatherForBuildingTask){
-//			((GatherForBuildingTask) currentTask).setAgentSource(this);
-//		}
 
-		
-		
-		//if all else fails: Wander
-		if (currentTask == null && randomProb(200) && !isWorking){
-			currentTask = new WanderTask(new Point(getCurrentX(currentPosition),
-					getCurrentY(currentPosition)));
+		// if (currentTask instanceof GatherForBuildingTask){
+		// ((GatherForBuildingTask) currentTask).setAgentSource(this);
+		// }
+
+		// if all else fails: Wander
+		if (currentTask == null && randomProb(200) && !isWorking) {
+			currentTask = new WanderTask(new Point(
+					getCurrentX(currentPosition), getCurrentY(currentPosition)));
 			taskTimer = 10;
 		}
-		
-
 
 		executeCurrentTask();
 
@@ -99,8 +112,8 @@ public class FarmerAgent extends Agent {
 	}
 
 	private boolean farmExists() {
-		for (Entity b : World.buildings){
-			if (((Building) b).getType() == EBuilding.FARM){
+		for (Entity b : World.buildings) {
+			if (((Building) b).getType() == EBuilding.FARM) {
 				return true;
 			}
 		}

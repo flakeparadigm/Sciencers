@@ -44,11 +44,16 @@ public class MinerAgent extends Agent {
 
 		// seek food if hungry
 		if (hunger < SEEK_FOOD_HUNGER && currentTask == null) {
-			if (findNearestTree(currentPosition) != null) {
-				currentTask = new HarvestTreeTask(this,
-						findNearestTree(currentPosition), World.terrain);
-				taskTimer = 10;
-			}
+//			if (findNearestTree(currentPosition) != null) {
+//				currentTask = new HarvestTreeTask(this,
+//						findNearestTree(currentPosition), World.terrain);
+//				taskTimer = 10;
+//			}
+		}
+		
+		//find building to work
+		if (factoryExists()){
+			buildingWorked = getFactory();
 		}
 		
 		if (currentTask == null && !isWorking && factoryExists() && tasks.isEmpty()) {
@@ -61,6 +66,7 @@ public class MinerAgent extends Agent {
 		if (isWorking && currentTask == null && buildingWorked != null && tasks.isEmpty() && inventory.getAmount(Resource.IRON)<5){
 //			currentTask = new HarvestTreeTask(this, findNearestTree(currentPosition), World.terrain);
 			currentTask = new GatherResources(Resource.IRON);
+			System.out.println("added gather iron");
 			taskTimer = 10;
 		}
 		
@@ -154,6 +160,15 @@ public class MinerAgent extends Agent {
 
 	}
 	
+	private Building getFactory() {
+		for (Entity b : World.buildings){
+			if (((Building) b).getType() == EBuilding.FACTORY){
+				return (Building)b;
+			}
+		}
+		return null;
+	}
+
 	private boolean factoryExists() {
 		for (Entity b : World.buildings){
 			if (((Building) b).getType() == EBuilding.FACTORY){

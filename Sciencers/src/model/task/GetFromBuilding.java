@@ -31,6 +31,7 @@ public class GetFromBuilding implements Task {
 
 	@Override
 	public Point getPos() {
+		System.out.println(sinkBuilding.getPos());
 		return sinkBuilding.getPos();
 	}
 

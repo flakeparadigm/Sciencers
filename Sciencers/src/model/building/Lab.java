@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import model.Research;
 import model.agent.Agent;
 import model.inventory.Inventory;
+import model.inventory.Resource;
 
 public class Lab extends Building {
 	
@@ -15,6 +16,7 @@ public class Lab extends Building {
 	private final int BUILDING_WIDTH = 4;
 	private final int BUILDING_HEIGHT = 2; //?
 	private final int MAX_WORKERS = 5;
+	private Inventory inventory;
 //	private final int ITEMS_PER_UPDATE = 1;
 //	private final int CAPACITY = 0;
 	
@@ -28,6 +30,7 @@ public class Lab extends Building {
 	public Lab(Point pos) {
 		super(pos);
 		workers = new ArrayList<Agent>();
+		inventory = new Inventory(5, Resource.URANIUM);
 	}
 
 	@Override
@@ -42,7 +45,7 @@ public class Lab extends Building {
 
 	@Override
 	public Inventory getInventory() {
-		return null; //Lab shouldn't have an inventory
+		return inventory; //Lab has empty inventory
 	}
 
 	@Override
