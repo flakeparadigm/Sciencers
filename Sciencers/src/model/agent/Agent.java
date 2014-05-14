@@ -174,7 +174,10 @@ public abstract class Agent implements Entity {
 		}
 
 		if (tickCount % HUNGER_SPEED == 0) {
-			if(hunger <= 0) {
+			if(fatigue >= MAX_FATIGUE) {
+				blood -= 6;
+				hunger -= 6;
+			} else if (hunger <= 0){
 				blood -= 6;
 				fatigue += 5;
 			} else if (hunger <= 10 || fatigue >= MAX_FATIGUE) {
