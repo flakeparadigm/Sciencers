@@ -15,7 +15,7 @@ public class GameTick extends Thread {
 	boolean terminate = false;
 
 	Random rand = new Random();
-	private final int TRAGIC_EVENT_TIME = 2000;
+	private final int TRAGIC_EVENT_TIME = 10000;
 
 	public GameTick(ArrayList<Entity> entities, int tickTime) {
 		this.entities = entities;
@@ -45,8 +45,8 @@ public class GameTick extends Thread {
 							.println("1000 ticks since last count on this thread, "
 									+ count + " total");
 
-					if (count == TRAGIC_EVENT_TIME) {
-						// if(rand.nextInt(count) >= TRAGIC_EVENT_TIME) {
+					// if (count == TRAGIC_EVENT_TIME) {
+					if (rand.nextInt(10000) == 5000) {
 						World.rogueAttack();
 					}
 				}

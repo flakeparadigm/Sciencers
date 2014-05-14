@@ -1,7 +1,6 @@
 package model.agent;
 
 import java.awt.Point;
-import java.util.Random;
 import java.util.Stack;
 
 import model.Entity;
@@ -9,7 +8,6 @@ import model.PathFinder;
 import model.World;
 import model.building.Building;
 import model.building.Farm;
-import model.inventory.Resource;
 import model.inventory.Tool;
 import model.task.HarvestTreeTask;
 import model.task.RogueTask;
@@ -18,7 +16,6 @@ public class RogueAgent extends Agent {
 
 	private boolean killer = true;
 	private Entity prey;
-	private Random rand = new Random();
 
 	public RogueAgent(Point currentPosition) {
 		super(currentPosition);

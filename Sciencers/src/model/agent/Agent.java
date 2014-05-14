@@ -37,7 +37,7 @@ public abstract class Agent implements Entity {
 	protected final int SEEK_FOOD_HUNGER = 40;
 	protected final int MAX_FATIGUE = 100;
 	//
-	protected int hunger = 50;
+	protected int hunger = 75;
 	protected int fatigue = 0;
 	protected int blood = 100;
 	boolean isWorking = false;
@@ -63,6 +63,8 @@ public abstract class Agent implements Entity {
 	protected boolean dead = false;
 
 	protected int jumpTick = 0;
+
+	protected Random rand = new Random();
 
 	public Agent(Point currentPosition) {
 		MY_ID = currentId++;
@@ -95,13 +97,13 @@ public abstract class Agent implements Entity {
 				// if movements needs updated:
 				movements = goHere(currentPosition, currentTask.getPos());
 				if (movements.isEmpty() && currentTask != null) {
-					if (!rejectedLastTask){
-//						TaskList.addTask(currentTask, agentType);
+					if (!rejectedLastTask) {
+						// TaskList.addTask(currentTask, agentType);
 					} else {
 						setNull = true;
 						System.out.println("Trash task");
 					}
-					
+
 					rejectedLastTask = true;
 				} else {
 					rejectedLastTask = false;
@@ -123,7 +125,7 @@ public abstract class Agent implements Entity {
 		if (setNull) {
 			currentTask = null;
 		}
-		
+
 		getNextTaskIfNotBusy(agentType);
 	}
 
@@ -160,8 +162,8 @@ public abstract class Agent implements Entity {
 
 	protected void updateStats() {
 		// new agent death using flag variable
-		
-		if (blood <= 0 || hunger <=0) {
+
+		if (blood <= 0) {
 			dead = true;
 			AlertCollection.addAlert("An agent has died!");
 			return;
@@ -170,9 +172,12 @@ public abstract class Agent implements Entity {
 		if (hunger < 0.5 * SEEK_FOOD_HUNGER) {
 			AlertCollection.addAlert("An agent is starving! D:");
 		}
-		
+
 		if (tickCount % HUNGER_SPEED == 0) {
-			if(hunger <= 10 || fatigue >= MAX_FATIGUE) {
+			if(hunger <= 0) {
+				blood -= 6;
+				fatigue += 5;
+			} else if (hunger <= 10 || fatigue >= MAX_FATIGUE) {
 				blood--;
 				hunger -= 6;
 				fatigue += 3;
@@ -190,6 +195,17 @@ public abstract class Agent implements Entity {
 		if (taskTimer < -500) {
 			resetAgent();
 			taskTimer = 0;
+		}
+
+		if (!(this instanceof RogueAgent)) {
+			for (Entity e : World.agents) {
+				boolean nearby = (Math.abs(e.getPos().getX()
+						- currentPosition.getX()) <= 1)
+						&& (Math.abs(e.getPos().getY() - currentPosition.getY()) <= 1);
+				if (nearby && e instanceof RogueAgent) {
+					attack((Agent) e, rand.nextInt(2));
+				}
+			}
 		}
 	}
 
@@ -426,7 +442,7 @@ public abstract class Agent implements Entity {
 			}
 		}
 	}
-	
+
 	protected Point findNearestTree(Point2D.Double currentPosition) {
 		if (currentPosition.equals(Tile.Wood)
 				|| currentPosition.equals(Tile.Leaves)) {
@@ -565,29 +581,27 @@ public abstract class Agent implements Entity {
 		inventory.changeAmount(tool, 1);
 		// TODO handle overfilling inventory
 	}
-	
+
 	public void attack(Agent target, int damage) {
 		target.hurt(damage);
 	}
 
 	private void hurt(int damage) {
-		System.out.println("Ouch! -" + damage + " >> " + blood);
 		blood -= damage;
 	}
 
 	public boolean isDead() {
 		return dead;
 	}
-	
-	public void setDead(){
+
+	public void setDead() {
 		dead = true;
 	}
 
 	public boolean randomProb(int probability) {
-		Random r = new Random();
 		int Low = 0;
 		int High = probability;
-		int R = r.nextInt(High - Low) + Low;
+		int R = rand.nextInt(High - Low) + Low;
 		if (R == 0) {
 			return true;
 		}
@@ -605,8 +619,8 @@ public abstract class Agent implements Entity {
 		// TODO Auto-generated method stub
 		return fatigue;
 	}
-	
-	public int getBlood(){
+
+	public int getBlood() {
 		return blood;
 	}
 
