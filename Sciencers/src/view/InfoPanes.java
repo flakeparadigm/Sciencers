@@ -253,7 +253,7 @@ public class InfoPanes extends JPanel {
 
 			gatherButton = new JButton("Gather");
 			gatherButton.addActionListener(new ButtonListener());
-			add(gatherButton);
+//			add(gatherButton);
 
 		}
 
