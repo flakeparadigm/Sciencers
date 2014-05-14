@@ -39,11 +39,13 @@ public class UpperStatsView extends JPanel {
 	private JButton fireButton6;
 	private JButton fireButton7;
 
-	private final int BUTTON_OFFSET = 100;
+	private final int BUTTON_OFFSET = 300;
 	// button width is 80
 	private final int HUNGER_OFFSET = 0;
-	private final int INV_OFFSET = 210;
-	private final int TYPE_OFFSET = 180;
+	private final int INV_OFFSET = 410;
+	private final int TYPE_OFFSET = 380;
+	private final int FATIGUE_OFFSET = 100;
+	private final int BLOOD_OFFSET = 200;
 
 	public UpperStatsView() {
 		agents = new ArrayList<Entity>();
@@ -132,10 +134,16 @@ public class UpperStatsView extends JPanel {
 			g2.drawString(((Agent) agents.get(i)).getType().getName()
 					.substring(0, 1), TYPE_OFFSET, i * WorldView.TILE_SIZE + 56);
 			g2.drawString("" + ((Agent) agents.get(i)).getHunger(), HUNGER_OFFSET, i * WorldView.TILE_SIZE + 56);
-			
+			g2.drawString("" + ((Agent) agents.get(i)).getFatigue(), FATIGUE_OFFSET, i * WorldView.TILE_SIZE + 56);
+			g2.drawString("" + ((Agent) agents.get(i)).getBlood(), BLOOD_OFFSET, i * WorldView.TILE_SIZE + 56);
+
 			//headings:
 			g2.setFont(new Font("Verdana", Font.PLAIN, 15));
 			g2.drawString("Hunger", HUNGER_OFFSET, 35);
+			g2.drawString("Fatigue", FATIGUE_OFFSET, 35);
+			g2.drawString("Blood", BLOOD_OFFSET, 35);
+
+			
 
 			
 			

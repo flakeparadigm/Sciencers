@@ -146,6 +146,7 @@ public class MinerAgent extends Agent {
 			currentTask = new WanderTask(new Point(getCurrentX(currentPosition),
 					getCurrentY(currentPosition)));
 			taskTimer = 10;
+			fatigue--;
 		}
 
 		executeCurrentTask();

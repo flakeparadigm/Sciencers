@@ -601,4 +601,13 @@ public abstract class Agent implements Entity {
 		return hunger;
 	}
 
+	public int getFatigue() {
+		// TODO Auto-generated method stub
+		return fatigue;
+	}
+	
+	public int getBlood(){
+		return blood;
+	}
+
 }
