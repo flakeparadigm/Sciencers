@@ -46,24 +46,7 @@ public class FarmerAgent extends Agent {
 		// }
 
 		// seek food if hungry
-		if (hunger < SEEK_FOOD_HUNGER && currentTask == null) {
-			// if (findNearestTree(currentPosition) != null) {
-			// currentTask = new HarvestTreeTask(this,
-			// findNearestTree(currentPosition), World.terrain);
-			// taskTimer = 10;
-			// }
-			if (findClosestBuildingWithType(currentPosition, currentPosition,
-					Resource.FOOD) != null) {
-				Building foodBuilding = findClosestBuildingWithType(
-						currentPosition, currentPosition, Resource.FOOD);
-				currentTask = new GetFromBuilding(this, foodBuilding,
-						Resource.FOOD, 1);
-				hunger += 10;
-				if (foodBuilding.getInventory().getAmount(Resource.FOOD) > 10) {
-					foodBuilding.getInventory().changeAmount(Resource.FOOD, -1);
-				}
-			}
-		}
+		getFoodIfNecessary();
 
 		if (currentTask == null && !isWorking && farmExists()
 				&& tasks.isEmpty()) {
@@ -110,6 +93,7 @@ public class FarmerAgent extends Agent {
 		updateMovement(currentPosition, movements);
 
 	}
+
 
 	private boolean farmExists() {
 		for (Entity b : World.buildings) {

@@ -280,7 +280,7 @@ public class InfoPanes extends JPanel {
 					WorldView.selectionPanel.addBuilding(selectedBuilding);
 					return;
 				} else if (e.getSource() == hireButton
-						&& World.agents.size() < 7) {
+						&& World.agents.size() < (7 + numberOfDead())) {
 					if (selectedAgent.equals("Select Dood")
 							|| selectedAgent.equals("Generic"))// TODO
 						return;
@@ -299,6 +299,16 @@ public class InfoPanes extends JPanel {
 				} else
 					System.out
 							.println("ButtonListener registered a click from a button that doesn't exist!");
+			}
+
+			private int numberOfDead() {
+				int counter = 0;
+				for (Entity a: World.agents){
+					if (((Agent)a).isDead()){
+						counter++; 
+					}
+				}
+				return counter;
 			}
 		}
 	}

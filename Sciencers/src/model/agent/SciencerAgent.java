@@ -37,13 +37,7 @@ public class SciencerAgent extends Agent{
 		}
 
 		// seek food if hungry
-		if (hunger < SEEK_FOOD_HUNGER && currentTask == null) {
-//			if (findNearestTree(currentPosition) != null) {
-//				currentTask = new HarvestTreeTask(this,
-//						findNearestTree(currentPosition), World.terrain);
-//				taskTimer = 10;
-//			}
-		}
+		getFoodIfNecessary();
 		
 		Building lab = null;
 		

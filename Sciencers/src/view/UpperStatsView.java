@@ -41,7 +41,7 @@ public class UpperStatsView extends JPanel {
 
 	private final int BUTTON_OFFSET = 100;
 	// button width is 80
-	private final int NAME_OFFSET = 0;
+	private final int HUNGER_OFFSET = 0;
 	private final int INV_OFFSET = 210;
 	private final int TYPE_OFFSET = 180;
 
@@ -131,7 +131,9 @@ public class UpperStatsView extends JPanel {
 			g2.setFont(new Font("Verdana", Font.BOLD, 20));
 			g2.drawString(((Agent) agents.get(i)).getType().getName()
 					.substring(0, 1), TYPE_OFFSET, i * WorldView.TILE_SIZE + 56);
-
+			g2.drawString("" + ((Agent) agents.get(i)).getHunger(), HUNGER_OFFSET, i * WorldView.TILE_SIZE + 56);
+			
+			
 			setCorrectButtonsVisible();
 		}
 	}

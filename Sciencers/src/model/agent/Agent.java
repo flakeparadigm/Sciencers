@@ -18,6 +18,7 @@ import model.building.Building;
 import model.inventory.Inventory;
 import model.inventory.Resource;
 import model.inventory.Tool;
+import model.task.GetFromBuilding;
 import model.task.HarvestTreeTask;
 import model.task.Task;
 import model.task.TaskList;
@@ -33,10 +34,10 @@ public abstract class Agent implements Entity {
 	public final int HUNGER_SPEED = 100;
 	private final double GRAVITY_CONSTANT = .0581;
 	protected final double MAX_JUMP_VELOCITY = -.45;
-	protected final int SEEK_FOOD_HUNGER = 500;
-	protected final int MAX_FATIGUE = 1000;
+	protected final int SEEK_FOOD_HUNGER = 40;
+	protected final int MAX_FATIGUE = 100;
 	//
-	protected int hunger = 500;
+	protected int hunger = 50;
 	protected int fatigue = 0;
 	protected int blood = 100;
 	boolean isWorking = false;
@@ -160,7 +161,7 @@ public abstract class Agent implements Entity {
 	protected void updateStats() {
 		// new agent death using flag variable
 		
-		if (blood <= 0) {
+		if (blood <= 0 || hunger <=0) {
 			dead = true;
 			AlertCollection.addAlert("An agent has died!");
 			return;
@@ -405,6 +406,27 @@ public abstract class Agent implements Entity {
 		return null;
 	}
 
+	protected void getFoodIfNecessary() {
+		if (hunger < SEEK_FOOD_HUNGER && currentTask == null) {
+			// if (findNearestTree(currentPosition) != null) {
+			// currentTask = new HarvestTreeTask(this,
+			// findNearestTree(currentPosition), World.terrain);
+			// taskTimer = 10;
+			// }
+			if (findClosestBuildingWithType(currentPosition, currentPosition,
+					Resource.FOOD) != null) {
+				Building foodBuilding = findClosestBuildingWithType(
+						currentPosition, currentPosition, Resource.FOOD);
+				currentTask = new GetFromBuilding(this, foodBuilding,
+						Resource.FOOD, 1);
+				hunger += 5;
+				if (foodBuilding.getInventory().getAmount(Resource.FOOD) > 10) {
+					foodBuilding.getInventory().changeAmount(Resource.FOOD, -1);
+				}
+			}
+		}
+	}
+	
 	protected Point findNearestTree(Point2D.Double currentPosition) {
 		if (currentPosition.equals(Tile.Wood)
 				|| currentPosition.equals(Tile.Leaves)) {
@@ -573,5 +595,10 @@ public abstract class Agent implements Entity {
 	}
 
 	public abstract String getUserFriendlyName();
+
+	public int getHunger() {
+		// TODO Auto-generated method stub
+		return hunger;
+	}
 
 }
