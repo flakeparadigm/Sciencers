@@ -308,6 +308,7 @@ public class InfoPanes extends JPanel {
 						counter++; 
 					}
 				}
+				System.out.println("Dead:" + counter);
 				return counter;
 			}
 		}

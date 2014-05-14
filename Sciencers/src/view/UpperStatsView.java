@@ -133,6 +133,11 @@ public class UpperStatsView extends JPanel {
 					.substring(0, 1), TYPE_OFFSET, i * WorldView.TILE_SIZE + 56);
 			g2.drawString("" + ((Agent) agents.get(i)).getHunger(), HUNGER_OFFSET, i * WorldView.TILE_SIZE + 56);
 			
+			//headings:
+			g2.setFont(new Font("Verdana", Font.PLAIN, 15));
+			g2.drawString("Hunger", HUNGER_OFFSET, 35);
+
+			
 			
 			setCorrectButtonsVisible();
 		}
