@@ -43,14 +43,16 @@ public class InfoPanes extends JPanel {
 
 	private DefaultListModel<String> taskListModel = new DefaultListModel<String>();
 	private JList<String> taskList = new JList<String>(taskListModel);
-	
+
 	private PlayerButtonsPane playerButtonsPane;
-	private TaskPane genericTaskPane, farmerTaskPane, minerTaskPane, sciencerTaskPane;
+	private TaskPane genericTaskPane, farmerTaskPane, minerTaskPane,
+			sciencerTaskPane;
 	private StatsPane statsPane;
 	private AlertsPane alertsPane;
 	private static int researchVal = 0;
-	
-	private JScrollPane genericTaskScroller, farmerTaskScroller, sciencerTaskScroller, minerTaskScroller, alertsScroller;
+
+	private JScrollPane genericTaskScroller, farmerTaskScroller,
+			sciencerTaskScroller, minerTaskScroller, alertsScroller;
 
 	private final int INFO_PANE_SIZE = 200;
 	// Panes
@@ -67,16 +69,17 @@ public class InfoPanes extends JPanel {
 		this.setLayout(null);
 
 		int xTemp = 0; // keeps track of assignment position for each new panel
-		
+
 		playerButtonsPane = new PlayerButtonsPane();
 		playerButtonsPane.setBorder(null);
 		playerButtonsPane.setOpaque(false);
 		this.add(playerButtonsPane);
-		playerButtonsPane.setSize(PLAYER_BUTTONS_WIDTH + 30, PLAYER_BUTTONS_WIDTH);
+		playerButtonsPane.setSize(PLAYER_BUTTONS_WIDTH + 30,
+				PLAYER_BUTTONS_WIDTH);
 		playerButtonsPane.setLocation(xTemp, 0);
 
 		xTemp += playerButtonsPane.getWidth() + 10;
-		
+
 		// Stats Pane
 		statsPane = new StatsPane();
 		statsPane.setBorder(null);
@@ -103,7 +106,7 @@ public class InfoPanes extends JPanel {
 						alertsScroller.repaint();
 					}
 				});
-		
+
 		xTemp += alertsScroller.getWidth() + 10;
 
 		// Generic Task Pane
@@ -112,7 +115,7 @@ public class InfoPanes extends JPanel {
 		genericTaskScroller.setViewportView(genericTaskPane);
 		genericTaskScroller.setOpaque(false);
 		genericTaskScroller.setBorder(null);
-//		this.add(genericTaskScroller);
+		// this.add(genericTaskScroller);
 		genericTaskScroller.setSize(TASK_BOX_WIDTH + 30, INFO_PANE_SIZE);
 		genericTaskScroller.setLocation(xTemp, 0);
 
@@ -125,13 +128,13 @@ public class InfoPanes extends JPanel {
 				});
 
 		xTemp += genericTaskScroller.getWidth() + 10;
-		
+
 		farmerTaskScroller = new JScrollPane();
 		farmerTaskPane = new TaskPane(EAgent.FARMER);
 		farmerTaskScroller.setViewportView(farmerTaskPane);
 		farmerTaskScroller.setOpaque(false);
 		farmerTaskScroller.setBorder(null);
-//		this.add(farmerTaskScroller);
+		// this.add(farmerTaskScroller);
 		farmerTaskScroller.setSize(TASK_BOX_WIDTH + 30, INFO_PANE_SIZE);
 		farmerTaskScroller.setLocation(xTemp, 0);
 
@@ -142,15 +145,15 @@ public class InfoPanes extends JPanel {
 						farmerTaskScroller.repaint();
 					}
 				});
-		
+
 		xTemp += farmerTaskScroller.getWidth() + 10;
-		
+
 		minerTaskScroller = new JScrollPane();
 		minerTaskPane = new TaskPane(EAgent.MINER);
 		minerTaskScroller.setViewportView(minerTaskPane);
 		minerTaskScroller.setOpaque(false);
 		minerTaskScroller.setBorder(null);
-//		this.add(minerTaskScroller);
+		// this.add(minerTaskScroller);
 		minerTaskScroller.setSize(TASK_BOX_WIDTH + 30, INFO_PANE_SIZE);
 		minerTaskScroller.setLocation(xTemp, 0);
 
@@ -163,13 +166,13 @@ public class InfoPanes extends JPanel {
 				});
 
 		xTemp += minerTaskScroller.getWidth() + 10;
-		
+
 		sciencerTaskScroller = new JScrollPane();
 		sciencerTaskPane = new TaskPane(EAgent.SCIENCER);
 		sciencerTaskScroller.setViewportView(sciencerTaskPane);
 		sciencerTaskScroller.setOpaque(false);
 		sciencerTaskScroller.setBorder(null);
-//		this.add(sciencerTaskScroller);
+		// this.add(sciencerTaskScroller);
 		sciencerTaskScroller.setSize(TASK_BOX_WIDTH + 30, INFO_PANE_SIZE);
 		sciencerTaskScroller.setLocation(xTemp, 0);
 
@@ -180,12 +183,12 @@ public class InfoPanes extends JPanel {
 						sciencerTaskScroller.repaint();
 					}
 				});
-		
+
 		// make sure to increment xTemp before each new panel
-		
-//		farmerTaskPane.setVisible(false);
-//		minerTaskPane.setVisible(false);
-//		sciencerTaskPane.setVisible(false);
+
+		// farmerTaskPane.setVisible(false);
+		// minerTaskPane.setVisible(false);
+		// sciencerTaskPane.setVisible(false);
 	}
 
 	public void performUpdate() {
@@ -196,117 +199,123 @@ public class InfoPanes extends JPanel {
 		statsPane.performUpdate();
 		alertsPane.performUpdate();
 	}
-	
+
 	private class PlayerButtonsPane extends JPanel {
-	
+
 		private JComboBox<String> buildMenu;
 		private JButton buildButton;
 		private JComboBox<String> hireMenu;
 		private JButton hireButton;
 		private JButton mineButton;
 		private JButton gatherButton;
-		
+
 		private String selectedBuilding = "Select Building";
 		private String selectedAgent;
-		
+
 		public PlayerButtonsPane() {
 			this.setLayout(new GridLayout(6, 1));
 			this.setBackground(new Color(0, 0, 0, 0));
 			setUpButtons();
 		}
-		
+
 		private void setUpButtons() {
 
 			buildMenu = new JComboBox<String>();
 			buildMenu.addItem("Select Building");
-			for(EBuilding b : EBuilding.values()) {
-				buildMenu.addItem(b.getName()); //TODO make this proper case instead of all caps
+			for (EBuilding b : EBuilding.values()) {
+				buildMenu.addItem(b.getName()); // TODO make this proper case
+												// instead of all caps
 			}
 			buildMenu.addActionListener(new MenuListener());
 			add(buildMenu);
-			
+
 			buildButton = new JButton("BUILD!");
 			buildButton.addActionListener(new ButtonListener());
 			add(buildButton);
-			
+
 			hireMenu = new JComboBox<String>();
 			hireMenu.addItem("Select Dood");
-			for(EAgent a : EAgent.values()) {
-				if(a != EAgent.GENERIC)
-					hireMenu.addItem(a.getName()); //TODO make pretty
+			for (EAgent a : EAgent.values()) {
+				if (a != EAgent.GENERIC)
+					hireMenu.addItem(a.getName()); // TODO make pretty
 			}
 			hireMenu.addActionListener(new MenuListener());
 			add(hireMenu);
-			
-			hireButton = new JButton("HIRE! - 100 Research");
+
+			hireButton = new JButton("HIRE! - 30 Research");
 			hireButton.addActionListener(new ButtonListener());
 			add(hireButton);
-			
+
 			mineButton = new JButton("Go mining!");
 			mineButton.addActionListener(new ButtonListener());
 			add(mineButton);
-			
+
 			gatherButton = new JButton("Gather");
 			gatherButton.addActionListener(new ButtonListener());
 			add(gatherButton);
-			
+
 		}
-		
+
 		private class MenuListener implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(e.getSource() == buildMenu) {
-					selectedBuilding = (String)buildMenu.getSelectedItem();
-				}
-				else if(e.getSource() == hireMenu) {
-					selectedAgent = (String)hireMenu.getSelectedItem();
-				}
-				else System.out.println("MenuListener registered a click from a menu that doesn't exist!");
+				if (e.getSource() == buildMenu) {
+					selectedBuilding = (String) buildMenu.getSelectedItem();
+				} else if (e.getSource() == hireMenu) {
+					selectedAgent = (String) hireMenu.getSelectedItem();
+				} else
+					System.out
+							.println("MenuListener registered a click from a menu that doesn't exist!");
 			}
 		}
-		
+
 		private class ButtonListener implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(e.getSource() == buildButton) {
-					if(selectedBuilding.equals("Select Building"))
-						return;					
-					
+				if (e.getSource() == buildButton) {
+					if (selectedBuilding.equals("Select Building"))
+						return;
+
 					WorldView.selectionPanel.addBuilding(selectedBuilding);
 					return;
-				}
-				else if(e.getSource() == hireButton && World.agents.size() < 7) {
-					if(selectedAgent.equals("Select Dood") || selectedAgent.equals("Generic"))//TODO
+				} else if (e.getSource() == hireButton
+						&& World.agents.size() < 7) {
+					if (selectedAgent.equals("Select Dood")
+							|| selectedAgent.equals("Generic"))// TODO
 						return;
-					
-					WorldView.selectionPanel.addAgent(selectedAgent);
+					if (World.playerScience > 30) {
+						WorldView.selectionPanel.addAgent(selectedAgent);
+						World.playerScience -= 30;
+					}
 					return;
-				}
-				else if(e.getSource() == mineButton) {			
+				} else if (e.getSource() == mineButton) {
 					WorldView.selectionPanel.mineArea();
 					return;
-				} if (e.getSource() == gatherButton) {
-					TaskList.addTask(new GatherResources(Resource.IRON), EAgent.MINER);
 				}
-				else System.out.println("ButtonListener registered a click from a button that doesn't exist!");
+				if (e.getSource() == gatherButton) {
+					TaskList.addTask(new GatherResources(Resource.IRON),
+							EAgent.MINER);
+				} else
+					System.out
+							.println("ButtonListener registered a click from a button that doesn't exist!");
 			}
 		}
 	}
 
 	private class TaskPane extends JPanel {
-		
+
 		private EAgent a;
 
 		public TaskPane(EAgent a) {
 			this.setLayout(new FlowLayout());
 			this.setBackground(new Color(0, 0, 0, 0));
-			
+
 			this.a = a;
-			
+
 			JLabel nameLabel = new JLabel(a.getName() + " Tasks");
 			nameLabel.setForeground(Color.white);
 			this.add(nameLabel);
-			
+
 			setupBoxes();
 			this.setPreferredSize(new Dimension(TASK_BOX_WIDTH,
 					(TASK_BOX_HEIGHT + 5) * this.getComponentCount() + 5));
@@ -315,10 +324,10 @@ public class InfoPanes extends JPanel {
 		public void performUpdate() {
 			setupBoxes();
 		}
-		
+
 		public void setupBoxes() {
-			for(Task t : TaskList.getList(a)) {
-				if(t.shouldBeSeen())
+			for (Task t : TaskList.getList(a)) {
+				if (t.shouldBeSeen())
 					this.add(new TaskBox(t));
 			}
 		}
@@ -357,28 +366,29 @@ public class InfoPanes extends JPanel {
 	}
 
 	private class StatsPane extends JPanel {
-		
+
 		JLabel lAgents, lResearch, lBuildings;
+
 		public StatsPane() {
 			this.setLayout(new FlowLayout());
 			this.setBackground(Color.BLACK);
-			
+
 			lAgents = new JLabel();
 			lResearch = new JLabel();
 			lBuildings = new JLabel();
-			
+
 			performUpdate();
-			
+
 			lAgents.setForeground(Color.white);
 			this.add(lAgents);
-			
+
 			lResearch.setForeground(Color.white);
 			this.add(lResearch);
-			
+
 			lBuildings.setForeground(Color.white);
 			this.add(lBuildings);
 		}
-		
+
 		public void performUpdate() {
 			lAgents.setText("Agents: " + World.agents.size());
 			lResearch.setText("Research: " + researchVal);
@@ -391,7 +401,7 @@ public class InfoPanes extends JPanel {
 		public AlertsPane() {
 			this.setLayout(new FlowLayout());
 			this.setBackground(new Color(0, 0, 0, 0));
-			
+
 			performUpdate();
 
 			this.setPreferredSize(new Dimension(ALERTS_BOX_WIDTH,
@@ -399,10 +409,10 @@ public class InfoPanes extends JPanel {
 		}
 
 		public void performUpdate() {
-			
-//			for(Alert a : AlertCollection.getAlerts()) {
-//				this.add(new AlertsBox(a.toString()));
-//			}
+
+			// for(Alert a : AlertCollection.getAlerts()) {
+			// this.add(new AlertsBox(a.toString()));
+			// }
 		}
 
 		@Override
@@ -421,7 +431,8 @@ public class InfoPanes extends JPanel {
 			alert = a;
 			this.setBackground(new Color(255, 255, 255, 100));
 			this.setSize(new Dimension(ALERTS_BOX_WIDTH, ALERTS_BOX_HEIGHT));
-			this.setPreferredSize(new Dimension(ALERTS_BOX_WIDTH, ALERTS_BOX_HEIGHT));
+			this.setPreferredSize(new Dimension(ALERTS_BOX_WIDTH,
+					ALERTS_BOX_HEIGHT));
 		}
 
 		@Override

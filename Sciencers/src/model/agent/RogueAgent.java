@@ -62,8 +62,6 @@ public class RogueAgent extends Agent {
 				// taskTimer = 10;
 			}
 		}
-
-		jumpTick = 1;
 			
 		executeCurrentTask();
 		
