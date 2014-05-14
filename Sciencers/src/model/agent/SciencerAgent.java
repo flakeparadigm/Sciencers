@@ -81,7 +81,10 @@ public class SciencerAgent extends Agent{
 					getCurrentY(currentPosition)));
 			isWorking = false;
 			taskTimer = 10;
-			fatigue --;
+			fatigue -=5;
+			if (fatigue < 0){
+				fatigue = 0;
+			}
 		}
 		
 

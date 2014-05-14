@@ -177,7 +177,7 @@ public abstract class Agent implements Entity {
 				hunger -= 6;
 				fatigue += 3;
 			} else if (isWorking) {
-				hunger -= 6;
+				hunger -= 3;
 				fatigue += 3;
 			} else {
 				hunger -= 1;

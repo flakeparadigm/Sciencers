@@ -86,7 +86,10 @@ public class FarmerAgent extends Agent {
 			currentTask = new WanderTask(new Point(
 					getCurrentX(currentPosition), getCurrentY(currentPosition)));
 			taskTimer = 10;
-			fatigue--;
+			fatigue -= 5;
+			if (fatigue < 0){
+				fatigue = 0;
+			}
 		}
 
 		executeCurrentTask();
