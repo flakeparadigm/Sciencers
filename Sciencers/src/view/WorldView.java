@@ -7,6 +7,8 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -60,7 +62,7 @@ public class WorldView extends JFrame {
 	public final static int Y_MAP_SIZE = 200;
 	public final static int TILE_SIZE = 16;
 	public final static int INFO_PANE_SIZE = 200;
-	public final static int X_UPPER_STATS_SIZE = 500;
+	public final static int X_UPPER_STATS_SIZE = 600;
 	public final static int Y_UPPER_STATS_SIZE = 260;
 
 	private static final String SAVE_LOCATION = "world.save";
@@ -97,14 +99,14 @@ public class WorldView extends JFrame {
 		gameWindow = this;
 		setupObservers();
 		setupProperties();
-		
+
 		// make new world or load save
 		if (newWorld) {
 			makeNewWorld();
 		} else {
 			loadSavedWorld();
 		}
-		
+
 		addComponents();
 		registerListeners();
 
@@ -136,17 +138,20 @@ public class WorldView extends JFrame {
 
 		System.out.println("Properties set");
 
-		// this.addComponentListener(new ComponentAdapter() {
-		// @Override
+		this.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				infoPanes.setSize(gameWindow.getWidth(), INFO_PANE_SIZE);
+				infoPanes.setLocation(0, gameWindow.getHeight()
+						- INFO_PANE_SIZE - 39);
 
-		// public void componentResized(ComponentEvent e)
-		// {
-		// infoPanes.setSize(gameWindow.getWidth(), INFO_PANE_SIZE);
-		// infoPanes.setLocation(0,gameWindow.getHeight()-INFO_PANE_SIZE-39);
-		// infoPanes.repaint();
-		// gameWindow.repaint();
-		// }
-		// });
+				upperStatsPanel.setLocation(gameWindow.getWidth()
+						- X_UPPER_STATS_SIZE, gameWindow.getHeight()
+						- Y_UPPER_STATS_SIZE);
+				infoPanes.repaint();
+				gameWindow.repaint();
+			}
+		});
 	}
 
 	// private void setupModel() {
@@ -498,7 +503,7 @@ public class WorldView extends JFrame {
 
 			World newWorld = (World) loadWorld.readObject();
 			newWorld.loadSaveables();
-			world=newWorld;
+			world = newWorld;
 
 			loadWorld.close();
 			loadFile.close();

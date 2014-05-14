@@ -23,6 +23,7 @@ import model.agent.Agent;
 import model.agent.EAgent;
 import model.inventory.Inventory;
 import model.inventory.Resource;
+import model.inventory.Tool;
 import model.task.GatherResources;
 import model.task.TaskList;
 
@@ -30,6 +31,7 @@ public class UpperStatsView extends JPanel {
 	ArrayList<Entity> agents;
 	ArrayList<Inventory> inventories;
 	private HashMap<Tile, Image> textures;
+	private HashMap<Tool, Image> tools;
 
 	private JButton fireButton1;
 	private JButton fireButton2;
@@ -39,23 +41,30 @@ public class UpperStatsView extends JPanel {
 	private JButton fireButton6;
 	private JButton fireButton7;
 
-	private final int BUTTON_OFFSET = 300;
+	private final int TOOLS_OFFSET = 0;
+	private final int HUNGER_OFFSET = 100;
+	private final int FATIGUE_OFFSET = 200;
+	private final int BLOOD_OFFSET = 300;
+	private final int BUTTON_OFFSET = 375;
 	// button width is 80
-	private final int HUNGER_OFFSET = 0;
-	private final int INV_OFFSET = 410;
-	private final int TYPE_OFFSET = 380;
-	private final int FATIGUE_OFFSET = 100;
-	private final int BLOOD_OFFSET = 200;
+	private final int TYPE_OFFSET = 480;
+	private final int INV_OFFSET = 510;
 
 	public UpperStatsView() {
 		agents = new ArrayList<Entity>();
 		inventories = new ArrayList<Inventory>();
 		textures = new HashMap<Tile, Image>();
+		tools = new HashMap<Tool, Image>();
 		try {
 			for (Tile t : Tile.values()) {
 				String s = "imgs/" + t + ".png";
 				Image i = ImageIO.read(new File(s));
 				textures.put(t, i);
+			}
+			for(Tool t : Tool.values()) {
+				String s = "imgs/" + t + ".png";
+				Image i = ImageIO.read(new File(s));
+				tools.put(t, i);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -123,6 +132,7 @@ public class UpperStatsView extends JPanel {
 		Graphics2D g2 = (Graphics2D) g;
 		// g2.drawString("Inventories:", 0, 10);
 		for (int i = 0; i < agents.size(); i++) {
+			Agent a = (Agent) agents.get(i);
 			ArrayList agentInv = changeToList(inventories.get(i));
 			for (int j = 0; j < agentInv.size(); j++) {
 				g2.drawImage(textures.get(agentInv.get(j)), INV_OFFSET + j
@@ -131,14 +141,22 @@ public class UpperStatsView extends JPanel {
 			}
 			g2.setColor(Color.WHITE);
 			g2.setFont(new Font("Verdana", Font.BOLD, 20));
-			g2.drawString(((Agent) agents.get(i)).getType().getName()
+			g2.drawString(a.getType().getName()
 					.substring(0, 1), TYPE_OFFSET, i * WorldView.TILE_SIZE + 56);
-			g2.drawString("" + ((Agent) agents.get(i)).getHunger(), HUNGER_OFFSET, i * WorldView.TILE_SIZE + 56);
-			g2.drawString("" + ((Agent) agents.get(i)).getFatigue(), FATIGUE_OFFSET, i * WorldView.TILE_SIZE + 56);
-			g2.drawString("" + ((Agent) agents.get(i)).getBlood(), BLOOD_OFFSET, i * WorldView.TILE_SIZE + 56);
+			g2.drawString("" + a.getHunger(), HUNGER_OFFSET, i * WorldView.TILE_SIZE + 56);
+			g2.drawString("" + a.getFatigue(), FATIGUE_OFFSET, i * WorldView.TILE_SIZE + 56);
+			g2.drawString("" + a.getBlood(), BLOOD_OFFSET, i * WorldView.TILE_SIZE + 56);
+			if(a.mainTool != null) {
+				g2.drawImage(tools.get(a.mainTool), TOOLS_OFFSET, i * WorldView.TILE_SIZE+5, null);
+			}
+			if(a.secondaryTool != null) {
+				g2.drawImage(tools.get(a.secondaryTool), TOOLS_OFFSET + 25, i * WorldView.TILE_SIZE+5, null);
+			}
+			
 
 			//headings:
 			g2.setFont(new Font("Verdana", Font.PLAIN, 15));
+			g2.drawString("Tools", TOOLS_OFFSET, 35);
 			g2.drawString("Hunger", HUNGER_OFFSET, 35);
 			g2.drawString("Fatigue", FATIGUE_OFFSET, 35);
 			g2.drawString("Blood", BLOOD_OFFSET, 35);
@@ -263,19 +281,6 @@ public class UpperStatsView extends JPanel {
 		}
 
 		repaint();
-	}
-	
-	private class FireButton extends JButton {
-		private Agent agent;
-		
-		FireButton(Agent a) {
-			super("Fire Me!");
-			agent = a;
-		}
-		
-		public Agent firedAgent() {
-			return agent;
-		}
 	}
 
 }

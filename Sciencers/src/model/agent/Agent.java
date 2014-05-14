@@ -18,6 +18,7 @@ import model.building.Building;
 import model.inventory.Inventory;
 import model.inventory.Resource;
 import model.inventory.Tool;
+import model.task.CraftToolTask;
 import model.task.GetFromBuilding;
 import model.task.HarvestTreeTask;
 import model.task.Task;
@@ -57,7 +58,7 @@ public abstract class Agent implements Entity {
 	protected Inventory inventory;
 	protected ArrayList<Tile> passableTiles;
 	public Tool workingTool = null;
-	protected Tool mainTool = null, secondaryTool = null;
+	public Tool mainTool = null, secondaryTool = null;
 	public Resource priorityResource;
 
 	protected boolean dead = false;
@@ -78,6 +79,10 @@ public abstract class Agent implements Entity {
 		movements = new Stack<Point>();
 		tasks = new Stack<Task>();
 
+		if(!(this instanceof MinerAgent))
+		tasks.push(new CraftToolTask(Tool.SWORD, this, new Point(
+				(int) currentPosition.getX(),
+				(int) currentPosition.getY())));
 	}
 
 	public abstract void update();
@@ -117,7 +122,7 @@ public abstract class Agent implements Entity {
 					.getPos().getX(), currentTask.getPos().getY()), .1, .1)
 					&& taskTimer < 0) {
 				// if in location of current task:
-				System.out.println("execute the task");
+				// System.out.println("execute the task");
 				currentTask.execute();
 				setNull = true;
 			}
@@ -174,10 +179,10 @@ public abstract class Agent implements Entity {
 		}
 
 		if (tickCount % HUNGER_SPEED == 0) {
-			if(fatigue >= MAX_FATIGUE) {
+			if (fatigue >= MAX_FATIGUE) {
 				blood -= 6;
 				hunger -= 6;
-			} else if (hunger <= 0){
+			} else if (hunger <= 0) {
 				blood -= 6;
 				fatigue += 5;
 			} else if (hunger <= 10 || fatigue >= MAX_FATIGUE) {
@@ -200,19 +205,27 @@ public abstract class Agent implements Entity {
 			taskTimer = 0;
 		}
 
+		if (!isWorking)
+			workingTool = null;
+
 		if (!(this instanceof RogueAgent)) {
+
 			for (Entity e : World.agents) {
 				boolean nearby = (Math.abs(e.getPos().getX()
 						- currentPosition.getX()) <= 1)
 						&& (Math.abs(e.getPos().getY() - currentPosition.getY()) <= 1);
+
 				if (nearby && e instanceof RogueAgent) {
-					attack((Agent) e, rand.nextInt(2));
+
+					if (hasTool(Tool.SWORD)) {
+						attack((Agent) e, Math.max(rand.nextInt(7) - 3, 0));
+					} else {
+						attack((Agent) e, Math.max(rand.nextInt(4) - 2, 0));
+					}
 				}
+
 			}
 		}
-		
-		if(!isWorking)
-			workingTool = null;
 	}
 
 	protected void resetAgent() {
@@ -552,16 +565,17 @@ public abstract class Agent implements Entity {
 			if (mainTool == null) {
 				inventory.changeAmount(Resource.WOOD, -3);
 				mainTool = t;
+				System.out.println("Primary Tool: "+t);
 			} else if (secondaryTool == null) {
 				inventory.changeAmount(Resource.WOOD, -3);
 				secondaryTool = t;
+				System.out.println("Secondary Tool: "+t);
 			} else {
 				System.out.println("Inventory full. Tool not crafted.");
 			}
 		} else {
-			(new HarvestTreeTask(this, findNearestTree((Double) getPos()),
-					World.terrain)).execute();
-			craftTool(t);
+			currentTask = new HarvestTreeTask(this, findNearestTree((Double) getPos()),
+					World.terrain);
 		}
 	}
 

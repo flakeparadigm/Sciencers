@@ -1,7 +1,7 @@
 package model.inventory;
 
 public enum Tool implements Storable {
-	HAMMER(20), PICKAXE(20), LIGHTSABER(20), DEATHBLADE(20);
+	HAMMER(20), PICKAXE(20), LIGHTSABER(20), DEATHBLADE(20), SWORD(20);
 	
 	private int itemSize;
 	

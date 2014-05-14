@@ -76,9 +76,23 @@ public class MinerAgent extends Agent {
 		getNextTaskIfNotBusy(EAgent.MINER);
 		// build hammer before building Building
 		if (currentTask instanceof GoMineAreaTask) {
+
+			if (hasTool(Tool.PICKAXE)) {
+				workingTool = Tool.PICKAXE;
+			}
+			
 			((GoMineAreaTask) currentTask).setAgentSource(this);
 			// } else if(currentTask instanceof HarvestTreeTask) {
 			// ((HarvestTreeTask) currentTask).setAgentSource(this);
+			
+//			if(!hasTool(Tool.PICKAXE)) {
+//				tasks.add(currentTask);
+//				currentTask = new CraftToolTask(Tool.PICKAXE, this, new Point(
+//						(int) currentPosition.getX(),
+//						(int) currentPosition.getY()));
+//				taskTimer = 10;
+//			}
+			
 		} else if (currentTask instanceof BuildBuildingTask) {
 			if (hasTool(Tool.HAMMER)) {
 				workingTool = Tool.HAMMER;
@@ -99,51 +113,60 @@ public class MinerAgent extends Agent {
 			}
 
 		} else if (currentTask instanceof ChangeTileTask) {
+
 			priorityResource = Resource.WOOD;
-			if (!passableTiles.contains(((ChangeTileTask) currentTask)
-					.getTileLocation().getY())) {
-				Tile hereTile = World.terrain.getTile(currentTask.getPos().x,
-						currentTask.getPos().y);
-				if (hereTile == Tile.Sky || hereTile == Tile.Wood
-						|| hereTile == Tile.Leaves) {
-					// ((ChangeTileTask) currentTask).changeTileType(Tile.Sky);
-				} else {
-					((ChangeTileTask) currentTask)
-							.changeTileType(Tile.BackgroundDirt);
+
+			if (currentTask instanceof ChangeTileTask) {
+				if (!passableTiles.contains(((ChangeTileTask) currentTask)
+						.getTileLocation().getY())) {
+					Tile hereTile = World.terrain.getTile(
+							currentTask.getPos().x, currentTask.getPos().y);
+					if (hereTile == Tile.Sky || hereTile == Tile.Wood
+							|| hereTile == Tile.Leaves) {
+						// ((ChangeTileTask)
+						// currentTask).changeTileType(Tile.Sky);
+					} else {
+						((ChangeTileTask) currentTask)
+								.changeTileType(Tile.BackgroundDirt);
+					}
 				}
-			}
-			if (currentTask.getPos().getY() < ((ChangeTileTask) currentTask)
-					.getTileLocation().getY()) {
-				((ChangeTileTask) currentTask).changeTileType(Tile.Ladder);
-			}
-			if (getInventory().getAmount(Resource.WOOD) < 3) {
-				tasks.add(currentTask);
-				currentTask = new HarvestTreeTask(this,
-						findNearestTree(currentPosition), World.terrain);
-				taskTimer = 10;
-			} else if (!passableTiles.contains(World.terrain.getTile(
-					(int) ((ChangeTileTask) currentTask).getTileLocation()
-							.getX(), (int) ((ChangeTileTask) currentTask)
-							.getTileLocation().getY()))) {
-				for (int i = 1; i < 100; i++) {
-					if (!passableTiles.contains(World.terrain.getTile(
-							(int) ((ChangeTileTask) currentTask)
-									.getTileLocation().getX(),
-							(int) ((ChangeTileTask) currentTask)
-									.getTileLocation().getY() - i))
-							&& !passableTiles.contains(World.terrain.getTile(
-									(int) ((ChangeTileTask) currentTask)
-											.getTileLocation().getX() - 1,
-									(int) ((ChangeTileTask) currentTask)
-											.getTileLocation().getY()))) {
-						tasks.add(currentTask);
-						currentTask = new ChangeTileTask(this, new Point(
+				if (currentTask.getPos().getY() < ((ChangeTileTask) currentTask)
+						.getTileLocation().getY()) {
+					((ChangeTileTask) currentTask).changeTileType(Tile.Ladder);
+				}
+				if (getInventory().getAmount(Resource.WOOD) < 3) {
+					tasks.add(currentTask);
+					currentTask = new HarvestTreeTask(this,
+							findNearestTree(currentPosition), World.terrain);
+					taskTimer = 10;
+				} else if (!passableTiles.contains(World.terrain.getTile(
+						(int) ((ChangeTileTask) currentTask).getTileLocation()
+								.getX(), (int) ((ChangeTileTask) currentTask)
+								.getTileLocation().getY()))) {
+					for (int i = 1; i < 100; i++) {
+						if (!passableTiles.contains(World.terrain.getTile(
 								(int) ((ChangeTileTask) currentTask)
 										.getTileLocation().getX(),
 								(int) ((ChangeTileTask) currentTask)
-										.getTileLocation().getY() - i),
-								Tile.Sky);
-						taskTimer = 10;
+										.getTileLocation().getY() - i))
+								&& !passableTiles
+										.contains(World.terrain
+												.getTile(
+														(int) ((ChangeTileTask) currentTask)
+																.getTileLocation()
+																.getX() - 1,
+														(int) ((ChangeTileTask) currentTask)
+																.getTileLocation()
+																.getY()))) {
+							tasks.add(currentTask);
+							currentTask = new ChangeTileTask(this, new Point(
+									(int) ((ChangeTileTask) currentTask)
+											.getTileLocation().getX(),
+									(int) ((ChangeTileTask) currentTask)
+											.getTileLocation().getY() - i),
+									Tile.Sky);
+							taskTimer = 10;
+						}
 					}
 				}
 			}
