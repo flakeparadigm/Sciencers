@@ -24,7 +24,7 @@ public class RogueAgent extends Agent {
 		super(currentPosition);
 
 		agentType = EAgent.ROGUE;
-		
+
 		workingTool = Tool.DEATHBLADE;
 
 		// killer = rand.nextBoolean();
@@ -54,16 +54,19 @@ public class RogueAgent extends Agent {
 		} else if (currentTask == null && rand.nextBoolean()) {
 			Building closest = findClosestFoodBldg();
 			currentTask = new RogueTask(this, closest);
-			taskTimer = 10;
+			// taskTimer = 10;
 		} else if (currentTask == null) {
 			if (findNearestTree(currentPosition) != null) {
 				currentTask = new HarvestTreeTask(this,
 						findNearestTree(currentPosition), World.terrain);
-				taskTimer = 10;
+				// taskTimer = 10;
 			}
 		}
 
+		jumpTick = 1;
+			
 		executeCurrentTask();
+		
 
 		updateMovement(currentPosition, movements);
 

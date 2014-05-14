@@ -40,7 +40,6 @@ public class World implements Serializable {
 
 	// resources
 	public static int playerScience;
-	public static int playerMoney;
 	public static final int WINNING_SCIENCE = 500;
 
 	// generation info
@@ -168,7 +167,6 @@ public class World implements Serializable {
 		saveProjectiles = projectiles;
 		// saveTasks = tasks;
 		savePlayerScience = playerScience;
-		savePlayerMoney = playerMoney;
 		saveResearch = Research.get();
 		saveSeed = seed;
 		saveWidth = width;
@@ -188,7 +186,6 @@ public class World implements Serializable {
 		// saveTasks = null;
 		playerScience = savePlayerScience;
 		savePlayerScience = 0;
-		playerMoney = savePlayerMoney;
 		savePlayerMoney = 0;
 		Research.set(saveResearch);
 		saveResearch = 0;

@@ -61,7 +61,7 @@ public abstract class Agent implements Entity {
 
 	protected boolean dead = false;
 
-	private int jumpTick = 0;
+	protected int jumpTick = 0;
 
 	public Agent(Point currentPosition) {
 		MY_ID = currentId++;

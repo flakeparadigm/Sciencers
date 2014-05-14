@@ -1,5 +1,8 @@
 package model;
 
+import model.agent.FarmerAgent;
+import model.agent.MinerAgent;
+import model.agent.SciencerAgent;
 import view.WorldView;
 
 public class WinChecker extends Thread {	
@@ -15,7 +18,7 @@ public class WinChecker extends Thread {
 			if(World.playerScience >= World.WINNING_SCIENCE) {
 				WorldView.win();
 			}
-			if(World.agents.size() == 0) {
+			if(!agentAlive()) {
 				WorldView.lose();
 			}
 			try {
@@ -24,5 +27,14 @@ public class WinChecker extends Thread {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private boolean agentAlive() {
+		for (Entity a: World.agents){
+			if (a instanceof MinerAgent || a instanceof SciencerAgent || a instanceof FarmerAgent){
+				return true;
+			}
+		}
+		return false;
 	}
 }

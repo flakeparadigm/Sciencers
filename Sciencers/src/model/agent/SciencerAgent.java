@@ -2,6 +2,7 @@ package model.agent;
 
 import java.awt.Point;
 
+import view.InfoPanes;
 import model.AlertCollection;
 import model.Entity;
 import model.World;
@@ -19,6 +20,8 @@ import model.task.WorkNearbyBuildingTask;
 
 public class SciencerAgent extends Agent{
 
+	private final int SCIENCE_FREQUENCY = 50;
+	
 	public SciencerAgent(Point currentPosition) {
 		super(currentPosition);
 		priorityResource = Resource.URANIUM;
@@ -67,17 +70,25 @@ public class SciencerAgent extends Agent{
 			isWorking = true;
 		}
 		
+		if (isWorking && tickCount % SCIENCE_FREQUENCY == 0)
+		{
+			World.playerScience ++;
+			InfoPanes.setScience(World.playerScience);
+			System.out.println(World.playerScience);
+		}
 		getNextTaskIfNotBusy(EAgent.SCIENCER);
 		
 		
 		
 
 		//if all else fails: Wander
-		if (currentTask == null && randomProb(200) && isWorking == false){
+		if (currentTask == null && randomProb(400)){
 			currentTask = new WanderTask(new Point(getCurrentX(currentPosition),
 					getCurrentY(currentPosition)));
+			isWorking = false;
 			taskTimer = 10;
 		}
+		
 
 		executeCurrentTask();
 

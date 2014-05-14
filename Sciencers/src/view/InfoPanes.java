@@ -48,6 +48,7 @@ public class InfoPanes extends JPanel {
 	private TaskPane genericTaskPane, farmerTaskPane, minerTaskPane, sciencerTaskPane;
 	private StatsPane statsPane;
 	private AlertsPane alertsPane;
+	private static int researchVal = 0;
 	
 	private JScrollPane genericTaskScroller, farmerTaskScroller, sciencerTaskScroller, minerTaskScroller, alertsScroller;
 
@@ -380,7 +381,7 @@ public class InfoPanes extends JPanel {
 		
 		public void performUpdate() {
 			lAgents.setText("Agents: " + World.agents.size());
-			lResearch.setText("Research: " + Research.get());
+			lResearch.setText("Research: " + researchVal);
 			lBuildings.setText("Buildings: " + World.buildings.size());
 			repaint();
 		}
@@ -434,6 +435,10 @@ public class InfoPanes extends JPanel {
 			for (String line : alert.split("\n"))
 				g2.drawString(line, x, y += g.getFontMetrics().getHeight());
 		}
+	}
+
+	public static void setScience(int playerScience) {
+		researchVal = playerScience;
 	}
 
 }

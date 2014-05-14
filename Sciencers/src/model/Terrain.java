@@ -27,7 +27,7 @@ public class Terrain implements Serializable {
 	 */
 	private final int averageTerrainHeight = 30;
 	private final int perlin1Magnitude = 20;
-	private final int perlin2Magnitude = 2;
+	private final int perlin2Magnitude = 0;
 	private final int perlin3Magnitude = 1;
 	private final int perlin1NoiseFrequency = 50;
 	private final int perlin2NoiseFrequency = 4;
