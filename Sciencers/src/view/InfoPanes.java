@@ -29,6 +29,7 @@ import model.agent.Agent;
 import model.agent.EAgent;
 import model.agent.FarmerAgent;
 import model.agent.MinerAgent;
+import model.agent.RogueAgent;
 import model.agent.SciencerAgent;
 import model.building.BuildingFactory;
 import model.building.EBuilding;
@@ -236,8 +237,8 @@ public class InfoPanes extends JPanel {
 			hireMenu = new JComboBox<String>();
 			hireMenu.addItem("Select Dood");
 			for (EAgent a : EAgent.values()) {
-				if (a != EAgent.GENERIC)
-					hireMenu.addItem(a.getName()); // TODO make pretty
+				if (a != EAgent.GENERIC && a != EAgent.ROGUE)
+					hireMenu.addItem(a.getName());
 			}
 			hireMenu.addActionListener(new MenuListener());
 			add(hireMenu);
@@ -367,13 +368,14 @@ public class InfoPanes extends JPanel {
 
 	private class StatsPane extends JPanel {
 
-		JLabel lAgents, lResearch, lBuildings;
+		JLabel lAgents, lResearch, lBuildings, lRogues;
 
 		public StatsPane() {
 			this.setLayout(new FlowLayout());
 			this.setBackground(Color.BLACK);
 
 			lAgents = new JLabel();
+			lRogues = new JLabel();
 			lResearch = new JLabel();
 			lBuildings = new JLabel();
 
@@ -387,12 +389,22 @@ public class InfoPanes extends JPanel {
 
 			lBuildings.setForeground(Color.white);
 			this.add(lBuildings);
+			
+			lRogues.setForeground(Color.red);
+			this.add(lRogues);
 		}
 
 		public void performUpdate() {
-			lAgents.setText("Agents: " + World.agents.size());
+			int numAgents = 0, numRogues = 0;
+			for(Entity a : World.agents) {
+				if(a instanceof RogueAgent)
+					numRogues++;
+				else numAgents++;
+			}
+			lAgents.setText("Agents: " + numAgents);
 			lResearch.setText("Research: " + researchVal);
 			lBuildings.setText("Buildings: " + World.buildings.size());
+			lRogues.setText("Angry Rogues: " + numRogues);
 			repaint();
 		}
 	}
