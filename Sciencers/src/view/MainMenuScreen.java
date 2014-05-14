@@ -27,6 +27,8 @@ public class MainMenuScreen extends JFrame {
 	private final int X_WINDOW_SIZE = 1000;
 	private final int Y_WINDOW_SIZE = 600;
 	
+	private WorldView gameWindow;
+	
 	public static void main(String[] args) {
 		
 		MainMenuScreen window = new MainMenuScreen();
@@ -113,26 +115,23 @@ public class MainMenuScreen extends JFrame {
 		
 		private class OButtonListener implements ActionListener {
 
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				boolean newWorld;
+				
 				if(arg0.getSource() == loadGameButton) {
-					
-					File file = new File(WorldView.getSaveLocation());
-					if (!file.exists()) {
-						JOptionPane.showMessageDialog(WorldView.gameWindow, "No save file was found.\nSorry.");
-						return;
-					}
-					WorldView.doCreateWorld = false;
+					newWorld = false;
 				}
 				else if(arg0.getSource() == newGameButton) {
-					WorldView.doCreateWorld = true;
+					newWorld = true;
 				}
 				else {
 					System.out.println("Main menu screen buttons are derped");
 					return;
 				}
-				WorldView.gameWindow = new WorldView();
-				WorldView.gameWindow.setVisible(true);
+				gameWindow = new WorldView(newWorld);
+				gameWindow.setVisible(true);
 				System.out.println("Setup procedure completed. Game is now happy, and indeed quite playable.");
 
 				hideThis();

@@ -49,10 +49,6 @@ public class WorldView extends JFrame {
 	public static SciencersObserver terrainWatch;
 	public static InfoObserver infoWatch;
 
-	// boolean
-	public static boolean doCreateWorld;
-	// public static boolean loadWorldBool;
-
 	// Magic Numbers
 	static Toolkit tk = Toolkit.getDefaultToolkit();
 	private final int X_SCREEN_SIZE = ((int) tk.getScreenSize().getWidth());
@@ -74,29 +70,52 @@ public class WorldView extends JFrame {
 	private static int xPanelLocation = -X_MAP_SIZE / 2 * TILE_SIZE;
 	private static int yPanelLocation = -10 * TILE_SIZE;
 
-//	public static void main(String[] args) {
-//		System.out
-//				.println("Wouldn't it be nice to launch from the pretty new menu screen?");
-//		gameWindow = new WorldView();
-//		gameWindow.setVisible(true);
-//	}
+	// public static void main(String[] args) {
+	// System.out
+	// .println("Wouldn't it be nice to launch from the pretty new menu screen?");
+	// gameWindow = new WorldView();
+	// gameWindow.setVisible(true);
+	// }
 
 	public WorldView() {
 		gameWindow = this;
 		setupObservers();
 		setupProperties();
-		setupModel();
+		makeNewWorld();
 		addComponents();
 		registerListeners();
 
 		World.startTicks();
-		if (doCreateWorld)
-			World.giveStarter();
-		
+		World.giveStarter();
+
 		new Thread(new WinChecker()).start();
 		System.out.println("WorldView constructed, WinChecker running");
 		updateTerrain();
+	}
 
+	public WorldView(boolean newWorld) {
+		gameWindow = this;
+		setupObservers();
+		setupProperties();
+		
+		// make new world or load save
+		if (newWorld) {
+			makeNewWorld();
+		} else {
+			loadSavedWorld();
+		}
+		
+		addComponents();
+		registerListeners();
+
+		World.startTicks();
+		if (newWorld) {
+			World.giveStarter();
+		}
+
+		new Thread(new WinChecker()).start();
+		System.out.println("WorldView constructed, WinChecker running");
+		updateTerrain();
 	}
 
 	private void setupObservers() {
@@ -114,7 +133,7 @@ public class WorldView extends JFrame {
 		setSize(X_WINDOW_SIZE, Y_WINDOW_SIZE);
 		setLayout(null);
 		setLocation(50, 50);
-		
+
 		System.out.println("Properties set");
 
 		// this.addComponentListener(new ComponentAdapter() {
@@ -130,33 +149,33 @@ public class WorldView extends JFrame {
 		// });
 	}
 
-	private void setupModel() {
-		// int loadWorld = JOptionPane.showConfirmDialog(gameWindow,
-		// "Would you like to load the previous game?", "Load Game?",
-		// JOptionPane.YES_NO_OPTION);
-		//
-		// if (loadWorld == JOptionPane.YES_OPTION) {
-		// doCreateWorld = false;
-		// loadSavedWorld();
-		// } else {
-		// doCreateWorld = true;
-		// makeNewWorld();
-		// }
-
-		// if (loadWorldBool) {
-		// doCreateWorld = false;
-		// loadSavedWorld();
-		// } else {
-		// doCreateWorld = true;
-		// makeNewWorld();
-		// }
-
-		if (doCreateWorld) {
-			makeNewWorld();
-		} else {
-			loadSavedWorld();
-		}
-	}
+	// private void setupModel() {
+	// // int loadWorld = JOptionPane.showConfirmDialog(gameWindow,
+	// // "Would you like to load the previous game?", "Load Game?",
+	// // JOptionPane.YES_NO_OPTION);
+	// //
+	// // if (loadWorld == JOptionPane.YES_OPTION) {
+	// // doCreateWorld = false;
+	// // loadSavedWorld();
+	// // } else {
+	// // doCreateWorld = true;
+	// // makeNewWorld();
+	// // }
+	//
+	// // if (loadWorldBool) {
+	// // doCreateWorld = false;
+	// // loadSavedWorld();
+	// // } else {
+	// // doCreateWorld = true;
+	// // makeNewWorld();
+	// // }
+	//
+	// if (doCreateWorld) {
+	// makeNewWorld();
+	// } else {
+	// loadSavedWorld();
+	// }
+	// }
 
 	private void addComponents() {
 
@@ -201,9 +220,9 @@ public class WorldView extends JFrame {
 		terrainPanel.setSize(X_MAP_SIZE * TILE_SIZE, Y_MAP_SIZE * TILE_SIZE);
 		terrainPanel.setOpaque(false);
 		terrainPanel.setBackground(new Color(0, 0, 0, 0));
-		
-		backgroundPanel = new BackgroundView(new Point(-xPanelLocation / TILE_SIZE,
-				-yPanelLocation / TILE_SIZE));
+
+		backgroundPanel = new BackgroundView(new Point(-xPanelLocation
+				/ TILE_SIZE, -yPanelLocation / TILE_SIZE));
 		add(backgroundPanel);
 		backgroundPanel.setLocation(xPanelLocation, yPanelLocation);
 		// TODO: figure out correct panel size
@@ -461,7 +480,7 @@ public class WorldView extends JFrame {
 	// CREATE, LOAD, AND SAVE WORLDS
 
 	private void makeNewWorld() {
-		world = new World((long)(Math.random()*500), X_MAP_SIZE, Y_MAP_SIZE);
+		world = new World((long) (Math.random() * 500), X_MAP_SIZE, Y_MAP_SIZE);
 		System.out.println("New world created");
 	}
 
@@ -477,8 +496,9 @@ public class WorldView extends JFrame {
 			FileInputStream loadFile = new FileInputStream(SAVE_LOCATION);
 			ObjectInputStream loadWorld = new ObjectInputStream(loadFile);
 
-			world = (World) loadWorld.readObject();
-			world.loadSaveables();
+			World newWorld = (World) loadWorld.readObject();
+			newWorld.loadSaveables();
+			world=newWorld;
 
 			loadWorld.close();
 			loadFile.close();
@@ -487,6 +507,7 @@ public class WorldView extends JFrame {
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(gameWindow,
 					"Save file failed to load.\nSorry.");
+			ex.printStackTrace();
 			makeNewWorld();
 		}
 	}
@@ -550,15 +571,15 @@ public class WorldView extends JFrame {
 
 	public static void win() {
 		World.stopTicks();
-		JOptionPane
-				.showMessageDialog(gameWindow, "You won the game!\nCongrats!");
+		JOptionPane.showMessageDialog(gameWindow,
+				"You won the game!\nCongrats!");
 		System.exit(0);
 	}
 
 	public static void lose() {
 		World.stopTicks();
-		JOptionPane
-				.showMessageDialog(gameWindow, "You lost the game!\nThat sucks!");
+		JOptionPane.showMessageDialog(gameWindow,
+				"You lost the game!\nThat sucks!");
 		System.exit(0);
 	}
 }

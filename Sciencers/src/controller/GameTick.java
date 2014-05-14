@@ -13,7 +13,7 @@ public class GameTick extends Thread {
 	int tickTime;
 	boolean shouldUpdate = true;
 	boolean terminate = false;
-	
+
 	Random rand = new Random();
 	private final int TRAGIC_EVENT_TIME = 2000;
 
@@ -44,40 +44,41 @@ public class GameTick extends Thread {
 					System.out
 							.println("1000 ticks since last count on this thread, "
 									+ count + " total");
-					
-					if(count == TRAGIC_EVENT_TIME) {
-//					if(rand.nextInt(count) >= TRAGIC_EVENT_TIME) {
+
+					if (count == TRAGIC_EVENT_TIME) {
+						// if(rand.nextInt(count) >= TRAGIC_EVENT_TIME) {
 						World.rogueAttack();
 					}
 				}
 				// Until the game ends, always update the given list of
 				// entities
 				// every tickTime milliseconds
-				for (Entity e : entities) {
-					if (!shouldUpdate) // prevent concurrent modification.
-						break; // stops updates when paused, even mid-cycle;
+				try {
+					for (Entity e : entities) {
+						if (!shouldUpdate) // prevent concurrent modification.
+							break; // stops updates when paused, even mid-cycle;
 
-					try {
 						e.update();
-					} catch (Exception ex) {
-						ex.printStackTrace();
+
+						// if the agent has died, add it to the deadEntities
+						// list.
+						if (e.isDead()) {
+							deadEntities.add(e);
+						}
 					}
 
-					// if the agent has died, add it to the deadEntities list.
-					if (e.isDead()) {
-						deadEntities.add(e);
+					// Clean up dead entities and clear the DE array list
+					for (Entity d : deadEntities) {
+						entities.remove(d);
 					}
-				}
+					deadEntities.clear();
 
-				// Clean up dead entities and clear the DE array list
-				for (Entity d : deadEntities) {
-					entities.remove(d);
-				}
-				deadEntities.clear();
-
-				// If there are any entities, update the view
-				if (entities.size() > 0) {
-					SciencersObserver.updateObserver(entities.get(0));
+					// If there are any entities, update the view
+					if (entities.size() > 0) {
+						SciencersObserver.updateObserver(entities.get(0));
+					}
+				} catch (Exception ex) {
+					ex.printStackTrace();
 				}
 
 				try {

@@ -155,17 +155,18 @@ public class World implements Serializable {
 	private Terrain saveTerrain;
 	private ArrayList<Entity> saveAgents, saveBuildings;
 	private ArrayList<Projectile> saveProjectiles;
-	// private TaskList saveTasks;
-	private int savePlayerScience, savePlayerMoney, saveResearch;
+	private int savePlayerScience, saveResearch;
 	private long saveSeed;
 	private int saveWidth, saveHeight;
+	
+	
 
 	public void makeSaveable() {
 		saveTerrain = terrain;
 		saveAgents = agents;
+		System.out.println(saveAgents);
 		saveBuildings = buildings;
 		saveProjectiles = projectiles;
-		// saveTasks = tasks;
 		savePlayerScience = playerScience;
 		saveResearch = Research.get();
 		saveSeed = seed;
@@ -176,27 +177,30 @@ public class World implements Serializable {
 	public void loadSaveables() {
 		terrain = saveTerrain;
 		saveTerrain = null;
+
 		agents = saveAgents;
 		saveAgents = null;
+
 		buildings = saveBuildings;
 		saveBuildings = null;
+
 		projectiles = saveProjectiles;
 		saveProjectiles = null;
-		// tasks = saveTasks;
-		// saveTasks = null;
+		
 		playerScience = savePlayerScience;
 		savePlayerScience = 0;
-		savePlayerMoney = 0;
+		
 		Research.set(saveResearch);
 		saveResearch = 0;
+		
 		seed = saveSeed;
 		saveSeed = 0;
+		
 		width = saveWidth;
 		saveWidth = 0;
+		
 		height = saveHeight;
 		saveHeight = 0;
-
-		(new WinChecker()).run();
 	}
 
 	public static void reset() {
